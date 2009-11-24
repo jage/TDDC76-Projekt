@@ -1,0 +1,6 @@
+*.o
+.cdtproject
+.metadata
+.project
+.settings/
+.*~
