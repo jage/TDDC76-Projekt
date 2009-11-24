@@ -9,7 +9,7 @@
 using namespace std;
 
 
-GraphicsEngine::GraphicsEngine(int width, int height) : screen(NULL), source_image(NULL)
+GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), source_image(NULL)
 {
 	screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
 	if (screen == NULL)
@@ -63,7 +63,7 @@ void GraphicsEngine::clear()
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
 }
 
-SDL_Rect GraphicsEngine::get_clipping_rect(PANZER_IMAGE picture_nr)
+SDL_Rect GraphicsEngine::get_clipping_rect(PANZER_IMAGE& picture_nr)
 {
 	SDL_Rect rect;
 	switch (picture_nr)
