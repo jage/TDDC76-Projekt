@@ -1,45 +1,38 @@
-#include "GameEngine.h"
-#include "GraphicsEngine.h"
-#include "State.h"
-#include "SDL.h"
-#include <list>
-#include <iostream>
+/*
+ * GameEngine.cpp
+ *
+ *  Created on: Nov 22, 2009
+ *      Author: rosjo
+ */
 
+#include "iostream"
+#include "GameEngine.h"
+#include "State.h"
 using namespace std;
 
-GameEngine::GameEngine()
-{}
+GameEngine::GameEngine() {
 
-GameEngine::~GameEngine()
-{}
+	meny_ptr_ = new Meny(&graphicengine_,&gameworld_);
+}
 
-void GameEngine::run()
-{
-//Start SDL
-	SDL_Init(SDL_INIT_VIDEO);
+GameEngine::~GameEngine() {
+	// TODO Auto-generated destructor stub
+}
 
-	State* currentstate = new MainState(&gfx, &gameworld);
+void GameEngine::run() {
+	bool exit_now = false;
+	char input = 0;
 
-	int ticks = 0;
-	int fps = 120;
-
-	Element ball(CANNONBALL, 300,0,300,0,0,1);
-	gameworld.add_element(ball);
-	Element cannon(CANNON, 0, 0, 0, 0, 0, 0);
-	gameworld.add_element(cannon);
-
-	for(int i = 0; i < 500; ++i)
+	while(!exit_now)
 	{
-		ticks = SDL_GetTicks();
-		currentstate->logic();
-		currentstate->render();
-		ticks -= SDL_GetTicks();
+		cout << "Pre meny\n";
+		cin >> input;
+		if(input == 'q')
+			exit_now = true;
 
-		if (-ticks < 1000 / fps)
-			SDL_Delay(1000 / fps + ticks);
+		//current_state_->render();
+		meny_ptr_->render();
+
 	}
-
-	//Quit SDL
-	SDL_Quit();
-
+	cout << "Thanks for using pantzer" << endl;
 }
