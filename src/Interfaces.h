@@ -11,7 +11,7 @@ class Movable
 {
 public:
 	virtual const double& get_windFactor() const=0;
-	virtual const Velocity& get_velocity() const=0
+	virtual const Velocity& get_velocity() const=0;
 	virtual void set_velocity(const Velocity&)=0;
 	virtual const double& get_angularFreq() const=0;
 	virtual void set_angularFreq()=0;
@@ -21,7 +21,7 @@ public:
 class Destructable
 {
 public:
-	virtual deform(const Collision&)=0;
+	virtual void  deform(const Collision&)=0;
 }
 
 #endif /*INTERFACES_H_*/
