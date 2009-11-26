@@ -10,7 +10,6 @@ class Player
 {
 public:
 	Player(int health, std::string name, int points);
-	virtual ~Player();
 	
 	/*
 	 * get_health()
@@ -53,6 +52,8 @@ public:
 	 * Hämtar en händelse.
 	 */
 	virtual event get_event();'
+	
+	virtual ~Player();
 	
  private:
  	int health;

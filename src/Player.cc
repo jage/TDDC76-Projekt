@@ -1,7 +1,10 @@
 #include "Player.h"
 
+Player::Player(int health, std::string name, int points):health_(health),name_(name),points_(points){}
+
 int Player::get_health()
 {
+	return health_
 }
 
 int Player::set_health()
