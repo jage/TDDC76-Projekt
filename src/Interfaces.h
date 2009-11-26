@@ -2,6 +2,7 @@
 #define INTERFACES_H_
 
 #include "Enums.h"
+#include "Structs.h"
 
 using namespace std;
 
@@ -9,11 +10,11 @@ using namespace std;
 class Movable
 {
 public:
-	const double& get_windFactor() const=0;
-	const Velocity& get_velocity() const=0
-	void set_velocity(const Velocity&)=0;
-	const double& get_angularFreq() const=0;
-	void set_angularFreq()=0;
+	virtual const double& get_windFactor() const=0;
+	virtual const Velocity& get_velocity() const=0
+	virtual void set_velocity(const Velocity&)=0;
+	virtual const double& get_angularFreq() const=0;
+	virtual void set_angularFreq()=0;
 }
 
 // abstract class for use with destructable game objects,
