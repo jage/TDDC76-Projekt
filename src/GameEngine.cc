@@ -8,31 +8,33 @@
 #include "iostream"
 #include "GameEngine.h"
 #include "State.h"
+#include "Enums.h"
+#include <vector>
+
 using namespace std;
 
 GameEngine::GameEngine() {
 
-	meny_ptr_ = new Meny(&graphicsengine_, &gameworld_);
+	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new Fire(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new ExitGame(&graphicsengine_, &gameworld_));
+
+	currentState_ = MENY;
+
 }
 
 GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
 }
 
-void GameEngine::run() {
-	bool exit_now = false;
-	char input = 0;
+void GameEngine::run()
+{
+	while(currentState_ != EXITGAME)
+		{
+			stateVector_[currentState_] ->render();
+			currentState_ = stateVector_[currentState_]->next_state();
+		};
 
-	while(!exit_now)
-	{
-		cout << "Pre meny\n";
-		cin >> input;
-		if(input == 'q')
-			exit_now = true;
-
-		//current_state_->render();
-		meny_ptr_->render();
-
-	}
 	cout << "Thanks for using pantzer" << endl;
 }

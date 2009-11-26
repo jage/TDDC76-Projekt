@@ -8,7 +8,7 @@ BUILD          = build
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++
-CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra
+CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
@@ -17,6 +17,7 @@ OBJECTS_LIST = Panzer2k.o Element.o GameEngine.o GameWorld.o State.o \
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
+
 
 # Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
