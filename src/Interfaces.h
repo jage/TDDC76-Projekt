@@ -21,7 +21,7 @@ public:
 class Destructable
 {
 public:
-	virtual void  deform(const Collision&)=0;
+	virtual void deform(const Collision&)=0;
 }
 
 #endif /*INTERFACES_H_*/
