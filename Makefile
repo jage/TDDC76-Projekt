@@ -11,6 +11,7 @@ CCC       = g++
 CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra
 
 # Objektkodsmoduler som ingår i Panzer 2K
+
 OBJECTS_LIST = Panzer2k.o Element.o GameEngine.o State.o
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
