@@ -10,8 +10,8 @@
 
 using namespace std;
 //State---------------------------------------------------------//
-State::State(GraphicEngine* graphicengine, GameWorld* gameworld)
-	: graphicengine_ptr_(graphicengine), gameworld_ptr_(gameworld){}
+State::State(GraphicsEngine* graphicengine, GameWorld* gameworld)
+	: graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld){}
 State::~State() {}
 //--------------------------------------------------------------//
 
