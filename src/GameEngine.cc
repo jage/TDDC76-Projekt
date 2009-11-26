@@ -12,7 +12,7 @@ using namespace std;
 
 GameEngine::GameEngine() {
 
-	meny_ptr_ = new Meny(&graphicengine_,&gameworld_);
+	meny_ptr_ = new Meny(&graphicsengine_, &gameworld_);
 }
 
 GameEngine::~GameEngine() {

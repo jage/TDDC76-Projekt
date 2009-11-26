@@ -31,7 +31,7 @@ public:
 private:
 
 	GameWorld gameworld_;
-	GraphicsEngine graphicengine_;
+	GraphicsEngine graphicsengine_;
 	Sound sound_;
 	Player player1;
 	Player player2;
