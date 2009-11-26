@@ -3,7 +3,7 @@
 
 enum PANZER_STATES
 {
-	MAINSTATE
+	MENY
 };
 
 enum PANZER_IMAGE
