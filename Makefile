@@ -11,8 +11,10 @@ CCC       = g++
 CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra
 
 # Objektkodsmoduler som ingår i Panzer 2K
-OBJECTS_LIST = Panzer2k.o,Element.o
+OBJECTS_LIST = Panzer2k.o Element.o GameEngine.o State.o
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
+
+all: panzer2k
 
 # Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
@@ -24,7 +26,12 @@ $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 	
 $(BUILD)/Element.o: $(PANZER2K)/Element.h $(PANZER2K)/Element.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Element.cc -o $(BUILD)/Element.o
-	
+
+$(BUILD)/GameEngine.o: $(PANZER2K)/GameEngine.h $(PANZER2K)/GameEngine.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Element.cc -o $(BUILD)/Element.o
+
+$(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o
 # make Element
 
 Element: $(BUILD)/Element.o
