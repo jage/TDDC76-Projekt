@@ -14,12 +14,4 @@ enum PANZER_IMAGE
 	SUN
 };
 
-struct Collision
-{
-	bool has_collided;
-	double x;
-	double y;
-	double blast_radius;
-};
-
 #endif
