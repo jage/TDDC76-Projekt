@@ -33,9 +33,15 @@ $(BUILD)/GameEngine.o: $(PANZER2K)/GameEngine.h $(PANZER2K)/GameEngine.cc
 
 $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o
-# make Element
+	
+$(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
 
+# make Element
 Element: $(BUILD)/Element.o
+
+# Make Network
+Network: $(BUILD)/Network.o
 
 # 'make clean' tar bort objektkodsfiler och 'core'
 clean:
