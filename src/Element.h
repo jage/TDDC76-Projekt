@@ -18,14 +18,14 @@ public:
 	const int& get_height();
 	const int& get_width();
 	const PANZER_IMAGE& get_imgRef();
-	virtual ~Element(){};
+	virtual ~Element() {};
 private:
 	int x_;		// x coordinate
 	int y_;		// y coordinate
+	PANZER_IMAGE imgRef_;	// reference to element image 
 	int width_;	// width of element
 	int height_; // height of element
 	double angle_; // the rotation angle of element
-	PANZER_IMAGE imgRef;	// reference to element image 
 };
 
 #endif /*ELEMENT_H_*/
