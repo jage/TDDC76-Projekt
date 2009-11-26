@@ -4,4 +4,4 @@
 .project
 .settings/
 .*~
-.gitignore
+.cproject
