@@ -9,22 +9,22 @@ class Element
 {
 public:
 	Element(const int&,const int&,const PANZER_IMAGE&,const int& x=0,const int& y=0,const double& angle=0); // x,y,imgRef,width,height,angle
-	const int& get_x();
+	const int& get_x() const;
 	void set_x(const int&);
-	const int& get_y();
+	const int& get_y() const;
 	void set_y(const int&);
-	const double& get_angle();
 	void set_angle(const double&);
-	const int& get_height();
-	const int& get_width();
-	const PANZER_IMAGE& get_imgRef();
+	const double& get_angle() const;
+	const int& get_height() const;
+	const int& get_width() const;
+	const PANZER_IMAGE& get_imgRef() const;
 	virtual ~Element() {};
 private:
-	int x_;		// x coordinate
-	int y_;		// y coordinate
-	PANZER_IMAGE imgRef_;	// reference to element image 
 	int width_;	// width of element
 	int height_; // height of element
+	PANZER_IMAGE imgRef_;	// reference to element image
+	int x_;		// x coordinate
+	int y_;		// y coordinate
 	double angle_; // the rotation angle of element
 };
 
