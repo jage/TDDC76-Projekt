@@ -3,6 +3,7 @@
 
 enum PANZER_STATES
 {
+	MAINSTATE
 	MENY
 };
 
