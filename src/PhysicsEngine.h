@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "Interfaces.h"
 
 using namespace std;
 
@@ -12,10 +13,7 @@ class PhysicsEngine {
 		PhysicsEngine();
 		void update_pos(vector<Element&>, double&);
 		void update_pos(Element&, double&);
-	
-	private:
-		
-	
-}
+
+};
 #endif /*PHYSICSENGINE_H_*/
 
