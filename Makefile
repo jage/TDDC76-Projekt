@@ -8,7 +8,7 @@ BUILD          = build
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++
-CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
+CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
