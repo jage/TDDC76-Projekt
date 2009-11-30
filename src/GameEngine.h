@@ -8,6 +8,7 @@
 #ifndef GAMEENGINE_H_
 #define GAMEENGINE_H_
 
+#include <vector>
 #include "GameWorld.h"
 #include "GraphicsEngine.h"
 #include "State.h"
@@ -31,16 +32,16 @@ public:
 private:
 
 	GameWorld gameworld_;
-	GraphicsEngine graphicengine_;
+	GraphicsEngine graphicsengine_;
 	Sound sound_;
 	Player player1;
 	Player player2;
 
 
 	//Tillstånd
-	State* current_state_;
-    Meny* meny_ptr_;
-
+	PANZER_STATES currentState_;
+	State* prevState_;
+    vector<State*> stateVector_;
 
 	// Kopiering och tilldelning tillåts ej (definieras ej)
     GameEngine(const GameEngine&);
