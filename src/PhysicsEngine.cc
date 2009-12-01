@@ -46,8 +46,8 @@ void PhysicsEngine::update_pos(Element& element, double& gravity) {
  */
 void PhysicsEngine::calc_new_pos(Movable& element, double& gravity) {
 	element.set_velocity(
-			element.get_velocity().dx,
-			sqrt(sqr(element.get_velocity().dy) - 2*gravity*element.get_velocity().dy)
+			element.get_velocity().dx_,
+			sqrt(sqr(element.get_velocity().dy_) - 2*gravity*element.get_velocity().dy_)
 			);
 }
 

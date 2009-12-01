@@ -4,6 +4,7 @@
 # Filkataloger där olika delar av programvaran finns.
 PANZER2K     = src
 BUILD          = build
+SDL	=	ISDL ISDL_image
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
@@ -21,7 +22,7 @@ all: panzer2k
 
 # Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(OBJECTS)
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(OBJECTS)
 	
 # Delmal
 $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
