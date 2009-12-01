@@ -1,17 +1,17 @@
 /*
  *	GraphicsEngine.h
  *
- *	Creator: Johan Wågberg
+ *	Creator: Johan Wï¿½gberg
  *	Date: 091123
  *
- *	Ritar ut Element på skärmen.
+ *	Ritar ut Element pï¿½ skï¿½rmen.
  */
 
 
 #ifndef GRAPHICSENGINE_H_
 #define GRAPHICSENGINE_H_
 
-#include "SDL.h"
+#include "SDL/SDL.h"
 #include "Element.h"
 #include "Enums.h"
 #include <vector>
@@ -37,3 +37,4 @@ private:
 };
 
 #endif
+

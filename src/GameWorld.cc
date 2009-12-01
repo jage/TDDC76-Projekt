@@ -1,7 +1,7 @@
 #include "GameWorld.h"
 
 GameWorld::GameWorld()
-{};
+{}
 
 GameWorld::~GameWorld()
 {}
@@ -12,8 +12,8 @@ void GameWorld::add_element(Element new_element)
 }
 
 Collision GameWorld::update_world()
-{
-	// Ska implementeras med PhysicsEngine senare
+{ ;}
+/*	// Ska implementeras med PhysicsEngine senare
 
 	for(std::vector<Element>::iterator it = element_vector.begin();
 		it != element_vector.end();
@@ -29,7 +29,7 @@ Collision GameWorld::update_world()
 	coll.y = 0;
 
 	return coll;
-}
+}*/
 
 std::vector<Element>* GameWorld::get_element_vector()
 {

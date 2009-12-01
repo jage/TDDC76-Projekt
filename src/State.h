@@ -87,8 +87,112 @@ public:
 	PANZER_STATES next_state();
 
 private:
-	/*GameWorld& gameworld_;
-	GraphicEngine& graphicsengine_;*/
+
+};
+
+class Player1State : public State
+{
+
+public:
+	//Meny();
+	Player1State(GraphicsEngine*, GameWorld*);
+	~Player1State();
+
+
+	/*
+	 * Skriver ut menyalternativ till användaren på standard utsrömmen
+	 */
+	void render();
+
+	/*
+	 * logic()
+	 * Saknar egentlig funktion
+	 */
+	void logic(){};
+
+	/*
+	 * handle_event()
+	 * Svarar på användarens knapptryckningar
+	 */
+	void handle_input(std::istream&){};
+
+	/*
+	 * next_state()
+	 * Nästa tillstånd för Meny
+	 */
+	PANZER_STATES next_state();
+
+private:
+
+};
+
+class Fire : public State
+{
+public:
+
+	Fire(GraphicsEngine*, GameWorld*);
+	~Fire();
+
+
+	/*
+	 * Skriver ut menyalternativ till användaren på standard utsrömmen
+	 */
+	void render();
+
+	/*
+	 * logic()
+	 * Saknar egentlig funktion
+	 */
+	void logic(){};
+
+	/*
+	 * handle_event()
+	 * Svarar på användarens knapptryckningar
+	 */
+	void handle_input(std::istream&){};
+
+	/*
+	 * next_state()
+	 * Nästa tillstånd för Meny
+	 */
+	PANZER_STATES next_state();
+
+private:
+
+};
+
+class ExitGame : public State
+{
+
+public:
+	ExitGame(GraphicsEngine*, GameWorld*);
+	~ExitGame();
+
+
+	/*
+	 * Skriver ut menyalternativ till användaren på standard utsrömmen
+	 */
+	void render();
+
+	/*
+	 * logic()
+	 * Saknar egentlig funktion
+	 */
+	void logic(){};
+
+	/*
+	 * handle_event()
+	 * Svarar på användarens knapptryckningar
+	 */
+	void handle_input(std::istream&){};
+
+	/*
+	 * next_state()
+	 * Nästa tillstånd för Meny
+	 */
+	PANZER_STATES next_state();
+
+private:
 
 };
 
