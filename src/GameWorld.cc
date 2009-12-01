@@ -8,12 +8,12 @@ GameWorld::~GameWorld()
 
 void GameWorld::add_element(Element new_element)
 {
-	element_vector.push_back(new_element);
+	element_vector_.push_back(new_element);
 }
 
 Collision GameWorld::update_world()
 {
-	physics_engine_.update_pos(element_vector_,gravity);
+	physics_engine_.update_pos(element_vector_,gravity_);
 	return 1; //dummy
 }
 

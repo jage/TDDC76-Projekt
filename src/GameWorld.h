@@ -17,12 +17,12 @@ public:
 	Collision update_world();
 	std::vector<Element>* get_element_vector();
 
-	std::vector<Element> element_vector;
+	std::vector<Element> element_vector_;
 
 private:
 	PhysicsEngine physics_engine_;
 	//Wind
-	const double gravity = 9.82;
+	const double gravity_ = 9.82;
 	//Cannon cannon1
 	//Cannon cannon2
 };
