@@ -9,8 +9,21 @@
 class Player
 {
 public:
-	Player(int health, std::string name, int points);
+	Player(int& , std::string&, int&);
+	 virtual ~Player();
+	 
+	 	/*
+	 * get_name()
+	 * Hämtar en spelares(Players) namn.
+	 */
+	const std::string& get_name() const;
 	
+	/*
+	 * set_name()
+	 * Sätter en spelares(Player) namn.
+	 */
+	void set_name(const string& n);
+	 
 	/*
 	 * get_health()
 	 * Hämtar en spelares(Players) hälsa i form av ett heltal. 
@@ -22,18 +35,6 @@ public:
 	 * Sätter en spelares(Player) hälsa. 
 	 */
 	int set_health(int);
-	
-	/*
-	 * get_name()
-	 * Hämtar en spelares(Players) namn.
-	 */
-	std::string get_name();
-	
-	/*
-	 * set_name()
-	 * Sätter en spelares(Player) namn.
-	 */
-	void set_name();
 	
 	/*
 	 * get_points()
@@ -51,14 +52,14 @@ public:
 	 * get_event() - en ren virtuell funktion
 	 * Hämtar en händelse.
 	 */
-	virtual event get_event();'
+	virtual event get_event();
 	
-	virtual ~Player();
+	
 	
  private:
- 	int health;
- 	int points;
- 	std::string name;	
+ 	int health_;
+ 	int points_;
+ 	std::string name_;	
 };
 
 #endif /*PLAYER_H_*/

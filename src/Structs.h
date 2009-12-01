@@ -6,15 +6,15 @@
 // Velocity
 struct Velocity
 {
-	double dx;
-	double dy;
+	double dx_;
+	double dy_;
 };
 
 // Collision
 struct Collision
 {
-	int x;
-	int y;
+	int x_;
+	int y_;
 };
 
 #endif /*STRUCTS_H_*/

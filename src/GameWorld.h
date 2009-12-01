@@ -20,9 +20,9 @@ public:
 	std::vector<Element> element_vector;
 
 private:
-	//PhisicsEngine
+	PhysicsEngine physics_engine_;
 	//Wind
-	//double gravity
+	const double gravity = 9.82;
 	//Cannon cannon1
 	//Cannon cannon2
 };

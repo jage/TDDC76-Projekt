@@ -10,13 +10,13 @@ Ammunition::Ammunition()
 // Standard
 const double& StandardAmmo::get_blastRadius() const
 {
-	return 10;	
+	return 10; // for modification	
 }
 
 const Collision& StandardAmmo::get_collision() const
 {
  	Collision coll;
- 	coll.x=get_x;
- 	coll.y=get_y;	
+ 	coll.x_=get_x;
+ 	coll.y_=get_y;	
 }
 

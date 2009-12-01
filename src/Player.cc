@@ -1,29 +1,34 @@
 #include "Player.h"
 
-Player::Player(int health, std::string name, int points):health_(health),name_(name),points_(points){}
+Player::Player(const std::string& name, int& health, int& points):health_(health),name_(name),points_(points){}
+
+const std::string& Player::get_name() const
+{
+	return name_;
+}
+
+void Player::set_name(const string& name)
+{
+	name_=name;
+}
 
 int Player::get_health()
 {
-	return health_
+	return health_;
 }
 
 int Player::set_health()
 {
-}
-
-std::string Player::get_name()
-{
-}
-
-void Player::set_name()
-{
+	health_=health;
 }
 
 int Player::get_points()
 {
+	return points_;
 }
 
 void Player::set_points()
 {
+	points_=points;
 }
 
