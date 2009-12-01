@@ -53,6 +53,7 @@ void Meny::handle_input(SDL_Event& event){
 						case SDLK_RIGHT: cout << "right" << endl ; break;
 						case SDLK_q: {cout << "quit" << endl; nextState_ = EXITGAME;} ; break;
 						case SDLK_p: nextState_ = PLAYER1STATE; break;
+						default: break;
 					}
 	            }
 	else if( event.type == SDL_QUIT )
