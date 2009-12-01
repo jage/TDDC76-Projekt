@@ -10,14 +10,11 @@ using namespace std;
 class Movable
 {
 public:
-	virtual const double& get_windFactor() const=0;
-	virtual const Velocity& get_velocity() const;
-	virtual void set_velocity(double&, double&);
-	virtual const double& get_angularFreq() const;
-	virtual void set_angularFreq(double&);
-private:
-	Velocity& velocity;
-	double& angle_freq;
+	virtual const double& get_windFactor() const =0;
+	virtual const Velocity& get_velocity() const =0;
+	virtual void set_velocity(double&, double&) =0;
+	virtual const double& get_angularFreq() const =0;
+	virtual void set_angularFreq(double&) =0;
 };
 
 // abstract class for use with destructable game objects,
