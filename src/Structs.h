@@ -6,17 +6,17 @@
 // Velocity
 struct Velocity
 {
-	double dx;
-	double dy;
+	double dx_;
+	double dy_;
 };
 
 // Collision
 struct Collision
 {
-	bool has_collided;
-	double x;
-	double y;
-	double blast_radius;
+	bool has_collided_;
+	double x_;
+	double y_;
+	double blast_radius_;
 };
 
 #endif /*STRUCTS_H_*/
