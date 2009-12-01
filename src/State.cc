@@ -34,7 +34,8 @@ void Meny::render(){
 	{
 		cout << "Press an arrow key\n"
 			 << "q - finished the 'game' \n"
-			 << "p - changes to the player state\n" << flush;
+			 << "p - changes to the player state\n"
+			 << "" << flush;
 		rendermeny_ = false;
 	}
 
@@ -57,10 +58,7 @@ void Meny::handle_input(SDL_Event& event){
 					}
 	            }
 	else if( event.type == SDL_QUIT )
-	            {
-	                //Quit the program
 	                nextState_ = EXITGAME;
-	            }
 }
 
 PANZER_STATES Meny::next_state()
@@ -125,9 +123,7 @@ void ExitGame::render(){
 	cout << "Ok start over, or... \n";
 }
 
-void ExitGame::logic(){
-	SDL_Quit();
-}
+void ExitGame::logic(){}
 
 PANZER_STATES ExitGame::next_state()
 {

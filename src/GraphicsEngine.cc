@@ -103,3 +103,4 @@ SDL_Surface* GraphicsEngine::load_image(string filename)
 	SDL_FreeSurface(loadedimage);
 	return optimizedimage;
 }
+

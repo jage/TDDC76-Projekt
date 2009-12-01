@@ -43,15 +43,22 @@ private:
 	State* prevState_;
     vector<State*> stateVector_;
 
-	// Kopiering och tilldelning tillÃ¥ts ej (definieras ej)
+    /*
+     * init()
+     * Initerar SDL, returnerar true ifall vi lyckades
+     */
+    bool init();
+
+    /*
+     * cleanup()
+     * Städar i minnet när spelet avslutas
+     */
+    void cleanup();
+
+	// Kopiering och tilldelning tillåts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
 
-
-		SDL_Surface* screen;
-    	SDL_Surface* source_image;
-
-    	SDL_Surface* load_image(std::string);
 
 };
 
