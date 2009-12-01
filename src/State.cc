@@ -10,8 +10,9 @@
 
 using namespace std;
 //State---------------------------------------------------------//
-State::State(GraphicEngine* graphicengine, GameWorld* gameworld)
-	: graphicengine_ptr_(graphicengine), gameworld_ptr_(gameworld){}
+State::State(GraphicsEngine* graphicengine, GameWorld* gameworld)
+	: graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld){}
+
 State::~State() {}
 //--------------------------------------------------------------//
 
@@ -21,7 +22,7 @@ State::~State() {}
 //Meny::Meny(){}
 
 Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld){}
+	 : State(graphicsengine,gameworld) {}
 
 Meny::~Meny(){}
 
@@ -43,6 +44,69 @@ void Meny::handle_input(std::istream& stream){
 }
 
 PANZER_STATES Meny::next_state()
+{
+	return PLAYER1STATE;
+}
+//---------------------------------------------------------------//
+
+//Player1State-----------------------------------------------------------//
+
+
+
+Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld) {}
+
+Player1State::~Player1State(){}
+
+void Player1State::render(){
+	cout << "Player1 state\n\n"
+		 << "next up is.....\n\n";
+}
+
+
+PANZER_STATES Player1State::next_state()
+{
+	return FIRE;
+}
+//---------------------------------------------------------------//
+
+//Fire-----------------------------------------------------------//
+
+
+
+Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld) {}
+
+Fire::~Fire(){}
+
+void Fire::render(){
+	cout << "FIRE\n\n"
+		 << "end game.....\n\n";
+}
+
+
+PANZER_STATES Fire::next_state()
+{
+	return EXITGAME;
+}
+//---------------------------------------------------------------//
+
+
+//ExitGame----------------------------------------------------------//
+
+
+
+ExitGame::ExitGame(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld) {}
+
+ExitGame::~ExitGame(){}
+
+void ExitGame::render(){
+	cout << "Ok start over, or... \n";
+}
+
+
+PANZER_STATES ExitGame::next_state()
 {
 	return MENY;
 }

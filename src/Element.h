@@ -2,6 +2,7 @@
 #define ELEMENT_H_
 
 #include "Enums.h"
+#include "Structs.h"
 
 using namespace std;
 
