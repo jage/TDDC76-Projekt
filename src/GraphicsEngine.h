@@ -1,10 +1,10 @@
-Ôªø/*
+/*
  *	GraphicsEngine.h
  *
- *	Creator: Johan W√•gberg
+ *	Creator: Johan WÂgberg
  *	Date: 091123
  *
- *	Ritar ut Element p√• sk√§rmen.
+ *	Ritar ut Element pÂ sk‰rmen.
  */
 
 
