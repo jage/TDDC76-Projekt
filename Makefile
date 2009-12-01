@@ -30,6 +30,9 @@ $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 	
 $(BUILD)/Element.o: $(PANZER2K)/Element.h $(PANZER2K)/Element.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Element.cc -o $(BUILD)/Element.o
+	
+$(BUILD)/Cannon.o: $(PANZER2K)/Cannon.h $(PANZER2K)/Cannon.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Cannon.cc -o $(BUILD)/Cannon.o
 
 $(BUILD)/GameEngine.o: $(PANZER2K)/GameEngine.h $(PANZER2K)/GameEngine.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GameEngine.cc -o $(BUILD)/GameEngine.o
@@ -48,6 +51,10 @@ $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
 # make Element
 
 Element: $(BUILD)/Element.o
+
+# make Cannon
+
+Cannon: $(BUILD)/Cannon.o
 
 # 'make clean' tar bort objektkodsfiler och 'core'
 clean:
