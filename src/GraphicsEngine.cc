@@ -209,17 +209,17 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 	}
 }
 
-void GraphicsEngine::drawTextOnScreenBuffer(const string& text, int x, int y)
+void GraphicsEngine::drawTextToScreenBuffer(const string& text, int x, int y)
 {
 	int textWidth = 0;
 	int textHeight = 0;
 	SDL_Surface* sText = NULL;
 	SDL_Rect rcDest;
-	SDL_Color textColor = {255, 255, 0};
+	SDL_Color textColor = {255, 0, 0};
 	int fontnumber = 0;
 
 
-	sText = TTF_RenderText_Solid(font[fontnumber], text.c_str(), textColor);
+	sText = TTF_RenderText_Blended(font[fontnumber], text.c_str(), textColor);
 
 	rcDest.x = x;
 	rcDest.y = y - sText->h;
