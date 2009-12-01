@@ -36,19 +36,22 @@ bool GraphicsEngine::draw(vector<Element>& element_vector)
 
 bool GraphicsEngine::draw(Element& draw_element)
 {
+	SDL_Rect pos;
+	pos.x = draw_element.get_x();
+	pos.y = draw_element.get_y();
 	if (draw_element.get_angle() != 0.0) {
 		SDL_Surface* source = NULL;
-		SDL_Rect clip = get_clipping_rect(draw_element.get_image());
+		SDL_Rect clip = get_clipping_rect(draw_element.get_imgRef());
 		source = SDL_CreateRGBSurfaceFrom(source_image->pixels, clip.w, clip.h, source_image->format->BitsPerPixel, source_image->pitch, source_image->format->Rmask, source_image->format->Gmask, source_image->format->Bmask, source_image->format->Amask);
 		SDL_BlitSurface(source_image, NULL, source, NULL);
 		SDL_Surface* rotaded_image = NULL;
 		rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 1);
 		SDL_FreeSurface(source);
-		SDL_BlitSurface(rotaded_image, NULL, screen, &draw_element.get_position_rect());
+		SDL_BlitSurface(rotaded_image, NULL, screen, &pos);
 		SDL_FreeSurface(rotaded_image);
 	}
 	else {
-		SDL_BlitSurface(source_image, &get_clipping_rect(draw_element.get_image()), screen, &draw_element.get_position_rect());
+		SDL_BlitSurface(source_image, &get_clipping_rect(draw_element.get_imgRef()), screen, &pos);
 	}
 	return true;
 }
@@ -63,7 +66,7 @@ void GraphicsEngine::clear()
 	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
 }
 
-SDL_Rect GraphicsEngine::get_clipping_rect(PANZER_IMAGE& picture_nr)
+SDL_Rect GraphicsEngine::get_clipping_rect(const PANZER_IMAGE& picture_nr) const
 {
 	SDL_Rect rect;
 	switch (picture_nr)
@@ -90,7 +93,7 @@ SDL_Rect GraphicsEngine::get_clipping_rect(PANZER_IMAGE& picture_nr)
 	return rect;
 }
 
-SDL_Surface* GraphicsEngine::load_image(string filename)
+SDL_Surface* GraphicsEngine::load_image(const string filename)
 {
 	SDL_Surface* loadedimage = NULL;
 	SDL_Surface* optimizedimage = NULL;

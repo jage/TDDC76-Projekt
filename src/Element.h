@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "Structs.h"
 
-using namespace std;
+//using namespace std;
 
 class Element
 {

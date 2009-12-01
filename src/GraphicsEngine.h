@@ -32,8 +32,8 @@ private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
 
-	SDL_Surface* load_image(std::string);
-	SDL_Rect get_clipping_rect(PANZER_IMAGE&);
+	SDL_Surface* load_image(const std::string);
+	SDL_Rect get_clipping_rect(const PANZER_IMAGE&) const;
 };
 
 #endif
