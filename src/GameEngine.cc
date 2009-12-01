@@ -63,6 +63,7 @@ void GameEngine::run()
 		{
 			stateVector_.at(currentState_) ->render();
 
+			stateVector_.at(currentState_) ->logic();
 
 			while(SDL_PollEvent(&event) == true)
 			{
@@ -70,6 +71,7 @@ void GameEngine::run()
 				stateVector_.at(currentState_) ->handle_input(event);
 
 			}
+
 
 
 			currentState_ = stateVector_.at(currentState_)->next_state();

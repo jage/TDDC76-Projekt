@@ -24,7 +24,7 @@ State::~State() {}
 
 Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld),
-	   changeState_(false),
+	   nextState_(MENY),
 	   rendermeny_(true){}
 
 Meny::~Meny(){}
@@ -32,7 +32,9 @@ Meny::~Meny(){}
 void Meny::render(){
 	if(rendermeny_)
 	{
-		cout << "Press an arrow key" << endl;
+		cout << "Press an arrow key\n"
+			 << "q - finished the 'game' \n"
+			 << "p - changes to the player state\n" << flush;
 		rendermeny_ = false;
 	}
 
@@ -49,22 +51,20 @@ void Meny::handle_input(SDL_Event& event){
 	                    case SDLK_DOWN: cout << "down" << endl; break;
 	                    case SDLK_LEFT: cout << "left" << endl; break;
 						case SDLK_RIGHT: cout << "right" << endl ; break;
-						case SDLK_q: {cout << "quit" << endl; changeState_ = true;} ; break;
+						case SDLK_q: {cout << "quit" << endl; nextState_ = EXITGAME;} ; break;
+						case SDLK_p: nextState_ = PLAYER1STATE; break;
 					}
 	            }
 	else if( event.type == SDL_QUIT )
 	            {
 	                //Quit the program
-	                changeState_ = true;
+	                nextState_ = EXITGAME;
 	            }
 }
 
 PANZER_STATES Meny::next_state()
 {
-	if(changeState_ == false)
-		return MENY;
-	else
-		return EXITGAME;
+	return nextState_;
 }
 //---------------------------------------------------------------//
 
@@ -124,6 +124,9 @@ void ExitGame::render(){
 	cout << "Ok start over, or... \n";
 }
 
+void ExitGame::logic(){
+	SDL_Quit();
+}
 
 PANZER_STATES ExitGame::next_state()
 {

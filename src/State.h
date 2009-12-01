@@ -87,7 +87,7 @@ public:
 	PANZER_STATES next_state();
 
 private:
- bool changeState_;
+ PANZER_STATES nextState_;
  bool rendermeny_;
 
 private:
@@ -180,9 +180,9 @@ public:
 
 	/*
 	 * logic()
-	 * Saknar egentlig funktion
+	 * Städar i minnet efter SDL
 	 */
-	void logic(){};
+	void logic();
 
 	/*
 	 * handle_event()
