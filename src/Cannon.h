@@ -8,18 +8,20 @@ class Cannon : public Element
 {
 public:
 	Cannon(Ammunition*);
-	void set_angle(const double&);	// sets the angle
-	void adjust_angle(const double&); // increase/decrease the angle
+	void set_angle(const double&);	// sets fire angle
+	void adjust_angle(const double&); // increase/decrease fire angle
 	const double& get_angle() const;
 	void set_power(const int&);
 	const double& get_power() const;
-	void change_ammunition(const Ammunition*);
-	const Ammunition* get_ammunition() const;
-	void fire(); 
+	void change_ammunition(Ammunition*); // change ammunition
+	Ammunition* get_ammunition() const; // get pointer to current ammunition
+	void fire();	// fire the cannon
+	const bool fired() const; // is the cannon fired?
 	virtual ~Cannon();
 private:
 	double fireAngle_;
 	int power_;
+	bool fired_;
 	Ammunition* ptr_ammunition_; // pointer to current ammunition object 
 };
 
