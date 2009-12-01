@@ -1,4 +1,4 @@
-/*
+﻿/*
  *	GraphicsEngine.h
  *
  *	Creator: Johan Wågberg

@@ -1,4 +1,4 @@
-#include "GraphicsEngine.h"
+ï»¿#include "GraphicsEngine.h"
 #include "Element.h"
 #include "SDL_rotozoom.h"
 #include "Enums.h"
@@ -30,14 +30,14 @@ GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NUL
 
 GraphicsEngine::~GraphicsEngine()
 {
-	// Frigör alla bilder och fonter
+	// FrigÃ¶r alla bilder och fonter
 	uninit();
 	SDL_FreeSurface(source_image);
 	TTF_Quit();
 }
 
 /*
- * Ritar ut alla element i vektorn på skärmen i den ordning ligger i vektorn
+ * Ritar ut alla element i vektorn till bufferten i den ordning ligger i vektorn
  */
 void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 {
@@ -53,9 +53,9 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 }
 
 /*
- * Ritar ut ett enstaka element på skärmen
- * Finns förroterade bilder används dessa
- * annars roteras bilder när de behövs
+ * Ritar ut ett enstaka element till bufferten
+ * Finns fÃ¶rroterade bilder anvÃ¤nds dessa
+ * annars roteras bilder nÃ¤r de behÃ¶vs
  */
 
 void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
@@ -106,10 +106,10 @@ void GraphicsEngine::showScreenBufferOnScreen()
 }
 
 /*
- * "Tömmer" screenbuffer genom att fylla den med
- * angiven färg. Färgen ges i form av en unsigned int
- * där de 8 minst signifikanta bitarna represeterar
- * blått, nästa 8 grönt och nästa 8 rött.
+ * "TÃ¶mmer" bufferten genom att fylla den med
+ * angiven fÃ¤rg. FÃ¤rgen ges i form av en unsigned int
+ * dÃ¤r de 8 minst signifikanta bitarna represeterar
+ * blÃ¥tt, nÃ¤sta 8 grÃ¶nt och nÃ¤sta 8 rÃ¶tt.
  */
 void GraphicsEngine::clearScreenBuffer(const unsigned int color)
 {
@@ -117,8 +117,8 @@ void GraphicsEngine::clearScreenBuffer(const unsigned int color)
 }
 
 /*
- * "Tömmer" screenbuffer genom att fylla den med
- * vit färg.
+ * "TÃ¶mmer" bufferten genom att fylla den med
+ * vit fÃ¤rg.
  */
 void GraphicsEngine::clearScreenBuffer()
 {
@@ -126,7 +126,7 @@ void GraphicsEngine::clearScreenBuffer()
 }
 
 /*
- * Returnerar rektangeln där respektive bild finns i
+ * Returnerar rektangeln dÃ¤r respektive bild finns i
  * sprite_sheet
  */
 SDL_Rect GraphicsEngine::get_clipping_rect(const PANZER_IMAGE& picture_nr) const
@@ -157,8 +157,8 @@ SDL_Rect GraphicsEngine::get_clipping_rect(const PANZER_IMAGE& picture_nr) const
 }
 
 /*
- * Laddar in bild från disk och konverterar
- * den till rätt format för snabb blittning.
+ * Laddar in bild frÃ¥n disk och konverterar
+ * den till rÃ¤tt format fÃ¶r snabb blittning.
  * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  */
