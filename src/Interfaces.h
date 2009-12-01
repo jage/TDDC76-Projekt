@@ -12,7 +12,7 @@ class Movable
 public:
 	virtual const double& get_windFactor() const=0;
 	virtual const Velocity& get_velocity() const=0;
-	virtual void set_velocity(double, double);
+	virtual void set_velocity(double&, double&);
 	virtual const double& get_angularFreq() const=0;
 	virtual void set_angularFreq()=0;
 };

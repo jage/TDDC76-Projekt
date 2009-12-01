@@ -12,7 +12,7 @@ void GameWorld::add_element(Element new_element)
 }
 
 Collision GameWorld::update_world()
-{ ;}
+{return Collision();}
 /*	// Ska implementeras med PhysicsEngine senare
 
 	for(std::vector<Element>::iterator it = element_vector.begin();
