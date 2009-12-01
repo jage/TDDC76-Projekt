@@ -12,12 +12,7 @@ class PhysicsEngine {
 	
 	public:
 		PhysicsEngine();
-		void update_pos(vector<Element*>, double&);
-		void update_pos(Element*, double&);
-
-	private:
-		void calc_new_pos(Movable*, double&);
-
+		void update_pos(MovableElement, const double);
 };
 #endif /*PHYSICSENGINE_H_*/
 
