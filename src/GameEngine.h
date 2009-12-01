@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "GameWorld.h"
-#include "GraphicsEngine.h"
+#include "SDL/SDL.h"
 #include "State.h"
 
 //Dummyclasses
@@ -46,6 +46,12 @@ private:
 	// Kopiering och tilldelning tillåts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
+
+
+		SDL_Surface* screen;
+    	SDL_Surface* source_image;
+
+    	SDL_Surface* load_image(std::string);
 
 };
 

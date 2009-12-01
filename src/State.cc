@@ -7,7 +7,8 @@
 
 #include "State.h"
 #include <iostream>
-
+//#include "SDLInclude.h"
+#include "SDL/SDL.h"
 using namespace std;
 //State---------------------------------------------------------//
 State::State(GraphicsEngine* graphicengine, GameWorld* gameworld)
@@ -22,30 +23,48 @@ State::~State() {}
 //Meny::Meny(){}
 
 Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+	 : State(graphicsengine,gameworld),
+	   changeState_(false),
+	   rendermeny_(true){}
 
 Meny::~Meny(){}
 
 void Meny::render(){
-	cout << "Welcome to Pantzer!\n"
-		 << "A, view the abouts\n\n"
-		 << "$>";
+	if(rendermeny_)
+	{
+		cout << "Press an arrow key" << endl;
+		rendermeny_ = false;
+	}
+
 }
 
-void Meny::handle_input(std::istream& stream){
+void Meny::handle_input(SDL_Event& event){
 
-	char input = 0;
-	stream >> input;
+	if( event.type == SDL_KEYDOWN )
+	            {
 
-	if(input == 'A')
-		cout << "Made by lazy students\n\n";
-	else
-		cout << "Try another key\n";
+	                switch( event.key.keysym.sym )
+	                {
+	                    case SDLK_UP:  cout << "up" << endl; break;
+	                    case SDLK_DOWN: cout << "down" << endl; break;
+	                    case SDLK_LEFT: cout << "left" << endl; break;
+						case SDLK_RIGHT: cout << "right" << endl ; break;
+						case SDLK_q: {cout << "quit" << endl; changeState_ = true;} ; break;
+					}
+	            }
+	else if( event.type == SDL_QUIT )
+	            {
+	                //Quit the program
+	                changeState_ = true;
+	            }
 }
 
 PANZER_STATES Meny::next_state()
 {
-	return PLAYER1STATE;
+	if(changeState_ == false)
+		return MENY;
+	else
+		return EXITGAME;
 }
 //---------------------------------------------------------------//
 
@@ -108,7 +127,7 @@ void ExitGame::render(){
 
 PANZER_STATES ExitGame::next_state()
 {
-	return MENY;
+	return EXITGAME;
 }
 //---------------------------------------------------------------//
 

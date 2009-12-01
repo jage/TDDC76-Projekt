@@ -9,6 +9,8 @@
 #include "GameEngine.h"
 #include "State.h"
 #include "Enums.h"
+#include "SDL/SDL.h"
+#include <stdexcept>
 #include <vector>
 
 using namespace std;
@@ -28,12 +30,51 @@ GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
 }
 
+SDL_Surface* GameEngine::load_image(string filename)
+{
+	SDL_Surface* loadedimage = NULL;
+	SDL_Surface* optimizedimage = NULL;
+
+	loadedimage = SDL_LoadBMP(filename.c_str());
+
+	if (loadedimage != NULL) {
+		optimizedimage = SDL_DisplayFormat(loadedimage);
+	}
+	SDL_FreeSurface(loadedimage);
+	return optimizedimage;
+
+}
+
+
 void GameEngine::run()
 {
+	if((SDL_Init(SDL_INIT_VIDEO) == -1))
+		throw logic_error("Gick ej att initera SDL");
+
+
+	screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE);
+	if (screen == NULL)
+		throw logic_error("Gick ej att initiera SDL screen");
+	source_image = load_image("sprite_sheet.bmp");
+
+	SDL_Event event;
+
 	while(currentState_ != EXITGAME)
 		{
-			stateVector_[currentState_] ->render();
-			currentState_ = stateVector_[currentState_]->next_state();
+			stateVector_.at(currentState_) ->render();
+
+
+			while(SDL_PollEvent(&event) == true)
+			{
+
+				stateVector_.at(currentState_) ->handle_input(event);
+
+			}
+
+
+			currentState_ = stateVector_.at(currentState_)->next_state();
+
+			SDL_Delay(30);
 		};
 
 	cout << "Thanks for using pantzer" << endl;
