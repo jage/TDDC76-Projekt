@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "GameWorld.h"
-#include "GraphicsEngine.h"
+#include "SDL/SDL.h"
 #include "State.h"
 
 //Dummyclasses
@@ -43,9 +43,22 @@ private:
 	State* prevState_;
     vector<State*> stateVector_;
 
-	// Kopiering och tilldelning tillÃ¥ts ej (definieras ej)
+    /*
+     * init()
+     * Initerar SDL, returnerar true ifall vi lyckades
+     */
+    bool init();
+
+    /*
+     * cleanup()
+     * Städar i minnet när spelet avslutas
+     */
+    void cleanup();
+
+	// Kopiering och tilldelning tillåts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
+
 
 };
 

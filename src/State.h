@@ -10,7 +10,7 @@
 
 #include "GraphicsEngine.h"
 #include "GameWorld.h"
-#include "State.h"
+#include "SDL/SDL.h"
 #include <iostream>
 
 
@@ -40,7 +40,7 @@ public:
 	 * Bestämmer hur tillståndet svara på användarens interaktion
 	 * TODO SDL_Event istället för att läsa på en inström
 	 */
-	virtual void handle_input(std::istream&) = 0;
+	virtual void handle_input(SDL_Event&) = 0;
 
 	/*
 	 * next_state()
@@ -78,13 +78,17 @@ public:
 	 * handle_event()
 	 * Svarar på användarens knapptryckningar
 	 */
-	void handle_input(std::istream&);
+	void handle_input(SDL_Event&);
 
 	/*
 	 * next_state()
 	 * Nästa tillstånd för Meny
 	 */
 	PANZER_STATES next_state();
+
+private:
+ PANZER_STATES nextState_;
+ bool rendermeny_;
 
 private:
 
@@ -114,7 +118,7 @@ public:
 	 * handle_event()
 	 * Svarar på användarens knapptryckningar
 	 */
-	void handle_input(std::istream&){};
+	void handle_input(SDL_Event&){};
 
 	/*
 	 * next_state()
@@ -149,7 +153,7 @@ public:
 	 * handle_event()
 	 * Svarar på användarens knapptryckningar
 	 */
-	void handle_input(std::istream&){};
+	void handle_input(SDL_Event&){};
 
 	/*
 	 * next_state()
@@ -176,15 +180,15 @@ public:
 
 	/*
 	 * logic()
-	 * Saknar egentlig funktion
+	 * St�dar i minnet efter SDL
 	 */
-	void logic(){};
+	void logic();
 
 	/*
 	 * handle_event()
 	 * Svarar på användarens knapptryckningar
 	 */
-	void handle_input(std::istream&){};
+	void handle_input(SDL_Event&){};
 
 	/*
 	 * next_state()

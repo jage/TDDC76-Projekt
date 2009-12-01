@@ -4,7 +4,7 @@
 # Filkataloger där olika delar av programvaran finns.
 PANZER2K     = src
 BUILD          = build
-SDL	=	ISDL ISDL_image
+SDL	=	-lSDL -lSDL_image
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
@@ -35,7 +35,7 @@ $(BUILD)/Cannon.o: $(PANZER2K)/Cannon.h $(PANZER2K)/Cannon.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Cannon.cc -o $(BUILD)/Cannon.o
 
 $(BUILD)/GameEngine.o: $(PANZER2K)/GameEngine.h $(PANZER2K)/GameEngine.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GameEngine.cc -o $(BUILD)/GameEngine.o
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) $(SDL) -c $(PANZER2K)/GameEngine.cc -o $(BUILD)/GameEngine.o
 
 $(BUILD)/GameWorld.o: $(PANZER2K)/GameWorld.h $(PANZER2K)/GameWorld.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GameWorld.cc -o $(BUILD)/GameWorld.o
@@ -44,7 +44,7 @@ $(BUILD)/GraphicsEngine.o: $(PANZER2K)/GraphicsEngine.h $(PANZER2K)/GraphicsEngi
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GraphicsEngine.cc -o $(BUILD)/GraphicsEngine.o
 
 $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) $(SDL) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o
 
 
 

@@ -9,6 +9,8 @@
 #include "GameEngine.h"
 #include "State.h"
 #include "Enums.h"
+#include "SDL/SDL.h"
+#include <stdexcept>
 #include <vector>
 
 using namespace std;
@@ -28,13 +30,44 @@ GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
 }
 
+
 void GameEngine::run()
 {
+	if(!init())
+		throw logic_error("Gick ej att initera SDL");
+
+	SDL_Event event;
+
+
 	while(currentState_ != EXITGAME)
 		{
-			stateVector_[currentState_] ->render();
-			currentState_ = stateVector_[currentState_]->next_state();
-		};
+		    graphicsengine_.update_screen();
+			stateVector_.at(currentState_) ->render();
 
+			stateVector_.at(currentState_) ->logic();
+
+			while(SDL_PollEvent(&event) == true)
+			{
+				stateVector_.at(currentState_) ->handle_input(event);
+			}
+
+			currentState_ = stateVector_.at(currentState_)->next_state();
+
+			SDL_Delay(30);
+
+		};
+	cleanup();
 	cout << "Thanks for using pantzer" << endl;
+}
+
+
+bool GameEngine::init()
+{
+	return !(SDL_Init(SDL_INIT_VIDEO) == -1);
+}
+
+
+void GameEngine::cleanup()
+{
+	SDL_Quit();
 }
