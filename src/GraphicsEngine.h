@@ -11,7 +11,7 @@
 #ifndef GRAPHICSENGINE_H_
 #define GRAPHICSENGINE_H_
 
-#include "SDL/SDL.h"
+#include "SDLInclude.h"
 #include "Element.h"
 #include "Enums.h"
 #include <vector>
