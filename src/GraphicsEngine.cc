@@ -2,70 +2,133 @@
 #include "Element.h"
 #include "SDL_rotozoom.h"
 #include "Enums.h"
+#include "SDL_image.h"
+#include "SDL_ttf.h"
 #include <stdexcept>
 #include <vector>
 #include <string>
+#include <iostream>
 
 using namespace std;
 
 
 GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), source_image(NULL)
 {
+	// Initiera en SDL-yta
 	screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
 	if (screen == NULL)
 		throw logic_error("Gick ej att initiera SDL screen");
-	source_image = load_image("sprite_sheet.bmp");
+
+	// starta SDL_ttf
+	if (TTF_Init() == -1)
+		cerr << "Gick ej att starta SDL_ttf" << endl;
+
+	// Ladda in bilderna
+	source_image = loadImageFromDisc("sprite_sheet.bmp");
+	init();
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
+	// Frigör alla bilder och fonter
+	uninit();
 	SDL_FreeSurface(source_image);
+	TTF_Quit();
 }
 
-bool GraphicsEngine::draw(vector<Element>& element_vector)
+/*
+ * Ritar ut alla element i vektorn på skärmen i den ordning ligger i vektorn
+ */
+void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 {
-	for(vector<Element>::iterator it = element_vector.begin();
-		it != element_vector.end();
-		++it)
+	if (!element_vector.empty())
 	{
-		draw(*it);
+		for(vector<Element>::const_iterator it = element_vector.begin();
+			it != element_vector.end();
+			++it)
+		{
+			drawToScreenBuffer(*it);
+		}
 	}
-	
-	return true;
 }
 
-bool GraphicsEngine::draw(Element& draw_element)
+/*
+ * Ritar ut ett enstaka element på skärmen
+ * Finns förroterade bilder används dessa
+ * annars roteras bilder när de behövs
+ */
+
+void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 {
-	SDL_Rect pos;
-	pos.x = draw_element.get_x();
-	pos.y = draw_element.get_y();
-	if (draw_element.get_angle() != 0.0) {
-		SDL_Surface* source = NULL;
-		SDL_Rect clip = get_clipping_rect(draw_element.get_imgRef());
-		source = SDL_CreateRGBSurfaceFrom(source_image->pixels, clip.w, clip.h, source_image->format->BitsPerPixel, source_image->pitch, source_image->format->Rmask, source_image->format->Gmask, source_image->format->Bmask, source_image->format->Amask);
-		SDL_BlitSurface(source_image, NULL, source, NULL);
-		SDL_Surface* rotaded_image = NULL;
-		rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 1);
-		SDL_FreeSurface(source);
-		SDL_BlitSurface(rotaded_image, NULL, screen, &pos);
-		SDL_FreeSurface(rotaded_image);
+	SDL_Rect destinationRectangle;
+	destinationRectangle.x = draw_element.get_x();
+	destinationRectangle.y = draw_element.get_y();
+
+	if (draw_element.get_imgRef() == CANNON)
+	{
+		int index = (int)draw_element.get_angle() % DEGREES;
+		destinationRectangle.x -= cannon[index]->w / 2;
+		destinationRectangle.y-= cannon[index]->h / 2;
+		SDL_BlitSurface(cannon[index], NULL, screen, &destinationRectangle);
 	}
-	else {
-		SDL_BlitSurface(source_image, &get_clipping_rect(draw_element.get_imgRef()), screen, &pos);
+	else
+	{
+		if (draw_element.get_angle() != 0.0)
+		{
+			SDL_Surface* source = NULL;
+			SDL_Rect clip = get_clipping_rect(draw_element.get_imgRef());
+			source = SDL_CreateRGBSurfaceFrom(source_image->pixels,
+												clip.w,
+												clip.h,
+												source_image->format->BitsPerPixel,
+												source_image->pitch,
+												source_image->format->Rmask,
+												source_image->format->Gmask,
+												source_image->format->Bmask,
+												source_image->format->Amask);
+			SDL_BlitSurface(source_image, NULL, source, NULL);
+			SDL_Surface* rotaded_image = NULL;
+			rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 1);
+			SDL_FreeSurface(source);
+			SDL_BlitSurface(rotaded_image, NULL, screen, &destinationRectangle);
+			SDL_FreeSurface(rotaded_image);
+		}
+		else
+		{
+			SDL_BlitSurface(source_image, &get_clipping_rect(draw_element.get_imgRef()), screen, &destinationRectangle);
+		}
 	}
-	return true;
 }
 
-void GraphicsEngine::update_screen()
+void GraphicsEngine::showScreenBufferOnScreen()
 {
 	SDL_Flip(screen);
 }
 
-void GraphicsEngine::clear()
+/*
+ * "Tömmer" screenbuffer genom att fylla den med
+ * angiven färg. Färgen ges i form av en unsigned int
+ * där de 8 minst signifikanta bitarna represeterar
+ * blått, nästa 8 grönt och nästa 8 rött.
+ */
+void GraphicsEngine::clearScreenBuffer(const unsigned int color)
 {
-	SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
+	SDL_FillRect(screen, &screen->clip_rect, color);
 }
 
+/*
+ * "Tömmer" screenbuffer genom att fylla den med
+ * vit färg.
+ */
+void GraphicsEngine::clearScreenBuffer()
+{
+	clearScreenBuffer(0xff << 16 | 0xff << 8 | 0xff << 0);
+}
+
+/*
+ * Returnerar rektangeln där respektive bild finns i
+ * sprite_sheet
+ */
 SDL_Rect GraphicsEngine::get_clipping_rect(const PANZER_IMAGE& picture_nr) const
 {
 	SDL_Rect rect;
@@ -87,22 +150,116 @@ SDL_Rect GraphicsEngine::get_clipping_rect(const PANZER_IMAGE& picture_nr) const
 		rect.x = 253;
 		rect.y = 0;
 		rect.w = 239;
-		rect.h = 277;
+		rect.h = 184;
 		break;
 	}
 	return rect;
 }
 
-SDL_Surface* GraphicsEngine::load_image(const string filename)
+/*
+ * Laddar in bild från disk och konverterar
+ * den till rätt format för snabb blittning.
+ * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
+ * PCX, GIF, JPEG, PNG, TGA, och TIFF.
+ */
+SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
 {
-	SDL_Surface* loadedimage = NULL;
-	SDL_Surface* optimizedimage = NULL;
+	SDL_Surface* loadedImage = NULL;
+	SDL_Surface* optimizedImage = NULL;
 
-	loadedimage = SDL_LoadBMP(filename.c_str());
+	loadedImage = IMG_Load(filename.c_str());
 
-	if (loadedimage != NULL) {
-		optimizedimage = SDL_DisplayFormat(loadedimage);
+	if (loadedImage != NULL) {
+		optimizedImage = SDL_DisplayFormat(loadedImage);
 	}
-	SDL_FreeSurface(loadedimage);
-	return optimizedimage;
+	else
+	{
+		cerr << IMG_GetError() << endl;
+	}
+	SDL_FreeSurface(loadedImage);
+	return optimizedImage;
 }
+
+void GraphicsEngine::loadCannonSpritesIntoMemory()
+{
+	SDL_Surface* unrotatedCannon = SDL_CreateRGBSurface(source_image->flags,
+		get_clipping_rect(CANNON).w,
+		get_clipping_rect(CANNON).h,
+		source_image->format->BitsPerPixel,
+		source_image->format->Rmask,
+		source_image->format->Gmask,
+		source_image->format->Bmask,
+		source_image->format->Amask);
+
+	SDL_BlitSurface(source_image, &get_clipping_rect(CANNON), unrotatedCannon, NULL);
+							
+	for (int i = 0; i < DEGREES; ++i)
+	{
+		cannon[i] = rotozoomSurface(unrotatedCannon, i, 1, 1);
+	}
+	SDL_FreeSurface(unrotatedCannon);
+}
+
+void GraphicsEngine::unloadCannonSpritesFromMemory()
+{
+	for (int i = 0; i < DEGREES; ++i)
+	{
+		SDL_FreeSurface(cannon[i]);
+		cannon[i] = NULL;
+	}
+}
+
+void GraphicsEngine::drawTextOnScreenBuffer(const string& text, int x, int y)
+{
+	int textWidth = 0;
+	int textHeight = 0;
+	SDL_Surface* sText = NULL;
+	SDL_Rect rcDest;
+	SDL_Color textColor = {255, 255, 0};
+	int fontnumber = 0;
+
+
+	sText = TTF_RenderText_Solid(font[fontnumber], text.c_str(), textColor);
+
+	rcDest.x = x;
+	rcDest.y = y - sText->h;
+
+	if (sText == NULL)
+	{
+		return;
+	}
+
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+
+
+}
+
+void GraphicsEngine::init()
+{
+	loadCannonSpritesIntoMemory();
+	loadFontsIntoMemory();
+}
+
+void GraphicsEngine::uninit()
+{
+	unloadCannonSpritesFromMemory();
+	unloadFontsFromMemory();
+}
+
+void GraphicsEngine::unloadFontsFromMemory()
+{
+	for(int i = 0; i < NROFFONTS; ++i)
+	{
+		TTF_CloseFont(font[i]);
+	}
+}
+
+void GraphicsEngine::loadFontsIntoMemory()
+{
+	font[0] = TTF_OpenFont("lazy.ttf", 32);
+	if (!font[0])
+	{
+		cerr << TTF_GetError() << endl;
+	}
+}
+

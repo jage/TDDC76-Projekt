@@ -1,10 +1,10 @@
 /*
  *	GraphicsEngine.h
  *
- *	Creator: Johan W�gberg
+ *	Creator: Johan Wågberg
  *	Date: 091123
  *
- *	Ritar ut Element p� sk�rmen.
+ *	Ritar ut Element på skärmen.
  */
 
 
@@ -12,10 +12,14 @@
 #define GRAPHICSENGINE_H_
 
 #include "SDLInclude.h"
+#include "SDL_ttf.h"
 #include "Element.h"
 #include "Enums.h"
 #include <vector>
 #include <string>
+
+const int DEGREES = 360;
+const int NROFFONTS = 1;
 
 class GraphicsEngine
 {
@@ -23,16 +27,27 @@ public:
 	GraphicsEngine(const int& = 640, const int& = 480);
 	~GraphicsEngine();
 
-	bool draw(std::vector<Element>&);
-	bool draw(Element&);
-	void clear();
-	void update_screen();
+	void drawToScreenBuffer(const std::vector<Element>&);
+	void drawToScreenBuffer(const Element&);
+	void clearScreenBuffer(const unsigned int);
+	void clearScreenBuffer();
+	void showScreenBufferOnScreen();
+	void drawTextOnScreenBuffer(const std::string&, int, int);
 
 private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
+	SDL_Surface* cannon[DEGREES];
+	TTF_Font* font[NROFFONTS];
 
-	SDL_Surface* load_image(const std::string);
+
+	void init();
+	void uninit();
+	void loadFontsIntoMemory();
+	void unloadFontsFromMemory();
+	void loadCannonSpritesIntoMemory();
+	void unloadCannonSpritesFromMemory();
+	SDL_Surface* loadImageFromDisc(const std::string&);
 	SDL_Rect get_clipping_rect(const PANZER_IMAGE&) const;
 };
 
