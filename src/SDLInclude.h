@@ -7,13 +7,11 @@
  */
 
 #ifdef _WIN32
-	#include "SDL/SDL.h"
-#endif
-
-#ifdef linux
 	#include "SDL.h"
 #endif
 
-
+#ifdef linux
+	#include "SDL/SDL.h"
+#endif
 
 #endif /*SDLINCLUDE_*/
