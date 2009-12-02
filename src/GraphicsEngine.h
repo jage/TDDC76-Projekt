@@ -34,6 +34,7 @@ public:
 	void showScreenBufferOnScreen();
 	void drawTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
 	void drawOutlinedTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
+	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, int xScreenPos, int yScreenPos);
 
 private:
 	SDL_Surface* screen;

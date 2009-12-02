@@ -341,3 +341,13 @@ void GraphicsEngine::loadFontsIntoMemory()
 	}
 }
 
+/*
+ * Ritar SDL_Surface till buffert
+ */
+void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, int xScreenPos, int yScreenPos)
+{
+	SDL_Rect rcDest;
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
+	SDL_BlitSurface(image, NULL, screen, &rcDest);
+}
