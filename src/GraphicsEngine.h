@@ -1,10 +1,10 @@
-ï»¿/*
+/*
  *	GraphicsEngine.h
  *
- *	Creator: Johan Wgberg
+ *	Creator: Johan Wågberg
  *	Date: 091123
  *
- *	Ritar ut Element pï¿½ skï¿½rmen.
+ *	Ritar ut Element och text på skärmen.
  */
 
 
@@ -29,18 +29,17 @@ public:
 
 	void drawToScreenBuffer(const std::vector<Element>&);
 	void drawToScreenBuffer(const Element&);
-	void clearScreenBuffer(const unsigned int);
+	void clearScreenBuffer(const unsigned int color);
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
-	void drawTextToScreenBuffer(const std::string&, int, int);
-	void drawTextWithShadowToScreenBuffer(const std::string&, int, int);
+	void drawTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
+	void drawOutlinedTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
 
 private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
 	SDL_Surface* cannon[DEGREES];
 	TTF_Font* font[NROFFONTS];
-
 
 	void init();
 	void uninit();

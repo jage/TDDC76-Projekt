@@ -209,30 +209,78 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 	}
 }
 
-void GraphicsEngine::drawTextToScreenBuffer(const string& text, int x, int y)
+void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
 {
+	int x, y;
 	int textWidth = 0;
 	int textHeight = 0;
 	SDL_Surface* sText = NULL;
 	SDL_Rect rcDest;
-	SDL_Color textColor = {255, 0, 0};
-	int fontnumber = 0;
 
-
-	sText = TTF_RenderText_Blended(font[fontnumber], text.c_str(), textColor);
-
-	rcDest.x = x;
-	rcDest.y = y - sText->h;
-
-	if (sText == NULL)
+	if (fontIndex > NROFFONTS)
 	{
+		cerr << "GraphicsEngine::drawOutlinedTextToScreenBuffer: fontIndex out of range" << endl;
 		return;
 	}
 
+	TTF_SizeText(font[fontIndex], text.c_str(), &textWidth, &textHeight);
+
+	// Centrerat
+	//xScreenPos = (screen->w - textWidth) / 2;
+
+	// Högerjusterat
+	//xScreenPos = (screen->w - textWidth) - xScreenPos;
+
+	SDL_Color textColor = {0, 0, 0, 0};
+	sText = TTF_RenderText_Solid(font[fontIndex], text.c_str(), textColor);
+
+
+	for (y = -3; y < 4; ++y)
+	{
+		for (x = -3; x < 4; ++x)
+		{
+			rcDest.x = xScreenPos + x;
+			rcDest.y = yScreenPos + y;
+			SDL_BlitSurface(sText, NULL, screen, &rcDest);
+		}
+	}
+
+	SDL_FreeSurface(sText);
+
+	SDL_Color textColor2 = {red, green, blue ,0};
+	sText = TTF_RenderText_Solid(font[fontIndex], text.c_str(), textColor2);
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+	SDL_FreeSurface(sText);
+}
+
+void GraphicsEngine::drawTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
+{
+	int textWidth = 0;
+	int textHeight = 0;
+	SDL_Surface* sText;
+	SDL_Rect rcDest;
+
+	if (fontIndex > NROFFONTS)
+	{
+		cerr <<  "GraphicsEngine::drawOutlinedTextToScreenBuffer: fontIndex out of range" << endl;
+		return;
+	}
+
+	SDL_Color textColor = {red, green, blue, 0};
+
+	sText = TTF_RenderText_Solid(font[fontIndex], text.c_str(), textColor);
+
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
+
 	SDL_BlitSurface(sText, NULL, screen, &rcDest);
 
-
+	SDL_FreeSurface(sText);
 }
+
+
 
 void GraphicsEngine::init()
 {
