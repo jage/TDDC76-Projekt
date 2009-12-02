@@ -12,28 +12,14 @@
 using namespace std;
 
 
-GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), source_image(NULL)
+GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), source_image(NULL), width_(width), height_(height)
 {
-	// Initiera en SDL-yta
-	screen = SDL_SetVideoMode(width, height, 32, SDL_SWSURFACE);
-	if (screen == NULL)
-		throw logic_error("Gick ej att initiera SDL screen");
-
-	// starta SDL_ttf
-	if (TTF_Init() == -1)
-		cerr << "Gick ej att starta SDL_ttf" << endl;
-
-	// Ladda in bilderna
-	source_image = loadImageFromDisc("sprite_sheet.bmp");
 	init();
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
-	// Frigör alla bilder och fonter
 	uninit();
-	SDL_FreeSurface(source_image);
-	TTF_Quit();
 }
 
 /*
@@ -76,7 +62,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 		if (draw_element.get_angle() != 0.0)
 		{
 			SDL_Surface* source = NULL;
-			SDL_Rect clip = get_clipping_rect(draw_element.get_imgRef());
+			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
 			source = SDL_CreateRGBSurfaceFrom(source_image->pixels,
 												clip.w,
 												clip.h,
@@ -95,7 +81,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 		}
 		else
 		{
-			SDL_BlitSurface(source_image, &get_clipping_rect(draw_element.get_imgRef()), screen, &destinationRectangle);
+			SDL_BlitSurface(source_image, &getClippingRectangle(draw_element.get_imgRef()), screen, &destinationRectangle);
 		}
 	}
 }
@@ -129,7 +115,7 @@ void GraphicsEngine::clearScreenBuffer()
  * Returnerar rektangeln där respektive bild finns i
  * sprite_sheet
  */
-SDL_Rect GraphicsEngine::get_clipping_rect(const PANZER_IMAGE& picture_nr) const
+SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) const
 {
 	SDL_Rect rect;
 	switch (picture_nr)
@@ -180,18 +166,23 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
 	return optimizedImage;
 }
 
+/*
+ * Förroterar alla bilder till cannon från
+ * 0 upp till DEGREES. Bilden hämtas från
+ * bilden dit getClippingRectangle() pekar.
+ */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
 	SDL_Surface* unrotatedCannon = SDL_CreateRGBSurface(source_image->flags,
-		get_clipping_rect(CANNON).w,
-		get_clipping_rect(CANNON).h,
+		getClippingRectangle(CANNON).w,
+		getClippingRectangle(CANNON).h,
 		source_image->format->BitsPerPixel,
 		source_image->format->Rmask,
 		source_image->format->Gmask,
 		source_image->format->Bmask,
 		source_image->format->Amask);
 
-	SDL_BlitSurface(source_image, &get_clipping_rect(CANNON), unrotatedCannon, NULL);
+	SDL_BlitSurface(source_image, &getClippingRectangle(CANNON), unrotatedCannon, NULL);
 							
 	for (int i = 0; i < DEGREES; ++i)
 	{
@@ -200,6 +191,9 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 	SDL_FreeSurface(unrotatedCannon);
 }
 
+/*
+ * Frigör minnet från cannon
+ */
 void GraphicsEngine::unloadCannonSpritesFromMemory()
 {
 	for (int i = 0; i < DEGREES; ++i)
@@ -209,6 +203,11 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 	}
 }
 
+/*
+ * Skriver ut önskad text till bufferten med svart kant
+ * runt om. Färg väljs från 0-255 i respektive rött,
+ * grönt och blått.
+ */
 void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
 {
 	int x, y;
@@ -255,6 +254,11 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScr
 	SDL_FreeSurface(sText);
 }
 
+/*
+ * Skriver ut önskad text till bufferten utan svart kant
+ * runt om. Färg väljs från 0-255 i respektive rött,
+ * grönt och blått.
+ */
 void GraphicsEngine::drawTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
 {
 	int textWidth = 0;
@@ -280,20 +284,43 @@ void GraphicsEngine::drawTextToScreenBuffer(const string& text, int xScreenPos, 
 	SDL_FreeSurface(sText);
 }
 
-
-
+/*
+ * Initierar alla bilder och fonter
+ */
 void GraphicsEngine::init()
 {
+	screen = SDL_SetVideoMode(width_, height_, 32, SDL_SWSURFACE);
+	
+	if (screen == NULL)
+	{
+		cerr << "Gick ej att initiera SDL screen" << endl;
+		return;
+	}
+	
+	if (TTF_Init() == -1)
+	{
+		cerr << "Gick ej att starta SDL_ttf" << endl;
+		return;
+	}
+	source_image = loadImageFromDisc("sprite_sheet.bmp");
 	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
 }
 
+/*
+ * Frigör minne
+ */
 void GraphicsEngine::uninit()
 {
+	SDL_FreeSurface(source_image);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
+	TTF_Quit();
 }
 
+/*
+ * Frigör minnet för alla fonter.
+ */
 void GraphicsEngine::unloadFontsFromMemory()
 {
 	for(int i = 0; i < NROFFONTS; ++i)
@@ -302,6 +329,9 @@ void GraphicsEngine::unloadFontsFromMemory()
 	}
 }
 
+/*
+ * Läser in alla fonter i minnet.
+ */
 void GraphicsEngine::loadFontsIntoMemory()
 {
 	font[0] = TTF_OpenFont("lazy.ttf", 32);

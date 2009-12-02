@@ -40,6 +40,8 @@ private:
 	SDL_Surface* source_image;
 	SDL_Surface* cannon[DEGREES];
 	TTF_Font* font[NROFFONTS];
+	int width_;
+	int height_;
 
 	void init();
 	void uninit();
@@ -48,7 +50,7 @@ private:
 	void loadCannonSpritesIntoMemory();
 	void unloadCannonSpritesFromMemory();
 	SDL_Surface* loadImageFromDisc(const std::string&);
-	SDL_Rect get_clipping_rect(const PANZER_IMAGE&) const;
+	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
 };
 
 #endif
