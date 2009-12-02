@@ -33,17 +33,18 @@ GameEngine::~GameEngine() {
 
 void GameEngine::run()
 {
-	if(!init())
+	if(!init_SDL())
 		throw logic_error("Gick ej att initera SDL");
 
 	SDL_Event event;
 
+int test = 1600;
 
 	while(currentState_ != EXITGAME)
 		{
-		    graphicsengine_.showScreenBufferOnScreen();
-			stateVector_.at(currentState_) ->render();
+			graphicsengine_.showScreenBufferOnScreen();
 
+		    stateVector_.at(currentState_) ->render();
 			stateVector_.at(currentState_) ->logic();
 
 			while(SDL_PollEvent(&event) == true)
@@ -53,15 +54,16 @@ void GameEngine::run()
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
 
-			SDL_Delay(30);
 
+			SDL_Delay(30);
 		};
-	cleanup();
+
 	cout << "Thanks for using pantzer" << endl;
+	cleanup();
 }
 
 
-bool GameEngine::init()
+bool GameEngine::init_SDL()
 {
 	return !(SDL_Init(SDL_INIT_VIDEO) == -1);
 }
@@ -71,3 +73,8 @@ void GameEngine::cleanup()
 {
 	SDL_Quit();
 }
+
+
+
+
+

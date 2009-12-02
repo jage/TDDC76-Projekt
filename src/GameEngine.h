@@ -47,7 +47,7 @@ private:
      * init()
      * Initerar SDL, returnerar true ifall vi lyckades
      */
-    bool init();
+    bool init_SDL();
 
     /*
      * cleanup()
@@ -58,6 +58,7 @@ private:
 	// Kopiering och tilldelning tillåts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
+
 
 
 };
