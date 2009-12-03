@@ -1,7 +1,7 @@
 #ifndef AMMUNITION_H_
 #define AMMUNITION_H_
 
-#include "Element.h"
+#include "MovableElement.h"
 #include "Structs.h"
 
 class Ammunition : public MovableElement
