@@ -41,7 +41,7 @@ void GameEngine::run()
 
 	while(currentState_ != EXITGAME)
 		{
-		    graphicsengine_.update_screen();
+		    graphicsengine_.showScreenBufferOnScreen();
 			stateVector_.at(currentState_) ->render();
 
 			stateVector_.at(currentState_) ->logic();
