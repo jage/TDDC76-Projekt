@@ -4,7 +4,7 @@
 #include "Element.h"
 #include "Structs.h"
 
-class Ammunition : public Element
+class Ammunition : public MovableElement
 {
 public:
 	Ammunition();
