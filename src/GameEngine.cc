@@ -31,13 +31,13 @@ GameEngine::~GameEngine() {
 }
 void GameEngine::regulate_fps()
 {
-	unsigned int fps = 99;
+	unsigned int fps = 100;
 
 	ticks_ = SDL_GetTicks() - ticks_;
 
 	if(ticks_ < 1000/fps)
 	{
-		if(ticks_ > 4)
+		if(ticks_ > 2)
 			{	 ++fps;
 				//cout << "New fps: " << fps << endl;
 			}

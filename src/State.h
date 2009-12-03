@@ -96,10 +96,20 @@ public:
 private:
  PANZER_STATES nextState_;
  bool rendermeny_;
- MENYIMAGES menyItem1;
- MENYIMAGES menyItem2;
+ bool quitMeny_;
 
- void renderMenyGfx(MENYIMAGES image, int x, int y);
+
+ //Grafiken är temporär bör integreras med GraphicsEngine
+
+ SDL_Surface* play_;
+ SDL_Surface* options_;
+ SDL_Surface* network_;
+ SDL_Surface* quit_;
+ SDL_Surface* marker_;
+
+ void renderMenyGfx();
+
+
 
 
 private:

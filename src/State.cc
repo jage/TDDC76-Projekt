@@ -57,27 +57,31 @@ Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld),
 	   nextState_(MENY),
 	   rendermeny_(true),
-	   menyItem1(PLAYMENY),
-	   menyItem2(MENYORIGNAL){}
+	   quitMeny_(false){
+	play_ = load_image("play.png");
+	network_ = load_image("network.png");
+	options_ = load_image("options.png");
+	quit_ = load_image("quit.png");
+	marker_ = load_image("grundmarker.png");
+}
 
-Meny::~Meny(){}
+Meny::~Meny(){
+	SDL_FreeSurface(play_);
+	SDL_FreeSurface(network_);
+	SDL_FreeSurface(options_);
+	SDL_FreeSurface(quit_);
+	SDL_FreeSurface(marker_);
+}
 
 
-void Meny::renderMenyGfx(MENYIMAGES image, int x, int y)
+void Meny::renderMenyGfx()
 {
-	switch(image)
-	{
-	case MENYHIGLIGHTED:
-			graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("menytest.png"),x,y); break;
-	case MENYORIGNAL:
-			graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("menytest2.png"),x,y); break;
-	case PLAYMENY:
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("playmeny.png"),x,y); break;
-	case PLAYMENYSELECTED:
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("playmenyselected.png"),x,y); break;
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(play_,50,50);
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(network_,50,100);
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(options_,50,150);
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(quit_,50,200);
 
-	}
-
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(marker_,0,(50 + 50 * nextState_));
 
 }
 
@@ -89,36 +93,43 @@ void Meny::render(){
 			 << "q - finished the 'game' \n"
 			 << "p - changes to the player state\n"
 			 << "Meny eats memory, please be gentle..." << flush;
+		graphicsengine_ptr_->clearScreenBuffer(0);
+		renderMenyGfx();
 		rendermeny_ = false;
 	}
-	renderMenyGfx(menyItem1,40,100);
-	renderMenyGfx(menyItem2,40,200);
 }
 
 
 void Meny::handle_input(SDL_Event& event){
 
-	if( event.type == SDL_KEYDOWN )
-	            {
 
-	                switch( event.key.keysym.sym )
-	                {
-						case SDLK_UP: {menyItem1 = MENYHIGLIGHTED; menyItem2 = MENYORIGNAL;}; break;
-						case SDLK_DOWN: { menyItem2 = MENYHIGLIGHTED; menyItem1 = MENYORIGNAL;}; break;
-						case SDLK_LEFT: graphicsengine_ptr_->clearScreenBuffer(0x0e << 16 | 0x08 << 8 | 0xff << 0); break;
-						case SDLK_RIGHT: graphicsengine_ptr_->clearScreenBuffer(0xff << 16 | 0xff << 8 | 0xaa << 0); break;
-						case SDLK_p: nextState_ = PLAYER1STATE; break;
-						case SDLK_q: {cout << "quit" << endl; nextState_ = EXITGAME;} ; break;
-						default: break;
-					}
-	            }
+	if( event.type == SDL_KEYDOWN )
+	{
+		rendermeny_ = true;
+		switch( event.key.keysym.sym )
+			{
+				case SDLK_UP: nextState_ = EXITGAME; break;
+				case SDLK_DOWN: nextState_ = PLAYER1STATE; break;
+
+				case SDLK_p: nextState_ = PLAYER1STATE; break;
+				case SDLK_q: {cout << "quit" << endl; nextState_ = EXITGAME; quitMeny_ = true;} ; break;
+				case SDLK_RETURN: quitMeny_= true; break;
+				default: break;
+			}
+	}
 	else if( event.type == SDL_QUIT )
-	                nextState_ = EXITGAME;
+	{
+		nextState_ = EXITGAME;
+		quitMeny_ = true;
+	}
 }
 
 PANZER_STATES Meny::next_state()
 {
-	return nextState_;
+	if(quitMeny_)
+		return nextState_;
+	else
+		return MENY;
 }
 //---------------------------------------------------------------//
 
