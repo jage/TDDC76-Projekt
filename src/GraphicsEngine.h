@@ -12,7 +12,6 @@
 #define GRAPHICSENGINE_H_
 
 #include "SDLInclude.h"
-#include "SDL_ttf.h"
 #include "Element.h"
 #include "Enums.h"
 #include <vector>

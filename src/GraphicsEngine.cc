@@ -1,9 +1,8 @@
+#include "SDLInclude.h"
 #include "GraphicsEngine.h"
 #include "Element.h"
 #include "SDL_rotozoom.h"
 #include "Enums.h"
-#include "SDL_image.h"
-#include "SDL_ttf.h"
 #include <stdexcept>
 #include <vector>
 #include <string>
@@ -156,7 +155,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
 	loadedImage = IMG_Load(filename.c_str());
 
 	if (loadedImage != NULL) {
-		optimizedImage = SDL_DisplayFormat(loadedImage);
+		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 	}
 	else
 	{
