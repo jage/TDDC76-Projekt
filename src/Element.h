@@ -20,12 +20,12 @@ public:
 	const int& get_width() const;
 	const PANZER_IMAGE& get_imgRef() const;
 	virtual ~Element() {};
-private:
-	int width_;	// width of element
-	int height_; // height of element
-	PANZER_IMAGE imgRef_;	// reference to element image
-	int x_;		// x coordinate
-	int y_;		// y coordinate
+protected:
+	 int width_;	// width of element
+	 int height_; // height of element
+	 PANZER_IMAGE imgRef_;	// reference to element image
+	 int x_;		// x coordinate
+	 int y_;		// y coordinate
 	double angle_; // the rotation angle of element
 };
 
