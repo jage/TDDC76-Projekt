@@ -6,6 +6,11 @@ GameWorld::GameWorld(const double& gravity,const double& wind)
 GameWorld::~GameWorld()
 {}
 
+ElementVector* GameWorld::get_elements()
+{
+	return &elements_;
+}
+
 void GameWorld::add_element(Element* ptr_newElement)
 {
 	elements_.push_back(ptr_newElement);
@@ -23,7 +28,22 @@ bool GameWorld::update_world()
 	return 1; //dummy
 }
 
-std::vector<Element*>* GameWorld::get_elements()
+const double& GameWorld::get_gravity() const
 {
-	return &elements_;
+	return gravity_;	
+}
+
+void GameWorld::set_gravity(const double& gravity)
+{
+	gravity_=gravity;	
+}
+
+const double& GameWorld::get_wind() const
+{
+	return wind_;	
+}
+
+void GameWorld::set_wind(const double& wind)
+{
+	wind_=wind;	
 }

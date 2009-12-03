@@ -31,8 +31,8 @@ private:
 	PhysicsEngine physEngine_;
 	ElementVector elements_;
 	MovableElementVector movableElements_;
-	//Cannon cannon1_;
-	//Cannon cannon2_;
+	Cannon cannon1_;
+	Cannon cannon2_;
 };
 
 #endif
