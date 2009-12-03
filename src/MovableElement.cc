@@ -18,7 +18,7 @@ Velocity& MovableElement::get_velocity(){
 }
 
 void MovableElement::set_velocity(double dx, double dy){
-	velocity.dx_ = dx;
-	velocity.dy_ = dy;
+	velocity_.dx_ = dx;
+	velocity_.dy_ = dy;
 }
 
