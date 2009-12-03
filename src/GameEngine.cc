@@ -66,10 +66,8 @@ void GameEngine::run()
 			ticks_ = SDL_GetTicks();
 
 			stateVector_.at(currentState_) ->render();
-
 			graphicsengine_.showScreenBufferOnScreen();
 
-		    stateVector_.at(currentState_) ->render();
 			stateVector_.at(currentState_) ->logic();
 
 			while(SDL_PollEvent(&event) == true)
@@ -78,7 +76,6 @@ void GameEngine::run()
 			}
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
-
 
 			regulate_fps();
 
