@@ -13,7 +13,7 @@ CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
-OBJECTS_LIST = Panzer2k.o Element.o GameEngine.o GameWorld.o State.o \
+OBJECTS_LIST = Element.o Cannon.o PhysicsEngine.o State.o GameEngine.o GameWorld.o Panzer2k.o \
 				GraphicsEngine.o
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
@@ -42,6 +42,9 @@ $(BUILD)/GameWorld.o: $(PANZER2K)/GameWorld.h $(PANZER2K)/GameWorld.cc
 
 $(BUILD)/GraphicsEngine.o: $(PANZER2K)/GraphicsEngine.h $(PANZER2K)/GraphicsEngine.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GraphicsEngine.cc -o $(BUILD)/GraphicsEngine.o
+	
+$(BUILD)/PhysicsEngine.o: $(PANZER2K)/PhysicsEngine.h $(PANZER2K)/PhysicsEngine.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/PhysicsEngine.cc -o $(BUILD)/PhysicsEngine.o
 
 $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) $(SDL) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o

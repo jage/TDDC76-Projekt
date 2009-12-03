@@ -16,8 +16,8 @@ const double& StandardAmmo::get_blastRadius() const
 const Collision& StandardAmmo::get_collision() const
 {
  	Collision coll;
- 	coll.x_=get_x;
- 	coll.y_=get_y;
+ 	coll.x_=x_;
+ 	coll.y_=y_;
  	
  	return coll;
 }
