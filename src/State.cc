@@ -53,7 +53,7 @@ SDL_Surface* load_image( std::string filename )
 	      SDL_Surface* optimizedImage = NULL;
 
 	      //Load the image
-	      loadedImage = SDL_LoadBMP( filename.c_str() );
+	      loadedImage = IMG_Load( filename.c_str() );
 
 	      //If nothing went wrong in loading the image
 	      if( loadedImage != NULL )
@@ -64,6 +64,8 @@ SDL_Surface* load_image( std::string filename )
 	          //Free the old image
 	          SDL_FreeSurface( loadedImage );
 	      }
+	      else
+	    	  cerr << "Image not found!" << endl;
 
 	      //Return the optimized image
 	      return optimizedImage;
@@ -90,8 +92,8 @@ void Meny::handle_input(SDL_Event& event){
 						case SDLK_p: nextState_ = PLAYER1STATE; break;
 						default: break;*/
 
-						case SDLK_UP:  graphicsengine_ptr_->clearScreenBuffer(0xff << 16 | 0xff << 8 | 0xff << 0); break;
-						case SDLK_DOWN: graphicsengine_ptr_->clearScreenBuffer(0x00 << 16 | 0x00 << 8 | 0x00 << 0) ; break;
+						case SDLK_UP:  graphicsengine_ptr_->drawTextToScreenBuffer("UP",40,40,255,255,255,0); break;
+						case SDLK_DOWN: graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("menytest.png"),40,40) ; break;
 						case SDLK_LEFT: graphicsengine_ptr_->clearScreenBuffer(0x0e << 16 | 0x08 << 8 | 0xff << 0); break;
 						case SDLK_RIGHT: graphicsengine_ptr_->clearScreenBuffer(0xff << 16 | 0xff << 8 | 0xaa << 0); break;
 						case SDLK_p: nextState_ = PLAYER1STATE; break;

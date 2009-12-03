@@ -43,7 +43,7 @@ int test = 1600;
 	while(currentState_ != EXITGAME)
 		{
 			graphicsengine_.showScreenBufferOnScreen();
-
+			//graphicsengine_.drawTextToScreenBuffer("TEST",40,40,255,255,255,0);
 		    stateVector_.at(currentState_) ->render();
 			stateVector_.at(currentState_) ->logic();
 
