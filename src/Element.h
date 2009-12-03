@@ -9,7 +9,7 @@
 class Element
 {
 public:
-	Element(const int&,const int&,const PANZER_IMAGE&,const int& x=0,const int& y=0,const double& angle=0); // x,y,imgRef,width,height,angle
+	Element(const int&,const int&,const PANZER_IMAGE&,const int& x=0,const int& y=0,const double& angle=0); // w,h,imgRef,x,y,angle
 	const int& get_x() const;
 	void set_x(const int&);
 	const int& get_y() const;

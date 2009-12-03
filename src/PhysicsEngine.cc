@@ -1,4 +1,5 @@
 #include "PhysicsEngine.h"
+#include <math.h>
 
 /*
  * update_pos beräknar den nya positionen för ett givet MovableElement-objekt samt en given gravitation.
@@ -11,18 +12,18 @@ void PhysicsEngine::update_pos(MovableElement* element, const double gravity, co
 }
 
 void PhysicsEngine::update_dx(MovableElement* element, const double wind){
-	wind_dx(element, gravity);
+	//wind_effect(element, gravity);
 }
 void PhysicsEngine::update_dy(MovableElement* element, const double gravity){
-	element->velocity_.dy_ = sqrt(sqr(element->velocity_.dy_) - 2*gravity*element->velocity.dy_);
+	element->set_dy( sqrt( pow(element->get_dy(),2) - 2 * gravity * element->get_dy() ));
 }
 void PhysicsEngine::update_x(MovableElement* element, const double gravity){
-	element->x_ = element->x_ + element->velocity_.dx_;
+	element->set_x(element->get_x() + element->get_dx());
 }
 void PhysicsEngine::update_y(MovableElement* element, const double gravity){
-	element->y_ = element->y_ + element->velocity_.dy_;
+	element->set_y(element->get_y() + element->get_dy());
 }
 
-void PhysicsEngine::wind_dx(MovableElement* element, const double wind){
-	element->velocity_.dx_ = element->velocity_.dx_ *(1 - wind) * (1 - (element->y_ / 10000));
+void PhysicsEngine::wind_effect(MovableElement* element, const double wind){
+	element->set_dx(element->get_dx() *(1 - wind) * (1 - (element->get_y()/ 10000)));
 }
