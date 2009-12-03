@@ -14,10 +14,10 @@ void GameWorld::add_element(Element new_element)
 
 Collision GameWorld::update_world()
 {
-	vector<MovableElement>::iterator it = movable_element_vector_.begin();
+	vector<MovableElement*>::iterator it = movable_element_vector_.begin();
 	while(it != movable_element_vector_.end())
 	{
-		physics_engine_.update_pos(&(*it),gravity);
+		physics_engine_.update_pos(*it,gravity);
 		++it;
 	}
 	return Collision(); //dummy

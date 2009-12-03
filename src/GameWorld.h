@@ -20,7 +20,7 @@ public:
 	std::vector<Element>* get_element_vector();
 
 	std::vector<Element> element_vector_;
-	std::vector<MovableElement> movable_element_vector_;
+	std::vector<MovableElement*> movable_element_vector_;
 
 private:
 	PhysicsEngine physics_engine_;
