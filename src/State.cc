@@ -7,9 +7,6 @@
 
 #include "State.h"
 #include <iostream>
-//#include "SDLInclude.h"
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
 #include <string>
 
 using namespace std;
@@ -22,28 +19,8 @@ State::~State() {}
 //--------------------------------------------------------------//
 
 
-//Meny-----------------------------------------------------------//
 
-//Meny::Meny(){}
-
-Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld),
-	   nextState_(MENY),
-	   rendermeny_(true){}
-
-Meny::~Meny(){}
-
-void Meny::render(){
-	if(rendermeny_)
-	{
-		cout << "Press an arrow key\n"
-			 << "q - finished the 'game' \n"
-			 << "p - changes to the player state\n"
-			 << "" << flush;
-		rendermeny_ = false;
-	}
-
-}
+//Temporär funktion Graphics engine bör ta hand om allt
 SDL_Surface* load_image( std::string filename )
 	  {
 	      //Temporary storage for the image that's loaded
@@ -72,9 +49,51 @@ SDL_Surface* load_image( std::string filename )
 	  }
 
 
+//Meny-----------------------------------------------------------//
+
+//Meny::Meny(){}
+
+Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld),
+	   nextState_(MENY),
+	   rendermeny_(true),
+	   menyItem1(PLAYMENY),
+	   menyItem2(MENYORIGNAL){}
+
+Meny::~Meny(){}
 
 
+void Meny::renderMenyGfx(MENYIMAGES image, int x, int y)
+{
+	switch(image)
+	{
+	case MENYHIGLIGHTED:
+			graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("menytest.png"),x,y); break;
+	case MENYORIGNAL:
+			graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("menytest2.png"),x,y); break;
+	case PLAYMENY:
+		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("playmeny.png"),x,y); break;
+	case PLAYMENYSELECTED:
+		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("playmenyselected.png"),x,y); break;
 
+	}
+
+
+}
+
+
+void Meny::render(){
+	if(rendermeny_)
+	{
+		cout << "Press an arrow key\n"
+			 << "q - finished the 'game' \n"
+			 << "p - changes to the player state\n"
+			 << "Meny eats memory, please be gentle..." << flush;
+		rendermeny_ = false;
+	}
+	renderMenyGfx(menyItem1,40,100);
+	renderMenyGfx(menyItem2,40,200);
+}
 
 
 void Meny::handle_input(SDL_Event& event){
@@ -84,16 +103,8 @@ void Meny::handle_input(SDL_Event& event){
 
 	                switch( event.key.keysym.sym )
 	                {
-	                    /*case SDLK_UP:  cout << "up" << endl; break;
-	                    case SDLK_DOWN: cout << "down" << endl; break;
-	                    case SDLK_LEFT: cout << "left" << endl; break;
-						case SDLK_RIGHT: cout << "right" << endl ; break;
-						case SDLK_q: {cout << "quit" << endl; nextState_ = EXITGAME;} ; break;
-						case SDLK_p: nextState_ = PLAYER1STATE; break;
-						default: break;*/
-
-						case SDLK_UP:  graphicsengine_ptr_->drawTextToScreenBuffer("UP",40,40,255,255,255,0); break;
-						case SDLK_DOWN: graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("menytest.png"),40,40) ; break;
+						case SDLK_UP: {menyItem1 = MENYHIGLIGHTED; menyItem2 = MENYORIGNAL;}; break;
+						case SDLK_DOWN: { menyItem2 = MENYHIGLIGHTED; menyItem1 = MENYORIGNAL;}; break;
 						case SDLK_LEFT: graphicsengine_ptr_->clearScreenBuffer(0x0e << 16 | 0x08 << 8 | 0xff << 0); break;
 						case SDLK_RIGHT: graphicsengine_ptr_->clearScreenBuffer(0xff << 16 | 0xff << 8 | 0xaa << 0); break;
 						case SDLK_p: nextState_ = PLAYER1STATE; break;

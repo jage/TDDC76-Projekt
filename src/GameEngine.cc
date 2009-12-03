@@ -9,7 +9,7 @@
 #include "GameEngine.h"
 #include "State.h"
 #include "Enums.h"
-#include "SDL/SDL.h"
+#include "SDLInclude.h"
 #include <stdexcept>
 #include <vector>
 
@@ -29,7 +29,27 @@ GameEngine::GameEngine() {
 GameEngine::~GameEngine() {
 	// TODO Auto-generated destructor stub
 }
+void GameEngine::regulate_fps()
+{
+	unsigned int fps = 99;
 
+	ticks_ = SDL_GetTicks() - ticks_;
+
+	if(ticks_ < 1000/fps)
+	{
+		if(ticks_ > 4)
+			{	 ++fps;
+				//cout << "New fps: " << fps << endl;
+			}
+
+		SDL_Delay(1000/fps - ticks_);
+	}
+	else
+	{
+		--fps;
+		//cout << "New fps: " << fps << endl;
+	}
+}
 
 void GameEngine::run()
 {
@@ -38,14 +58,13 @@ void GameEngine::run()
 
 	SDL_Event event;
 
-int test = 1600;
-
 	while(currentState_ != EXITGAME)
 		{
+			ticks_ = SDL_GetTicks();
+
+			stateVector_.at(currentState_) ->render();
 			graphicsengine_.showScreenBufferOnScreen();
-			//graphicsengine_.drawTextToScreenBuffer("TEST",40,40,255,255,255,0);
-		    stateVector_.at(currentState_) ->render();
-			stateVector_.at(currentState_) ->logic();
+		    stateVector_.at(currentState_) ->logic();
 
 			while(SDL_PollEvent(&event) == true)
 			{
@@ -55,7 +74,7 @@ int test = 1600;
 			currentState_ = stateVector_.at(currentState_)->next_state();
 
 
-			SDL_Delay(30);
+			regulate_fps();
 		};
 
 	cout << "Thanks for using pantzer" << endl;

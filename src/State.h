@@ -55,6 +55,13 @@ protected:
 };
 
 
+enum MENYIMAGES{
+	MENYHIGLIGHTED,
+	MENYORIGNAL,
+	PLAYMENY,
+	PLAYMENYSELECTED
+};
+
 class Meny : public State
 {
 public:
@@ -89,6 +96,11 @@ public:
 private:
  PANZER_STATES nextState_;
  bool rendermeny_;
+ MENYIMAGES menyItem1;
+ MENYIMAGES menyItem2;
+
+ void renderMenyGfx(MENYIMAGES image, int x, int y);
+
 
 private:
 
