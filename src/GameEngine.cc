@@ -17,17 +17,19 @@ using namespace std;
 
 GameEngine::GameEngine() {
 
-	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
+
 	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new Fire(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new NetworkState(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new OptionState(&graphicsengine_, &gameworld_));
 	stateVector_.push_back(new ExitGame(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new Fire(&graphicsengine_, &gameworld_));
+	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
 
 	currentState_ = MENY;
 
 }
 
 GameEngine::~GameEngine() {
-	// TODO Auto-generated destructor stub
 }
 void GameEngine::regulate_fps()
 {
@@ -64,7 +66,8 @@ void GameEngine::run()
 
 			stateVector_.at(currentState_) ->render();
 			graphicsengine_.showScreenBufferOnScreen();
-		    stateVector_.at(currentState_) ->logic();
+
+			stateVector_.at(currentState_) ->logic();
 
 			while(SDL_PollEvent(&event) == true)
 			{
@@ -72,7 +75,6 @@ void GameEngine::run()
 			}
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
-
 
 			regulate_fps();
 		};

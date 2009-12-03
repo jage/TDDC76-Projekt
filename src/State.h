@@ -54,14 +54,6 @@ protected:
 
 };
 
-
-enum MENYIMAGES{
-	MENYHIGLIGHTED,
-	MENYORIGNAL,
-	PLAYMENY,
-	PLAYMENYSELECTED
-};
-
 class Meny : public State
 {
 public:
@@ -95,9 +87,9 @@ public:
 
 private:
  PANZER_STATES nextState_;
- bool rendermeny_;
  bool quitMeny_;
 
+ void changeState(bool);
 
  //Grafiken �r tempor�r b�r integreras med GraphicsEngine
 
@@ -217,6 +209,76 @@ public:
 	 * Nästa tillstånd för Meny
 	 */
 	PANZER_STATES next_state();
+
+private:
+
+};
+
+class NetworkState : public State
+{
+
+public:
+	NetworkState(GraphicsEngine*, GameWorld*);
+	~NetworkState(){};
+
+
+	/*
+	 * Skriver ut menyalternativ till användaren på standard utsrömmen
+	 */
+	void render();
+
+	/*
+	 * logic()
+	 * St�dar i minnet efter SDL
+	 */
+	void logic();
+
+	/*
+	 * handle_event()
+	 * Svarar på användarens knapptryckningar
+	 */
+	void handle_input(SDL_Event&){};
+
+	/*
+	 * next_state()
+	 * Nästa tillstånd för Meny
+	 */
+	PANZER_STATES next_state(){return MENY;};
+
+private:
+
+};
+
+class OptionState : public State
+{
+
+public:
+	OptionState(GraphicsEngine*, GameWorld*);
+	~OptionState(){};
+
+
+	/*
+	 * Skriver ut menyalternativ till användaren på standard utsrömmen
+	 */
+	void render();
+
+	/*
+	 * logic()
+	 * St�dar i minnet efter SDL
+	 */
+	void logic();
+
+	/*
+	 * handle_event()
+	 * Svarar på användarens knapptryckningar
+	 */
+	void handle_input(SDL_Event&){};
+
+	/*
+	 * next_state()
+	 * Nästa tillstånd för Meny
+	 */
+	PANZER_STATES next_state(){return MENY;};
 
 private:
 

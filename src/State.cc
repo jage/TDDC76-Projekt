@@ -55,14 +55,14 @@ SDL_Surface* load_image( std::string filename )
 
 Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld),
-	   nextState_(MENY),
-	   rendermeny_(true),
+	   nextState_(PLAYER1STATE),
 	   quitMeny_(false){
+
 	play_ = load_image("play.png");
 	network_ = load_image("network.png");
 	options_ = load_image("options.png");
 	quit_ = load_image("quit.png");
-	marker_ = load_image("grundmarker.png");
+	marker_ = load_image("marker.png");
 }
 
 Meny::~Meny(){
@@ -87,18 +87,48 @@ void Meny::renderMenyGfx()
 
 
 void Meny::render(){
-	if(rendermeny_)
-	{
-		cout << "Press an arrow key\n"
-			 << "q - finished the 'game' \n"
-			 << "p - changes to the player state\n"
-			 << "Meny eats memory, please be gentle..." << flush;
 		graphicsengine_ptr_->clearScreenBuffer(0);
 		renderMenyGfx();
-		rendermeny_ = false;
-	}
+
 }
 
+void Meny::changeState(bool up){
+
+	switch(nextState_)
+	{
+		case PLAYER1STATE:
+		{
+			if(up)
+				{nextState_ = EXITGAME; cout << "play -> exit" << endl;}
+			else
+				{nextState_ = NETWORKSTATE;; cout << "play -> network" << endl;}
+		} break;
+		case NETWORKSTATE:
+		{
+			if(up)
+				{nextState_ = PLAYER1STATE; cout << "net -> play" << endl;}
+			else
+				{nextState_ = OPTIONSTATE; cout << "net -> opt" << endl;}
+		} break;
+
+		case OPTIONSTATE:
+		{
+			if(up)
+				{nextState_ = NETWORKSTATE; cout << "opt -> net" << endl;}
+			else
+				{nextState_ = EXITGAME; cout << "opt -> exit" << endl;}
+		}break;
+
+		case EXITGAME:
+		{
+			if(up)
+				{nextState_ = OPTIONSTATE; cout << "exit -> opt" << endl;}
+			else
+				{nextState_ = PLAYER1STATE; cout << "exit -> play" << endl;}
+		}break;
+
+	}
+}
 
 void Meny::handle_input(SDL_Event& event){
 
@@ -108,11 +138,8 @@ void Meny::handle_input(SDL_Event& event){
 		rendermeny_ = true;
 		switch( event.key.keysym.sym )
 			{
-				case SDLK_UP: nextState_ = EXITGAME; break;
-				case SDLK_DOWN: nextState_ = PLAYER1STATE; break;
-
-				case SDLK_p: nextState_ = PLAYER1STATE; break;
-				case SDLK_q: {cout << "quit" << endl; nextState_ = EXITGAME; quitMeny_ = true;} ; break;
+				case SDLK_UP: changeState(true) ; break;
+				case SDLK_DOWN: changeState(false); break;
 				case SDLK_RETURN: quitMeny_= true; break;
 				default: break;
 			}
@@ -127,7 +154,9 @@ void Meny::handle_input(SDL_Event& event){
 PANZER_STATES Meny::next_state()
 {
 	if(quitMeny_)
+	{   quitMeny_ = false;
 		return nextState_;
+	}
 	else
 		return MENY;
 }
@@ -198,3 +227,25 @@ PANZER_STATES ExitGame::next_state()
 //---------------------------------------------------------------//
 
 
+//NetworkState--------------------------------------------------//
+NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld) {}
+
+void NetworkState::render(){
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+}
+
+void NetworkState::logic(){
+	SDL_Delay(2000);
+}
+
+OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld) {}
+
+void OptionState::render(){
+	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+}
+
+void OptionState::logic(){
+	SDL_Delay(2000);
+}
