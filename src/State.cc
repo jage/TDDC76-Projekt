@@ -93,35 +93,6 @@ void Meny::render(){
 		renderMenyGfx();
 
 }
-SDL_Surface* load_image( std::string filename )
-	  {
-	      //Temporary storage for the image that's loaded
-	      SDL_Surface* loadedImage = NULL;
-
-	      //The optimized image that will be used
-	      SDL_Surface* optimizedImage = NULL;
-
-	      //Load the image
-	      loadedImage = SDL_LoadBMP( filename.c_str() );
-
-	      //If nothing went wrong in loading the image
-	      if( loadedImage != NULL )
-	      {
-	          //Create an optimized image
-	          optimizedImage = SDL_DisplayFormat( loadedImage );
-
-	          //Free the old image
-	          SDL_FreeSurface( loadedImage );
-	      }
-
-	      //Return the optimized image
-	      return optimizedImage;
-	  }
-
-
-
-
-
 
 void Meny::changeState(bool up){
 
@@ -166,7 +137,6 @@ void Meny::handle_input(SDL_Event& event){
 
 	if( event.type == SDL_KEYDOWN )
 	{
-		rendermeny_ = true;
 		switch( event.key.keysym.sym )
 			{
 				case SDLK_UP: changeState(true) ; break;
