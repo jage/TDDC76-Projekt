@@ -4,7 +4,7 @@
 # Filkataloger där olika delar av programvaran finns.
 PANZER2K     = src
 BUILD          = build
-SDL	=	-lSDL -lSDL_image
+SDL	=	-lSDL -lSDL_image -ISDL_ttf
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
