@@ -19,8 +19,8 @@
 
 #ifdef WINDOWS
 	#include "SDL.h"
-	#include "SLD_image.h"
-	#include "SLD_ttf.h"
+	#include "SDL_image.h"
+	#include "SDL_ttf.h"
 #endif
 
 #ifdef LINUX
