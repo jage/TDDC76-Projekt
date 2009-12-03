@@ -6,12 +6,27 @@
  * 
  */
 
-#ifdef _WIN32
+/*
+ * Platform
+ * WINDOWS
+ * MAC
+ * LINUX (both unix and linux)
+ */
+ 
+ #undef MAC
+ #define LINUX
+ #undef WINDOWS
+
+#ifdef WINDOWS
 	#include "SDL.h"
+	#include "SLD_image.h"
+	#include "SLD_ttf.h"
 #endif
 
-#ifdef linux
+#ifdef LINUX
 	#include "SDL/SDL.h"
+	#include "SDL/SDL_image.h"
+	#include "SDL/SDL_ttf.h"
 #endif
 
 #endif /*SDLINCLUDE_*/
