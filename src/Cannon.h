@@ -7,7 +7,7 @@
 class Cannon : public Element
 {
 public:
-	Cannon(Ammunition*);
+	Cannon(Ammunition* ammo=0);
 	void set_angle(const double&);	// sets fire angle
 	void adjust_angle(const double&); // increase/decrease fire angle
 	const double& get_angle() const;

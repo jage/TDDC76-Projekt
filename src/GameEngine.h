@@ -10,7 +10,7 @@
 
 #include <vector>
 #include "GameWorld.h"
-#include "SDL/SDL.h"
+#include "SDLInclude.h"
 #include "State.h"
 
 //Dummyclasses
@@ -36,9 +36,9 @@ private:
 	Sound sound_;
 	Player player1;
 	Player player2;
+	unsigned int ticks_;
 
-
-	//TillstÃ¥nd
+	//Tillstånd
 	PANZER_STATES currentState_;
 	State* prevState_;
     vector<State*> stateVector_;
@@ -47,7 +47,7 @@ private:
      * init()
      * Initerar SDL, returnerar true ifall vi lyckades
      */
-    bool init();
+    bool init_SDL();
 
     /*
      * cleanup()
@@ -55,9 +55,17 @@ private:
      */
     void cleanup();
 
+    /*
+     * regulate_fps()
+     * Reglerar frames/second, så att vi inte tar all processorkraft
+     * Standard är 100 fps
+     */
+    void regulate_fps();
+
 	// Kopiering och tilldelning tillåts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
+
 
 
 };
