@@ -4,7 +4,7 @@
 # Filkataloger där olika delar av programvaran finns.
 PANZER2K     = src
 BUILD          = build
-SDL	=	-lSDL -lSDL_image -ISDL_ttf
+SDL	=	-lSDL -lSDL_image -lSDL_ttf
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
@@ -13,8 +13,8 @@ CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
-OBJECTS_LIST = Element.o Cannon.o PhysicsEngine.o State.o GameEngine.o GameWorld.o Panzer2k.o \
-				GraphicsEngine.o
+OBJECTS_LIST = Element.o Cannon.o MovableElement.o PhysicsEngine.o State.o GameEngine.o GameWorld.o Panzer2k.o \
+				SDL_rotozoom.o GraphicsEngine.o
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
@@ -41,10 +41,16 @@ $(BUILD)/GameWorld.o: $(PANZER2K)/GameWorld.h $(PANZER2K)/GameWorld.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GameWorld.cc -o $(BUILD)/GameWorld.o
 
 $(BUILD)/GraphicsEngine.o: $(PANZER2K)/GraphicsEngine.h $(PANZER2K)/GraphicsEngine.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GraphicsEngine.cc -o $(BUILD)/GraphicsEngine.o
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) $(SDL) -c $(PANZER2K)/GraphicsEngine.cc -o $(BUILD)/GraphicsEngine.o
+	
+$(BUILD)/MovableElement.o: $(PANZER2K)/MovableElement.h $(PANZER2K)/MovableElement.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/MovableElement.cc -o $(BUILD)/MovableElement.o	
 	
 $(BUILD)/PhysicsEngine.o: $(PANZER2K)/PhysicsEngine.h $(PANZER2K)/PhysicsEngine.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/PhysicsEngine.cc -o $(BUILD)/PhysicsEngine.o
+	
+$(BUILD)/SDL_rotozoom.o: $(PANZER2K)/SDL_rotozoom.h $(PANZER2K)/SDL_rotozoom.c
+	gcc -c $(PANZER2K)/SDL_rotozoom.c -o $(BUILD)/SDL_rotozoom.o
 
 $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) $(SDL) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o
