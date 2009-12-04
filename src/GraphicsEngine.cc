@@ -62,25 +62,36 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 		{
 			SDL_Surface* source = NULL;
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
-			source = SDL_CreateRGBSurfaceFrom(source_image->pixels,
-												clip.w,
-												clip.h,
-												source_image->format->BitsPerPixel,
-												source_image->pitch,
-												source_image->format->Rmask,
-												source_image->format->Gmask,
-												source_image->format->Bmask,
-												source_image->format->Amask);
-			SDL_BlitSurface(source_image, NULL, source, NULL);
+			
+			// Skapa ny SDL_Surface
+			source = SDL_CreateRGBSurface(source_image->flags,
+				clip.w,
+				clip.h,
+				source_image->format->BitsPerPixel,
+				source_image->format->Rmask,
+				source_image->format->Gmask,
+				source_image->format->Bmask,
+				source_image->format->Amask);
+			
+			// Om colorkey, sätt colorkey och måla hela bilden "osynlig"
+			if (source_image->flags & SDL_SRCCOLORKEY)
+			{
+				SDL_SetColorKey(source, SDL_SRCCOLORKEY, source_image->format->colorkey);
+				SDL_FillRect(source, NULL, source_image->format->colorkey);
+			}
+
+			SDL_BlitSurface(source_image, &clip, source, NULL);
 			SDL_Surface* rotaded_image = NULL;
-			rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 1);
+			rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 0);
 			SDL_FreeSurface(source);
+			SDL_SetColorKey(rotaded_image, SDL_SRCCOLORKEY, source_image->format->colorkey);
 			SDL_BlitSurface(rotaded_image, NULL, screen, &destinationRectangle);
 			SDL_FreeSurface(rotaded_image);
 		}
 		else
 		{
-			SDL_BlitSurface(source_image, &getClippingRectangle(draw_element.get_imgRef()), screen, &destinationRectangle);
+			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
+			SDL_BlitSurface(source_image, &clip, screen, &destinationRectangle);
 		}
 	}
 }
@@ -126,10 +137,10 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
 		rect.h = 277;
 		break;
 	case SUN:
-		rect.x = 741;
+		rect.x = 742;
 		rect.y = 0;
-		rect.w = 155;
-		rect.h = 154;
+		rect.w = 154;
+		rect.h = 153;
 		break;
 	case CANNON:
 		rect.x = 253;
@@ -155,13 +166,15 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
 	loadedImage = IMG_Load(filename.c_str());
 
 	if (loadedImage != NULL) {
-		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
+		SDL_SetColorKey(loadedImage, SDL_SRCCOLORKEY, SDL_MapRGB(screen->format, 0, 255, 255));
+		optimizedImage = SDL_DisplayFormat(loadedImage);
+
 	}
-	else
-	{
+	else {
 		cerr << IMG_GetError() << endl;
 	}
 	SDL_FreeSurface(loadedImage);
+
 	return optimizedImage;
 }
 
@@ -172,7 +185,10 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
-	SDL_Surface* unrotatedCannon = SDL_CreateRGBSurface(source_image->flags,
+	SDL_Surface* unrotatedCannon = IMG_Load("cannon.png");
+	/*
+	SDL_Surface* unrotatedCannon = SDL_CreateRGBSurface(
+		source_image->flags,
 		getClippingRectangle(CANNON).w,
 		getClippingRectangle(CANNON).h,
 		source_image->format->BitsPerPixel,
@@ -180,12 +196,17 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 		source_image->format->Gmask,
 		source_image->format->Bmask,
 		source_image->format->Amask);
+	*/
 
-	SDL_BlitSurface(source_image, &getClippingRectangle(CANNON), unrotatedCannon, NULL);
+	//SDL_SetColorKey(unrotatedCannon, SDL_SRCCOLORKEY, source_image->format->colorkey);
+	//SDL_FillRect(unrotatedCannon, NULL, source_image->format->colorkey);
+	//SDL_FillRect(unrotatedCannon, NULL, SDL_MapRGBA(screen->format, 0, 0, 0, 0));
+	//SDL_BlitSurface(source_image, &getClippingRectangle(CANNON), unrotatedCannon, NULL);
 							
 	for (int i = 0; i < DEGREES; ++i)
 	{
-		cannon[i] = rotozoomSurface(unrotatedCannon, i, 1, 1);
+		cannon[i] = rotozoomSurface(unrotatedCannon, -i, 1, 1);
+		SDL_SetColorKey(cannon[i], SDL_SRCCOLORKEY, source_image->format->colorkey);
 	}
 	SDL_FreeSurface(unrotatedCannon);
 }
