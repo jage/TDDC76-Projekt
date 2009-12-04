@@ -7,8 +7,7 @@
 
 #include "State.h"
 #include <iostream>
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
+#include "SDLInclude.h"
 #include <string>
 
 using namespace std;

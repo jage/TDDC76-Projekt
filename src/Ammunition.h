@@ -8,9 +8,9 @@ class Ammunition : public MovableElement
 {
 public:
 	Ammunition();
-	virtual const double& get_blast_radius() const =0;
-	virtual const Collision& get_collision() const=0;
-	virtual ~Ammunition();
+	virtual const double get_blast_radius() const =0;
+	virtual const Collision get_collision() const=0;
+	virtual ~Ammunition(){};
 };
 
 /*
@@ -23,8 +23,8 @@ public:
 class StandardAmmo: public Ammunition
 {
 	public:
-		const double& get_blastRadius() const;
-		const Collision& get_collision() const;
+		const double get_blastRadius() const;
+		const Collision get_collision() const;
 };
 
 #endif /*AMMUNITION_H_*/

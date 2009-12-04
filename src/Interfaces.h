@@ -4,7 +4,7 @@
 #include "Enums.h"
 #include "Structs.h"
 
-using namespace std;
+//using namespace std;
 
 // abstract class for use with movable game objects
 class Movable

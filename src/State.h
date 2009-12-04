@@ -10,7 +10,7 @@
 
 #include "GraphicsEngine.h"
 #include "GameWorld.h"
-#include "SDL/SDL.h"
+#include "SDLInclude.h"
 #include <iostream>
 
 

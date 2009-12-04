@@ -9,50 +9,50 @@
 class Player
 {
 public:
-	Player(int& , std::string&, int&);
-	 virtual ~Player();
+	Player(const std::string&, const int, const int);
+	virtual ~Player(){};
 	 
-	 	/*
-	 * get_name()
-	 * Hämtar en spelares(Players) namn.
-	 */
+	 /*
+	  * get_name()
+	  * Hämtar en spelares(Players) namn.
+	  */
 	const std::string& get_name() const;
 	
 	/*
 	 * set_name()
 	 * Sätter en spelares(Player) namn.
 	 */
-	void set_name(const string& n);
+	void set_name(const std::string& n);
 	 
 	/*
 	 * get_health()
 	 * Hämtar en spelares(Players) hälsa i form av ett heltal. 
 	 */
-	int get_health();
+	const int& get_health() const;
 	
 	/*
 	 * set_health(int)
 	 * Sätter en spelares(Player) hälsa. 
 	 */
-	int set_health(int);
+	void set_health(const int);
 	
 	/*
 	 * get_points()
 	 * Hämtar en spelares(Player) poäng.
 	 */
-	int get_points();
+	const int& get_points() const;
 	
 	/*
 	 * set_points()
 	 * Sätter en spelares(Player) poäng.
 	 */
-	void set_points();	
+	void set_points(const int);	
 	
 	/*
 	 * get_event() - en ren virtuell funktion
 	 * Hämtar en händelse.
 	 */
-	virtual event get_event();
+	//virtual SDL_Event get_event();
 	
 	
 	

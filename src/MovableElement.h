@@ -7,8 +7,8 @@
 
 class MovableElement: public Element, public Movable {
 public:
-	MovableElement(const int&, const int&, PANZER_IMAGE,
-			const int&, const int&, const double&, double = 0, double = 0, double = 0, double = 0);
+	MovableElement(const int& w, const int& h, PANZER_IMAGE imgRef,
+			const int& x, const int& y, const double& angle, double angle_freq = 0, double dx = 0, double dy = 0, double windfactor = 0);
 
 	virtual ~MovableElement(){};
 
