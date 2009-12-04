@@ -14,8 +14,8 @@
  */
  
  #undef MAC
- #define LINUX
- #undef WINDOWS
+ #undef LINUX
+ #define WINDOWS
 
 #ifdef WINDOWS
 	#include "SDL.h"
