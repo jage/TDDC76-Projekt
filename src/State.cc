@@ -21,7 +21,7 @@ State::~State() {}
 
 
 
-//Temporär funktion Graphics engine bör ta hand om allt
+//Temporï¿½r funktion Graphics engine bï¿½r ta hand om allt
 SDL_Surface* load_image( std::string filename )
 	  {
 	      //Temporary storage for the image that's loaded
@@ -239,7 +239,7 @@ void NetworkState::render(){
 void NetworkState::logic(){
 	SDL_Delay(2000);
 }
-
+//OptionsState-------------------------------------------------//
 OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld) {}
 
@@ -250,3 +250,4 @@ void OptionState::render(){
 void OptionState::logic(){
 	SDL_Delay(2000);
 }
+//OptionsState-----------------------------------------------//

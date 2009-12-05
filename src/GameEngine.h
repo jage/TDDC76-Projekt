@@ -24,7 +24,7 @@ public:
 
 	/*
 	 * run() - funktionen startar speloopen.
-	 * TODO Loopen kÃ¶rs tills loppen hamnar i tillstÃ¥ndet
+	 * Loopen kÃ¶rs tills loppen hamnar i tillstÃ¥ndet
 	 * ExitGame
 	 */
 	void run();
@@ -38,7 +38,7 @@ private:
 	Player player2;
 	unsigned int ticks_;
 
-	//Tillstånd
+	//Tillstï¿½nd
 	PANZER_STATES currentState_;
 	State* prevState_;
     vector<State*> stateVector_;
@@ -51,18 +51,18 @@ private:
 
     /*
      * cleanup()
-     * Städar i minnet när spelet avslutas
+     * Stï¿½dar i minnet nï¿½r spelet avslutas
      */
     void cleanup();
 
     /*
      * regulate_fps()
-     * Reglerar frames/second, så att vi inte tar all processorkraft
-     * Standard är 100 fps
+     * Reglerar frames/second, sï¿½ att vi inte tar all processorkraft
+     * Standard ï¿½r 100 fps
      */
     void regulate_fps();
 
-	// Kopiering och tilldelning tillåts ej (definieras ej)
+	// Kopiering och tilldelning tillï¿½ts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
 

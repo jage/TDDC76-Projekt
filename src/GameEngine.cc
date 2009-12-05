@@ -26,6 +26,7 @@ GameEngine::GameEngine() {
 	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
 
 
+
 	currentState_ = MENY;
 
 }

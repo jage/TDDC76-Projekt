@@ -25,7 +25,8 @@ public:
 
 	/*
 	 * render()
-	 * Rita tillst�ndsspecifik grafik p� sk�rmen
+	 * Rita tillst�ndsspecifik grafik p� sk�rmen
+	 * OBS Uppdaterar inte spelskärmen, GameEngine gör detta
 	 */
 	virtual void render() = 0;
 
@@ -38,7 +39,6 @@ public:
 	/*
 	 * handle_input()
 	 * Bestämmer hur tillståndet svara på användarens interaktion
-	 * TODO SDL_Event istället för att läsa på en inström
 	 */
 	virtual void handle_input(SDL_Event&) = 0;
 
@@ -61,28 +61,12 @@ public:
 	Meny(GraphicsEngine*, GameWorld*);
 	~Meny();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
 	void logic(){};
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
 	void handle_input(SDL_Event&);
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
@@ -91,7 +75,7 @@ private:
 
  void changeState(bool);
 
- //Grafiken �r tempor�r b�r integreras med GraphicsEngine
+ //Grafiken �r tempor�r b�r integreras med GraphicsEngine
 
  SDL_Surface* play_;
  SDL_Surface* options_;
@@ -116,28 +100,12 @@ public:
 	Player1State(GraphicsEngine*, GameWorld*);
 	~Player1State();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
 	void logic(){};
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
 	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
@@ -151,28 +119,12 @@ public:
 	Fire(GraphicsEngine*, GameWorld*);
 	~Fire();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
 	void logic(){};
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
 	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
@@ -186,28 +138,12 @@ public:
 	ExitGame(GraphicsEngine*, GameWorld*);
 	~ExitGame();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * St�dar i minnet efter SDL
-	 */
 	void logic();
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
 	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
@@ -221,28 +157,12 @@ public:
 	NetworkState(GraphicsEngine*, GameWorld*);
 	~NetworkState(){};
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * St�dar i minnet efter SDL
-	 */
 	void logic();
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
 	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state(){return MENY;};
 
 private:
@@ -256,28 +176,12 @@ public:
 	OptionState(GraphicsEngine*, GameWorld*);
 	~OptionState(){};
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * St�dar i minnet efter SDL
-	 */
 	void logic();
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
 	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state(){return MENY;};
 
 private:
