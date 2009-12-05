@@ -112,6 +112,26 @@ private:
 
 };
 
+class Player2State : public State
+{
+
+public:
+	//Meny();
+	Player2State(GraphicsEngine*, GameWorld*);
+	~Player2State();
+
+	void render();
+
+	void logic(){};
+
+	void handle_input(SDL_Event&){};
+
+	PANZER_STATES next_state();
+
+private:
+
+};
+
 class Fire : public State
 {
 public:

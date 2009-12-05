@@ -10,6 +10,7 @@
 
 #include <vector>
 #include "GameWorld.h"
+#include "GraphicsEngine.h"
 #include "SDLInclude.h"
 #include "State.h"
 

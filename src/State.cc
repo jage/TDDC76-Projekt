@@ -180,9 +180,28 @@ void Player1State::render(){
 
 PANZER_STATES Player1State::next_state()
 {
-	return FIRE;
+	return PLAYER2STATE;
 }
 //---------------------------------------------------------------//
+
+//Player2State-----------------------------------------------------------//
+
+Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	 : State(graphicsengine,gameworld) {}
+
+Player2State::~Player2State(){}
+
+void Player2State::render(){
+	cout << "Player2 state\n\n"
+		 << "next up is.....\n\n";
+}
+
+
+PANZER_STATES Player2State::next_state()
+{
+	return FIRE;
+}
+
 
 //Fire-----------------------------------------------------------//
 
