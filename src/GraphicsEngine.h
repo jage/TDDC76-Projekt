@@ -18,7 +18,8 @@
 #include <string>
 
 const int DEGREES = 360;
-const int NROFFONTS = 1;
+const int NROFFONTS = 2;
+const int NROFBUTTONIMG = 5;
 
 class GraphicsEngine
 {
@@ -34,11 +35,13 @@ public:
 	void drawTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
 	void drawOutlinedTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
 	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, int xScreenPos, int yScreenPos);
+	void drawButton(const int fontnr, const std::string& text, int xScreenPos, int yScreenPos, bool active);
 
 private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
 	SDL_Surface* cannon[DEGREES];
+	SDL_Surface* buttons[NROFBUTTONIMG];
 	TTF_Font* font[NROFFONTS];
 	int width_;
 	int height_;
@@ -49,7 +52,9 @@ private:
 	void unloadFontsFromMemory();
 	void loadCannonSpritesIntoMemory();
 	void unloadCannonSpritesFromMemory();
-	SDL_Surface* loadImageFromDisc(const std::string&);
+	void loadButtonSpritesIntoMemory();
+	void unloadButtonSpritesFromMemory();
+	SDL_Surface* loadImageFromDisc(const std::string&, const bool transparent = false);
 	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
 };
 
