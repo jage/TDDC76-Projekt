@@ -323,7 +323,7 @@ void GraphicsEngine::init()
 		return;
 	}
 	source_image = loadImageFromDisc("sprite_sheet.bmp");
-	//loadCannonSpritesIntoMemory();
+	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
 }
 
@@ -333,7 +333,7 @@ void GraphicsEngine::init()
 void GraphicsEngine::uninit()
 {
 	SDL_FreeSurface(source_image);
-	//unloadCannonSpritesFromMemory();
+	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
 	TTF_Quit();
 }
