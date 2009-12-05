@@ -39,8 +39,8 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 
 /*
  * Ritar ut ett enstaka element till bufferten
- * Finns förroterade bilder används dessa
- * annars roteras bilder när de behövs
+ * Finns fï¿½rroterade bilder anvï¿½nds dessa
+ * annars roteras bilder nï¿½r de behï¿½vs
  */
 
 void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
@@ -73,7 +73,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 				source_image->format->Bmask,
 				source_image->format->Amask);
 			
-			// Om colorkey, sätt colorkey och måla hela bilden "osynlig"
+			// Om colorkey, sï¿½tt colorkey och mï¿½la hela bilden "osynlig"
 			if (source_image->flags & SDL_SRCCOLORKEY)
 			{
 				SDL_SetColorKey(source, SDL_SRCCOLORKEY, source_image->format->colorkey);
@@ -102,10 +102,10 @@ void GraphicsEngine::showScreenBufferOnScreen()
 }
 
 /*
- * "Tömmer" bufferten genom att fylla den med
- * angiven färg. Färgen ges i form av en unsigned int
- * där de 8 minst signifikanta bitarna represeterar
- * blått, nästa 8 grönt och nästa 8 rött.
+ * "Tï¿½mmer" bufferten genom att fylla den med
+ * angiven fï¿½rg. Fï¿½rgen ges i form av en unsigned int
+ * dï¿½r de 8 minst signifikanta bitarna represeterar
+ * blï¿½tt, nï¿½sta 8 grï¿½nt och nï¿½sta 8 rï¿½tt.
  */
 void GraphicsEngine::clearScreenBuffer(const unsigned int color)
 {
@@ -113,8 +113,8 @@ void GraphicsEngine::clearScreenBuffer(const unsigned int color)
 }
 
 /*
- * "Tömmer" bufferten genom att fylla den med
- * vit färg.
+ * "Tï¿½mmer" bufferten genom att fylla den med
+ * vit fï¿½rg.
  */
 void GraphicsEngine::clearScreenBuffer()
 {
@@ -122,7 +122,7 @@ void GraphicsEngine::clearScreenBuffer()
 }
 
 /*
- * Returnerar rektangeln där respektive bild finns i
+ * Returnerar rektangeln dï¿½r respektive bild finns i
  * sprite_sheet
  */
 SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) const
@@ -153,8 +153,8 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
 }
 
 /*
- * Laddar in bild från disk och konverterar
- * den till rätt format för snabb blittning.
+ * Laddar in bild frï¿½n disk och konverterar
+ * den till rï¿½tt format fï¿½r snabb blittning.
  * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  */
@@ -179,8 +179,8 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
 }
 
 /*
- * Förroterar alla bilder till cannon från
- * 0 upp till DEGREES. Bilden hämtas från
+ * Fï¿½rroterar alla bilder till cannon frï¿½n
+ * 0 upp till DEGREES. Bilden hï¿½mtas frï¿½n
  * bilden dit getClippingRectangle() pekar.
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
@@ -212,7 +212,7 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 }
 
 /*
- * Frigör minnet från cannon
+ * Frigï¿½r minnet frï¿½n cannon
  */
 void GraphicsEngine::unloadCannonSpritesFromMemory()
 {
@@ -224,9 +224,9 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 }
 
 /*
- * Skriver ut önskad text till bufferten med svart kant
- * runt om. Färg väljs från 0-255 i respektive rött,
- * grönt och blått.
+ * Skriver ut ï¿½nskad text till bufferten med svart kant
+ * runt om. Fï¿½rg vï¿½ljs frï¿½n 0-255 i respektive rï¿½tt,
+ * grï¿½nt och blï¿½tt.
  */
 void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
 {
@@ -247,7 +247,7 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScr
 	// Centrerat
 	//xScreenPos = (screen->w - textWidth) / 2;
 
-	// Högerjusterat
+	// Hï¿½gerjusterat
 	//xScreenPos = (screen->w - textWidth) - xScreenPos;
 
 	SDL_Color textColor = {0, 0, 0, 0};
@@ -275,9 +275,9 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScr
 }
 
 /*
- * Skriver ut önskad text till bufferten utan svart kant
- * runt om. Färg väljs från 0-255 i respektive rött,
- * grönt och blått.
+ * Skriver ut ï¿½nskad text till bufferten utan svart kant
+ * runt om. Fï¿½rg vï¿½ljs frï¿½n 0-255 i respektive rï¿½tt,
+ * grï¿½nt och blï¿½tt.
  */
 void GraphicsEngine::drawTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
 {
@@ -323,23 +323,23 @@ void GraphicsEngine::init()
 		return;
 	}
 	source_image = loadImageFromDisc("sprite_sheet.bmp");
-	loadCannonSpritesIntoMemory();
+	//loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
 }
 
 /*
- * Frigör minne
+ * Frigï¿½r minne
  */
 void GraphicsEngine::uninit()
 {
 	SDL_FreeSurface(source_image);
-	unloadCannonSpritesFromMemory();
+	//unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
 	TTF_Quit();
 }
 
 /*
- * Frigör minnet för alla fonter.
+ * Frigï¿½r minnet fï¿½r alla fonter.
  */
 void GraphicsEngine::unloadFontsFromMemory()
 {
@@ -350,7 +350,7 @@ void GraphicsEngine::unloadFontsFromMemory()
 }
 
 /*
- * Läser in alla fonter i minnet.
+ * Lï¿½ser in alla fonter i minnet.
  */
 void GraphicsEngine::loadFontsIntoMemory()
 {
