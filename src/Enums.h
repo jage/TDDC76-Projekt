@@ -15,7 +15,7 @@ enum PANZER_IMAGE
 {
 	CANNONBALL,
 	CANNON,
-	SUN
+	SUN,
 };
 
 #endif

@@ -158,20 +158,24 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
  * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  */
-SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
+SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const bool transparent)
 {
 	SDL_Surface* loadedImage = NULL;
 	SDL_Surface* optimizedImage = NULL;
 
 	loadedImage = IMG_Load(filename.c_str());
 
-	if (loadedImage != NULL) {
-		SDL_SetColorKey(loadedImage, SDL_SRCCOLORKEY, SDL_MapRGB(screen->format, 0, 255, 255));
-		optimizedImage = SDL_DisplayFormat(loadedImage);
-
+	if (!loadedImage)
+	{
+		cerr << IMG_GetError() << endl;
+	}
+	
+	if (transparent) { // Alphakanalen satt
+		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 	}
 	else {
-		cerr << IMG_GetError() << endl;
+		SDL_SetColorKey(loadedImage, SDL_SRCCOLORKEY, SDL_MapRGB(screen->format, 0, 255, 255));
+		optimizedImage = SDL_DisplayFormat(loadedImage);
 	}
 	SDL_FreeSurface(loadedImage);
 
@@ -185,28 +189,15 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename)
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
-	SDL_Surface* unrotatedCannon = IMG_Load("cannon.png");
-	/*
-	SDL_Surface* unrotatedCannon = SDL_CreateRGBSurface(
-		source_image->flags,
-		getClippingRectangle(CANNON).w,
-		getClippingRectangle(CANNON).h,
-		source_image->format->BitsPerPixel,
-		source_image->format->Rmask,
-		source_image->format->Gmask,
-		source_image->format->Bmask,
-		source_image->format->Amask);
-	*/
+	SDL_Surface* unrotatedCannon =loadImageFromDisc("cannon.png", true);
 
-	//SDL_SetColorKey(unrotatedCannon, SDL_SRCCOLORKEY, source_image->format->colorkey);
-	//SDL_FillRect(unrotatedCannon, NULL, source_image->format->colorkey);
-	//SDL_FillRect(unrotatedCannon, NULL, SDL_MapRGBA(screen->format, 0, 0, 0, 0));
-	//SDL_BlitSurface(source_image, &getClippingRectangle(CANNON), unrotatedCannon, NULL);
-							
+	if (!unrotatedCannon) {
+		cerr << "cannon.png ej funnen" << endl;
+	}
+					
 	for (int i = 0; i < DEGREES; ++i)
 	{
 		cannon[i] = rotozoomSurface(unrotatedCannon, -i, 1, 1);
-		SDL_SetColorKey(cannon[i], SDL_SRCCOLORKEY, source_image->format->colorkey);
 	}
 	SDL_FreeSurface(unrotatedCannon);
 }
@@ -323,6 +314,7 @@ void GraphicsEngine::init()
 		return;
 	}
 	source_image = loadImageFromDisc("sprite_sheet.bmp");
+	loadButtonSpritesIntoMemory();
 	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
 }
@@ -335,6 +327,7 @@ void GraphicsEngine::uninit()
 	SDL_FreeSurface(source_image);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
+	unloadButtonSpritesFromMemory();
 	TTF_Quit();
 }
 
@@ -359,6 +352,11 @@ void GraphicsEngine::loadFontsIntoMemory()
 	{
 		cerr << TTF_GetError() << endl;
 	}
+	font[1] = TTF_OpenFont("lazy.ttf", 26);
+	if (!font[1])
+	{
+		cerr << TTF_GetError() << endl;
+	}
 }
 
 /*
@@ -370,4 +368,78 @@ void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, int xScree
 	rcDest.x = xScreenPos;
 	rcDest.y = yScreenPos;
 	SDL_BlitSurface(image, NULL, screen, &rcDest);
+}
+
+void GraphicsEngine::loadButtonSpritesIntoMemory()
+{
+	buttons[0] = loadImageFromDisc("left.png", true);
+	buttons[1] = loadImageFromDisc("middle.png", true);
+	buttons[2] = loadImageFromDisc("end.png", true);
+	buttons[3] = loadImageFromDisc("greyarrow.png", true);
+	buttons[4] = loadImageFromDisc("activearrow.png", true);
+}
+
+void GraphicsEngine::unloadButtonSpritesFromMemory()
+{
+	for (int i = 0; i < NROFBUTTONIMG; ++i)
+	{
+		SDL_FreeSurface(buttons[i]);
+	}
+}
+
+void GraphicsEngine::drawButton(const int fontnr, const string& text, int xScreenPos, int yScreenPos, bool active)
+{
+	int textWidth;
+	int textHeight;
+	double startWidth = buttons[0]->w;
+	double middleWidth = buttons[1]->w;
+	double endWidth = buttons[2]->w;
+	double activeWidth = buttons[3]->w;
+	double buttonHeight = buttons[0]->h;
+	int i = 0;
+	SDL_Rect rcDest;
+	SDL_Surface* sText = NULL;
+
+	if (fontnr >= NROFFONTS || font < 0) {
+		cerr << "fontindex ouf of range" << endl;
+		return;
+	}
+	
+	TTF_SizeText(font[fontnr], text.c_str(), &textWidth, &textHeight);
+	
+	int nrOfMiddles = (int)(ceil((double)textWidth / middleWidth) + buttonHeight / 2 / middleWidth);
+
+	int totalButtonWidth = (int)(startWidth + nrOfMiddles * middleWidth + activeWidth + endWidth);
+	
+	rcDest.x = xScreenPos - totalButtonWidth / 2;
+	rcDest.y = (int)(yScreenPos -buttonHeight / 2);
+
+	SDL_BlitSurface(buttons[0], NULL, screen, &rcDest);
+	rcDest.x += buttons[0]->w; 
+
+	
+	for (i = 0; i < nrOfMiddles; ++i)
+	{	
+		SDL_BlitSurface(buttons[1], NULL, screen, &rcDest);
+		rcDest.x += buttons[1]->w;
+	}
+
+	if (active) {
+		SDL_BlitSurface(buttons[4], NULL, screen, &rcDest);
+		rcDest.x += buttons[4]->w;
+	}
+	else {
+		SDL_BlitSurface(buttons[3], NULL, screen, &rcDest);
+		rcDest.x += buttons[3]->w;
+	}
+
+	SDL_BlitSurface(buttons[2], NULL, screen, &rcDest);
+
+	SDL_Color color = {255, 255, 255};
+	sText = TTF_RenderText_Solid(font[fontnr], text.c_str(), color);
+	
+	rcDest.x = (int)(xScreenPos - totalButtonWidth / 2 + startWidth + nrOfMiddles * middleWidth / 2 - sText->w / 2);
+	rcDest.y = yScreenPos - sText->h / 2;
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+	SDL_FreeSurface(sText);
 }
