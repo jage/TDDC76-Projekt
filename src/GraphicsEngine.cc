@@ -107,7 +107,7 @@ void GraphicsEngine::showScreenBufferOnScreen()
  * d�r de 8 minst signifikanta bitarna represeterar
  * bl�tt, n�sta 8 gr�nt och n�sta 8 r�tt.
  */
-void GraphicsEngine::clearScreenBuffer(const unsigned int color)
+void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 {
 	SDL_FillRect(screen, &screen->clip_rect, color);
 }
@@ -158,7 +158,7 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
  * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  */
-SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const bool transparent)
+SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const bool& transparent)
 {
 	SDL_Surface* loadedImage = NULL;
 	SDL_Surface* optimizedImage = NULL;
@@ -219,7 +219,7 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
  * runt om. F�rg v�ljs fr�n 0-255 i respektive r�tt,
  * gr�nt och bl�tt.
  */
-void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
+void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const int& fontIndex)
 {
 	int x, y;
 	int textWidth = 0;
@@ -270,7 +270,7 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScr
  * runt om. F�rg v�ljs fr�n 0-255 i respektive r�tt,
  * gr�nt och bl�tt.
  */
-void GraphicsEngine::drawTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
+void GraphicsEngine::drawTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const int& fontIndex)
 {
 	int textWidth = 0;
 	int textHeight = 0;
@@ -362,7 +362,7 @@ void GraphicsEngine::loadFontsIntoMemory()
 /*
  * Ritar SDL_Surface till buffert
  */
-void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, int xScreenPos, int yScreenPos)
+void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, const int& xScreenPos, const int& yScreenPos)
 {
 	SDL_Rect rcDest;
 	rcDest.x = xScreenPos;
@@ -387,7 +387,7 @@ void GraphicsEngine::unloadButtonSpritesFromMemory()
 	}
 }
 
-void GraphicsEngine::drawButton(const int fontnr, const string& text, int xScreenPos, int yScreenPos, bool active)
+void GraphicsEngine::drawButton(const int& fontnr, const string& text, const int& xScreenPos, const int& yScreenPos, const bool& active)
 {
 	int textWidth;
 	int textHeight;

@@ -29,13 +29,13 @@ public:
 
 	void drawToScreenBuffer(const std::vector<Element>&);
 	void drawToScreenBuffer(const Element&);
-	void clearScreenBuffer(const unsigned int color);
+	void clearScreenBuffer(const unsigned int& color);
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
-	void drawTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
-	void drawOutlinedTextToScreenBuffer(const std::string& text, int xScreenPos, int yScreenPos, int red, int blue, int green, int fontIndex = 0);
-	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, int xScreenPos, int yScreenPos);
-	void drawButton(const int fontnr, const std::string& text, int xScreenPos, int yScreenPos, bool active);
+	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
+	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
+	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, const int& xScreenPos, const int& yScreenPos);
+	void drawButton(const int& fontnr, const std::string& text, const int& xScreenPos, const int& yScreenPos, const bool& active);
 
 private:
 	SDL_Surface* screen;
@@ -54,7 +54,7 @@ private:
 	void unloadCannonSpritesFromMemory();
 	void loadButtonSpritesIntoMemory();
 	void unloadButtonSpritesFromMemory();
-	SDL_Surface* loadImageFromDisc(const std::string&, const bool transparent = false);
+	SDL_Surface* loadImageFromDisc(const std::string&, const bool& transparent = false);
 	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
 };
 
