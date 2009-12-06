@@ -14,7 +14,7 @@ void Cannon::adjust_angle(const double& delta)
 	fireAngle_+=delta;
 }
 
-const double& Cannon::get_angle() const
+const double Cannon::get_angle() const
 {
 	return fireAngle_;	
 }
@@ -37,7 +37,7 @@ Ammunition* Cannon::get_ammunition() const
 
 const bool Cannon::fired() const
 {
-	return fired_;	
+	return fired_;
 }
 
 void Cannon::fire()
