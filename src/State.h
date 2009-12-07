@@ -72,6 +72,7 @@ public:
 private:
  PANZER_STATES nextState_;
  bool quitMeny_;
+ bool oldgfx_;
 
  void changeState(bool);
 

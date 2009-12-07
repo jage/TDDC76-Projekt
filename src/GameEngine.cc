@@ -33,8 +33,8 @@ GameEngine::GameEngine() {
 
 }
 
-GameEngine::~GameEngine() {
-}
+GameEngine::~GameEngine() {}
+
 void GameEngine::regulate_fps()
 {
 	unsigned int fps = 100;
@@ -85,7 +85,6 @@ void GameEngine::run()
 
 		};
 
-	cout << "Thanks for using pantzer" << endl;
 	cleanup();
 }
 
@@ -98,8 +97,12 @@ bool GameEngine::init_SDL()
 
 void GameEngine::cleanup()
 {
+
+	cout << "Running SDL_Quit()";
+
 	SDL_Quit();
-}
+	cout << "    [OK]" << endl;
+	}
 
 
 
