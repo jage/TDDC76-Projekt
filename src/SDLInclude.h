@@ -13,10 +13,11 @@
  * LINUX (both unix and linux)
  */
  
+
  #undef MAC
  #define LINUX
  #undef WINDOWS
-
+ 
 #ifdef WINDOWS
 	#include "SDL.h"
 	#include "SDL_image.h"
