@@ -13,9 +13,9 @@
  * LINUX (both unix and linux)
  */
  
- #undef MAC
- #undef LINUX
- #define WINDOWS
+// #define MAC
+ #define LINUX
+// #define WINDOWS
 
 #ifdef WINDOWS
 	#include "SDL.h"
