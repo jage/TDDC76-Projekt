@@ -114,6 +114,10 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 	int prevHeight(0);
 	
 	// now generate random heights of rectangles
+	
+	// feed rand with seed
+	srand(time(NULL));
+	
 	for (int i =0;i<noElements;i++)
 	{	
 		// generate new height and check if its ok

@@ -12,6 +12,7 @@
 #include "PanzerException.h"
 #include "Interval.h"
 #include <vector>
+#include <ctime>
 
 typedef std::vector<Element*> ElementVector;
 typedef std::vector<MovableElement*> MovableElementVector;
