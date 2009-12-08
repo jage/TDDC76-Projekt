@@ -10,7 +10,7 @@ TESTS        = $(PANZER2K)/tests
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++
 CCFLAGS  +=	-std=c++98 -I/Library/Frameworks/SDL.framework/Headers -I/opt/local/include
-BOOST_LD  = -L/opt/local/lib/ -lboost_system-mt
+BOOST_LD  = -L/opt/local/lib/ -lboost_system-mt -lboost_thread-mt
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
