@@ -55,6 +55,16 @@ void GameEngine::regulate_fps()
 	}
 }
 
+
+void GameEngine::return_to_meny()
+	{
+		graphicsengine_.clearScreenBuffer(0);
+		graphicsengine_.drawTextToScreenBuffer("Game aborted - returning to game meny", 0,0, 255,255,255);
+		graphicsengine_.showScreenBufferOnScreen();
+		SDL_Delay(1000);
+		currentState_ = MENY;
+	}
+
 void GameEngine::run()
 {
 	if(!init_SDL())
@@ -74,6 +84,8 @@ void GameEngine::run()
 			{
 				if(event.type == SDL_QUIT)
 					currentState_ = EXITGAME;
+				else if((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_ESCAPE))
+					return_to_meny();
 				else
 					stateVector_.at(currentState_) ->handle_input(event);
 			}
