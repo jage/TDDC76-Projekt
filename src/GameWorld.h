@@ -10,6 +10,7 @@
 #include "Ground.h"
 #include "Concrete.h"
 #include "PanzerException.h"
+#include "Interval.h"
 #include <vector>
 
 typedef std::vector<Element*> ElementVector;

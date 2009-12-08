@@ -85,14 +85,21 @@ Cannon* GameWorld::get_rightCannon() const
 
 bool GameWorld::generate_world(const int& width,const int& height, const int& res)
 {
-	if (width % res !=0) return false; // width must be an even multiple of the resolution 
+	if ((width-2*ptr_cannonL_->get_width()) % res !=0) return false; // width must be an even multiple of the resolution minus two widths of the cannons
 	
-	int maxHeight((int)height*(2.0/3.0)); // max height
-	int minHeight((int)height*(1.0/10.0)); // min height of a rectangle
-	int offset(minHeight * 0.1); // offset between two rectangles
-	int noElements((int)width/res);
+	int startHeight(0);
+	int endHeight(0);
+	int maxHeight(0);
+	int minHeight(0);
+	int offset(0);
+	int noElements(0);
+	
+	maxHeight= (int)(height*(2/3.0));
+	minHeight= (int)(height*(1/10.0));
+	offset=(int)(minHeight * 0.1);
+	noElements= (int)width/res;
+	
 	int* randomHeights;
-	
 	try
 	{
 		// allocate array
@@ -125,26 +132,33 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 	}
 	
 	// create ground elements
-	int rightCannonX(ptr_cannonR_->get_x());
-	int currX(0); // current x-coord
+	Interval leftCannonInterval(0,ptr_cannonL_->get_width());
+	Interval rightCannonInterval(width-ptr_cannonR_->get_width(),width);
 	
+	startHeight = randomHeights[0];
+	endHeight = randomHeights[noElements-1];
+		
 	for (int i =0;i<noElements;i++)
 	{
 		// check if one cannon is placed on current x-coord
 		try
 		{
-			if (CANNON_WIDTH-currX>0 || rightCannonX-currX<0)add_element(new Concrete(res, randomHeights[i], currX,height-randomHeights[i]));
-			else add_element(new Ground(res,randomHeights[i],currX,height-randomHeights[i]));
+			if(leftCannonInterval.belongs(i*res)) add_element(new Concrete(res,startHeight,i*res,height-startHeight));
+			else if(rightCannonInterval.belongs(i*res)) add_element(new Concrete(res,endHeight,i*res,height-endHeight));
+			else add_element(new Ground(res,randomHeights[i],i*res,height-randomHeights[i]));
 		}
 		catch (bad_alloc)
 		{
 			delete [] randomHeights;
 			throw GameWorldException("Can't allocate enough memory");	
 		}
-		
-		currX+=res;
 	}
 	
+	// place out the cannons
+	ptr_cannonL_->set_y(height-startHeight);
+	ptr_cannonL_->set_x(leftCannonInterval.get_middle());
+	ptr_cannonR_->set_y(height-endHeight);
+	ptr_cannonR_->set_x(rightCannonInterval.get_middle());
 	delete []randomHeights;
 	return true;
 }
