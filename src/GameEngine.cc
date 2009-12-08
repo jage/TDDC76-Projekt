@@ -80,23 +80,20 @@ void GameEngine::run()
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
 
-			if(currentState_ == FIREEND)
-			{
-				if(playerTurn_ == PLAYER1STATE)
+				if((playerTurn_ == PLAYER1STATE) && (currentState_ == FIREEND))
 				{
 					playerTurn_ = PLAYER2STATE;
 					currentState_ = PLAYER2STATE;
 				}
-				else
+				else if(currentState_ == FIREEND)
 				{
 					playerTurn_ = PLAYER1STATE;
 					currentState_ = PLAYER1STATE;
 				}
-			}
 
 			regulate_fps();
 
-		};
+		}
 
 	cleanup();
 }
