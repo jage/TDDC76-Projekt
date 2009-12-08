@@ -226,10 +226,10 @@ Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Fire::~Fire(){}
 
 void Fire::render(){
-	graphicsengine_ptr_->clearScreenBuffer(0);
-	gameworld_ptr_->generate_world(640,480,160);
+	graphicsengine_ptr_->clearScreenBuffer(123);
+	/*gameworld_ptr_->generate_world(640,480,160);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
-	graphicsengine_ptr_->showScreenBufferOnScreen();
+	graphicsengine_ptr_->showScreenBufferOnScreen();*/
 }
 
 void Fire::logic(){ SDL_Delay(2000);}
