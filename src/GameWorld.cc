@@ -1,23 +1,49 @@
 #include "GameWorld.h"
 
-GameWorld::GameWorld()
-{}
+GameWorld::GameWorld(const double& gravity,const double& wind)
+	:gravity_(gravity),wind_(wind) {}
 
 GameWorld::~GameWorld()
 {}
 
-void GameWorld::add_element(Element new_element)
+ElementVector* GameWorld::get_elements()
 {
-	element_vector.push_back(new_element);
+	return &elements_;
 }
 
-Collision GameWorld::update_world()
+void GameWorld::add_element(Element* ptr_newElement)
 {
-	physics_engine_.update_pos(element_vector_,gravity);
+	elements_.push_back(ptr_newElement);
+}
+
+bool GameWorld::update_world()
+{
+	vector<MovableElement*>::iterator it = movableElements_.begin();
+	while(it != movableElements_.end())
+	{
+		MovableElement* movElem = *it;
+		physEngine_.update_pos(movElem,gravity_,wind_);
+		++it;
+	}
 	return 1; //dummy
 }
 
-std::vector<Element>* GameWorld::get_element_vector()
+const double& GameWorld::get_gravity() const
 {
-	return &element_vector;
+	return gravity_;	
+}
+
+void GameWorld::set_gravity(const double& gravity)
+{
+	gravity_=gravity;	
+}
+
+const double& GameWorld::get_wind() const
+{
+	return wind_;	
+}
+
+void GameWorld::set_wind(const double& wind)
+{
+	wind_=wind;	
 }

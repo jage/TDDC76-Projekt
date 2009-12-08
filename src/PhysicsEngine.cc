@@ -1,56 +1,29 @@
 #include "PhysicsEngine.h"
-
-using namespace std;
-
+#include <math.h>
 
 /*
- * Konstruktor till PhysicsEngine
+ * update_pos beräknar den nya positionen för ett givet MovableElement-objekt samt en given gravitation.
  */
-PhysicsEngine::PhysicsEngine() {
+void PhysicsEngine::update_pos(MovableElement* element, const double gravity, const double wind) {
+	update_dx(element, wind);
+	update_dy(element, gravity);
+	update_x(element, gravity);
+	update_y(element,gravity);
 }
 
-
-/*
- * update_pos(std::vector<Element&> vec_element, double& gravitation)
- * updaterar positionen hos Element-objekt av typen Movable, givet en viss gravitation.
- */
-void PhysicsEngine::update_pos(std::vector<Element&> vec_element, double& gravity) {
-	
-	std::iterator it = vec_element.begin();
-
-	while(it != vec_element.end())
-	{
-		if (dynamic_cast<Movable&>(*it))
-		{
-			calc_new_pos(*it, gravity);		//använder calc_new_pos för enstaka element
-		}
-	}
+void PhysicsEngine::update_dx(MovableElement* element, const double wind){
+	//wind_effect(element, gravity);
+}
+void PhysicsEngine::update_dy(MovableElement* element, const double gravity){
+	element->set_dy( sqrt( pow(element->get_dy(),2) - 2 * gravity * element->get_dy() ));
+}
+void PhysicsEngine::update_x(MovableElement* element, const double gravity){
+	element->set_x(element->get_x() + element->get_dx());
+}
+void PhysicsEngine::update_y(MovableElement* element, const double gravity){
+	element->set_y(element->get_y() + element->get_dy());
 }
 
-
-/*
- * update_pos(Element& element, double& gravitation)
- * updaterar positionen om Element-objektet är av typen Movable, givet en viss gravitation.
- */
-void PhysicsEngine::update_pos(Element& element, double& gravity) {
-
-	if (dynamic_cast<Movable&>(element))
-	{
-		calc_new_pos(element, gravity);		//använder calc_new_pos om element är av typen Movable
-	}
+void PhysicsEngine::wind_effect(MovableElement* element, const double wind){
+	element->set_dx(element->get_dx() *(1 - wind) * (1 - (element->get_y()/ 10000)));
 }
-
-
-/*
- * calc_new_pos beräknar den nya positionen för ett givet Movable-objekt samt en given gravitation.
- */
-void PhysicsEngine::calc_new_pos(Movable& element, double& gravity) {
-	element.set_velocity(
-			element.get_velocity().dx_,
-			sqrt(sqr(element.get_velocity().dy_) - 2*gravity*element.get_velocity().dy_)
-			);
-}
-
-
-
-

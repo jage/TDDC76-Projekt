@@ -2,35 +2,39 @@
 #include "State.h"
 
 
-Player::Player(const std::string& name, int& health, int& points):health_(health),name_(name),points_(points){}
+using namespace std;
 
-const std::string& Player::get_name() const
+Player::Player(const string& name, const int health, const int points)
+ : health_(health), name_(name), points_(points)
+{}
+
+const string& Player::get_name() const
 {
 	return name_;
 }
 
 void Player::set_name(const string& name)
 {
-	name_=name;
+	name_ = name;
 }
 
-int Player::get_health()
+const int& Player::get_health() const
 {
 	return health_;
 }
 
-int Player::set_health()
+void Player::set_health(const int health)
 {
-	health_=health;
+	health_ = health;
 }
 
-int Player::get_points()
+const int& Player::get_points() const
 {
 	return points_;
 }
 
-void Player::set_points()
+void Player::set_points(const int points)
 {
-	points_=points;
+	points_ = points;
 }
 
