@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "State.h"
+
 
 Player::Player(const std::string& name, int& health, int& points):health_(health),name_(name),points_(points){}
 

@@ -1,5 +1,8 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
+
+#include "LocalPlayer.h"
+#include "NetworkPlayer.h"
 #include <string>
 
 /*
@@ -9,7 +12,7 @@
 class Player
 {
 public:
-	Player(int& , std::string&, int&);
+	Player(std::string& , int& , int& );
 	 virtual ~Player();
 	 
 	 	/*
@@ -22,7 +25,7 @@ public:
 	 * set_name()
 	 * Sätter en spelares(Player) namn.
 	 */
-	void set_name(const string& n);
+	void set_name(const string& name);
 	 
 	/*
 	 * get_health()
@@ -57,9 +60,10 @@ public:
 	
 	
  private:
+ 	std::string name_;	
  	int health_;
  	int points_;
- 	std::string name_;	
+ 	
 };
 
 #endif /*PLAYER_H_*/
