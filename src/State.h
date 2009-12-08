@@ -72,17 +72,8 @@ public:
 private:
  PANZER_STATES nextState_;
  bool quitMeny_;
- bool oldgfx_;
 
  void changeState(bool);
-
- //Grafiken �r tempor�r b�r integreras med GraphicsEngine
-
- SDL_Surface* play_;
- SDL_Surface* options_;
- SDL_Surface* network_;
- SDL_Surface* quit_;
- SDL_Surface* marker_;
 
  void renderMenyGfx();
 

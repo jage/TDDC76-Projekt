@@ -1,7 +1,7 @@
 #include "Element.h"
 
 // Constructor
-Element::Element(const int& height, const int& width, const PANZER_IMAGE& ImgRef, const int& x,const int& y,const double& angle)
+Element::Element(const int& width, const int& height, const PANZER_IMAGE& ImgRef, const int& x,const int& y,const double& angle)
 	:width_(width),height_(height),imgRef_(ImgRef),x_(x),y_(y), angle_(angle) {}
 	
 void Element::set_x(const int& x)

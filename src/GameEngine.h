@@ -42,7 +42,7 @@ private:
 	//Tillst�nd
 	PANZER_STATES currentState_;
 	PANZER_STATES playerTurn_;
-    vector<State*> stateVector_;
+	std::vector<State*> stateVector_;
 
     /*
      * init()

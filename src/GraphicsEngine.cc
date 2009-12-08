@@ -45,24 +45,32 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 
 void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 {
-	SDL_Rect destinationRectangle;
-	destinationRectangle.x = draw_element.get_x();
-	destinationRectangle.y = draw_element.get_y();
+	SDL_Rect rcDest;
+	rcDest.x = draw_element.get_x();
+	rcDest.y = draw_element.get_y();
+	rcDest.h = draw_element.get_height();
+	rcDest.w = draw_element.get_width();
+	int index = (int)draw_element.get_angle() % DEGREES; //Nödvändig för CANNON
 
-	if (draw_element.get_imgRef() == CANNON)
+	switch (draw_element.get_imgRef())
 	{
-		int index = (int)draw_element.get_angle() % DEGREES;
-		destinationRectangle.x -= cannon[index]->w / 2;
-		destinationRectangle.y-= cannon[index]->h / 2;
-		SDL_BlitSurface(cannon[index], NULL, screen, &destinationRectangle);
-	}
-	else
-	{
+	case CANNON:
+		rcDest.x -= cannon[index]->w / 2;
+		rcDest.y -= cannon[index]->h / 2;
+		SDL_BlitSurface(cannon[index], NULL, screen, &rcDest);
+		break;
+	case GROUND:
+		drawRectangle(rcDest.x, screen->h - rcDest.h, rcDest.w, rcDest.h, 0, 255, 0);
+		break;
+	case CONCRETE:
+		drawRectangle(rcDest.x, screen->h - rcDest.h, rcDest.w, rcDest.h, 240, 240, 240);
+		break;
+	default:
 		if (draw_element.get_angle() != 0.0)
 		{
 			SDL_Surface* source = NULL;
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
-			
+
 			// Skapa ny SDL_Surface
 			source = SDL_CreateRGBSurface(source_image->flags,
 				clip.w,
@@ -72,7 +80,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 				source_image->format->Gmask,
 				source_image->format->Bmask,
 				source_image->format->Amask);
-			
+
 			// Om colorkey, s�tt colorkey och m�la hela bilden "osynlig"
 			if (source_image->flags & SDL_SRCCOLORKEY)
 			{
@@ -85,14 +93,15 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 			rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 0);
 			SDL_FreeSurface(source);
 			SDL_SetColorKey(rotaded_image, SDL_SRCCOLORKEY, source_image->format->colorkey);
-			SDL_BlitSurface(rotaded_image, NULL, screen, &destinationRectangle);
+			SDL_BlitSurface(rotaded_image, NULL, screen, &rcDest);
 			SDL_FreeSurface(rotaded_image);
 		}
 		else
 		{
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
-			SDL_BlitSurface(source_image, &clip, screen, &destinationRectangle);
+			SDL_BlitSurface(source_image, &clip, screen, &rcDest);
 		}
+		break;
 	}
 }
 
@@ -534,3 +543,10 @@ void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos,
 	SDL_FillRect(screen, &rect, red << 16 | green << 8 | blue << 0);
 }
 
+void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
+{
+	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
+	{
+		drawToScreenBuffer(*(*it));
+	}
+}
