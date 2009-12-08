@@ -156,7 +156,10 @@ Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Player1State::~Player1State(){}
 
 void Player1State::render(){
+	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 void Player1State::logic(){nextState_ = PLAYER1STATE;}
 
@@ -166,8 +169,8 @@ void Player1State::handle_input(SDL_Event& event){
 			{
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_UP:{graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed up",100,100,254,254,254);} ; break;
-						case SDLK_DOWN:{graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed down",100,100,254,254,254);}; break;
+				case SDLK_UP: {gameworld_ptr_->get_leftCannon()->adjust_angle(10); cout << "Player 1 - UP cannon angle: " <<  gameworld_ptr_->get_leftCannon()->get_angle() << endl;} ; break;
+								case SDLK_DOWN: {gameworld_ptr_->get_leftCannon()->adjust_angle(-10); cout << "Player 1 - DOWN cannon angle: " << gameworld_ptr_->get_leftCannon()->get_angle() << endl;}; break;
 						case SDLK_RETURN: nextState_ = FIRE; break;
 						default: break;
 					}
@@ -190,8 +193,10 @@ Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Player2State::~Player2State(){}
 
 void Player2State::render(){
+graphicsengine_ptr_->clearScreenBuffer(0);
 graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
 graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
@@ -203,7 +208,7 @@ if(event.type == SDL_KEYDOWN)
 		switch( event.key.keysym.sym )
 			{
 				case SDLK_UP: {gameworld_ptr_->get_rightCannon()->adjust_angle(10); cout << "Player 2 - UP cannon angle: " <<  gameworld_ptr_->get_rightCannon()->get_angle() << endl;} ; break;
-				case SDLK_DOWN: {gameworld_ptr_->get_rightCannon()->adjust_angle(-10); cout << "Player 2 - DOWN" << gameworld_ptr_->get_rightCannon() << endl;}; break;
+				case SDLK_DOWN: {gameworld_ptr_->get_rightCannon()->adjust_angle(-10); cout << "Player 2 - DOWN" << gameworld_ptr_->get_rightCannon()->get_angle() << endl;}; break;
 				case SDLK_RETURN: nextState_ = FIRE ; break;
 				default: break;
 			}
@@ -230,6 +235,7 @@ Fire::~Fire(){}
 void Fire::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",0,0,255,0,0);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
@@ -280,7 +286,8 @@ OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld), nextState_(OPTIONSTATE){}
 
 void OptionState::render(){
-	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to change generate a level!",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to save the current level",0,40,255,0,255);
 }
 
 void OptionState::logic(){nextState_ = OPTIONSTATE;}
