@@ -5,3 +5,5 @@
 .settings/
 .*~
 .cproject
+.DS_Store
+*.orig
