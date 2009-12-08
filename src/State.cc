@@ -227,10 +227,12 @@ Fire::~Fire(){}
 
 void Fire::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",240,240,255,0,0);
+	gameworld_ptr_->generate_world(640,480,160);
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
-void Fire::logic(){ SDL_Delay(1000);}
+void Fire::logic(){ SDL_Delay(2000);}
 
 PANZER_STATES Fire::next_state()
 {
