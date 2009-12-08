@@ -12,8 +12,10 @@ public:
 	Element(const int&,const int&,const PANZER_IMAGE&,const int& x=0,const int& y=0,const double& angle=0); // w,h,imgRef,x,y,angle
 	const int get_x() const;
 	void set_x(const int&);
+	void set_x(const double&);
 	const int get_y() const;
 	void set_y(const int&);
+	void set_y(const double&);
 	void set_angle(const double&);
 	const double get_angle() const;
 	const int get_height() const;

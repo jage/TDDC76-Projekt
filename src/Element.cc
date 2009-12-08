@@ -9,6 +9,11 @@ void Element::set_x(const int& x)
 	x_=x;	
 }
 
+void Element::set_x(const double& x)
+{
+	x_=(int)x;	
+}
+
 const int Element::get_x() const
 {
 	return x_;
@@ -17,6 +22,11 @@ const int Element::get_x() const
 void Element::set_y(const int& y)
 {
 	y_=y;	
+}
+
+void Element::set_y(const double& y)
+{
+	y_=(int)y;	
 }
 
 const int Element::get_y() const
