@@ -35,7 +35,4 @@ enum PANZER_FONT
 	LAZY26
 };
 
-// some preprocessor defines
-#define CANNON_WIDTH 10
-
 #endif
