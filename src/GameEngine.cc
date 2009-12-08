@@ -73,7 +73,7 @@ void GameEngine::run()
 
 			while(SDL_PollEvent(&event))
 			{
-				if(event.type == SDL_QUIT)
+				if((event.type == SDL_QUIT) || ((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_q)))
 					currentState_ = EXITGAME;
 				else if((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_ESCAPE))
 					return_to_meny();
