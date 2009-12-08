@@ -58,7 +58,7 @@ Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld),
 	   nextState_(PLAYER1STATE),
 	   quitMeny_(false),
-	   oldgfx_(true){
+	   oldgfx_(false){
 
 	play_ = load_image("play.png");
 	network_ = load_image("network.png");
@@ -93,10 +93,10 @@ void Meny::renderMenyGfx()
 	//TODO En snygg rendering
 
 
-		graphicsengine_ptr_->drawButton(0,"   Play",50,50,(nextState_ == 0));
-		graphicsengine_ptr_->drawButton(0,"   Network",50,100,(nextState_ == 1));
-		graphicsengine_ptr_->drawButton(0,"    Options",50,150,(nextState_ == 2));
-		graphicsengine_ptr_->drawButton(0,"    Quit",50,200,(nextState_ == 3));
+		graphicsengine_ptr_->drawButton(0,"Play",50,50,(nextState_ == 0));
+		graphicsengine_ptr_->drawButton(0,"Network",50,100,(nextState_ == 1));
+		graphicsengine_ptr_->drawButton(0,"Options",50,150,(nextState_ == 2));
+		graphicsengine_ptr_->drawButton(0,"Quit",50,200,(nextState_ == 3));
 	}
 }
 
@@ -159,17 +159,13 @@ void Meny::handle_input(SDL_Event& event){
 			}
 	}
 
-	else if( event.type == SDL_QUIT )
-	{
-		nextState_ = EXITGAME;
-		quitMeny_ = true;
-	}
 }
 
 PANZER_STATES Meny::next_state()
 {
 	if(quitMeny_)
 	{   quitMeny_ = false;
+		graphicsengine_ptr_->clearScreenBuffer(0);//Töm skärmen för ny grafik
 		return nextState_;
 	}
 	else
@@ -182,38 +178,69 @@ PANZER_STATES Meny::next_state()
 
 
 Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+	 : State(graphicsengine,gameworld), nextState_(PLAYER1STATE) {}
 
 Player1State::~Player1State(){}
 
 void Player1State::render(){
-	cout << "Player1 state\n\n"
-		 << "next up is.....\n\n";
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
+}
+void Player1State::logic(){nextState_ = PLAYER1STATE;}
+
+void Player1State::handle_input(SDL_Event& event){
+
+		if(event.type == SDL_KEYDOWN)
+			{
+				switch( event.key.keysym.sym )
+					{
+						case SDLK_UP:{graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed up",100,100,254,254,254);} ; break;
+						case SDLK_DOWN:{graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed down",100,100,254,254,254);}; break;
+						case SDLK_RETURN: nextState_ = FIRE; break;
+						default: break;
+					}
+			}
+
 }
 
 
 PANZER_STATES Player1State::next_state()
 {
-	return PLAYER2STATE;
+			return nextState_;
 }
 //---------------------------------------------------------------//
 
 //Player2State-----------------------------------------------------------//
 
 Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+	 : State(graphicsengine,gameworld), nextState_(PLAYER2STATE) {}
 
 Player2State::~Player2State(){}
 
 void Player2State::render(){
-	cout << "Player2 state\n\n"
-		 << "next up is.....\n\n";
+graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
 }
+
+void Player2State::logic(){nextState_ = PLAYER2STATE;}
+
+void Player2State::handle_input(SDL_Event& event){
+
+if(event.type == SDL_KEYDOWN)
+	{
+		switch( event.key.keysym.sym )
+			{
+				case SDLK_UP: {graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 pushed up",100,100,254,254,254);} ; break;
+				case SDLK_DOWN: {graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 pushed down",100,100,254,254,254);}; break;
+				case SDLK_RETURN: nextState_ = FIRE ; break;
+				default: break;
+			}
+	}
+}
+
 
 
 PANZER_STATES Player2State::next_state()
 {
-	return FIRE;
+	return nextState_;
 }
 
 
@@ -227,14 +254,15 @@ Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Fire::~Fire(){}
 
 void Fire::render(){
-	cout << "FIRE\n\n"
-		 << "end game.....\n\n";
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",240,240,255,0,0);
 }
 
+void Fire::logic(){ SDL_Delay(1000);}
 
 PANZER_STATES Fire::next_state()
 {
-	return EXITGAME;
+	return FIREEND;
 }
 //---------------------------------------------------------------//
 
