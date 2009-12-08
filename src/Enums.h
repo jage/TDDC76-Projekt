@@ -9,14 +9,17 @@ enum PANZER_STATES
 	EXITGAME,
 	FIRE,
 	MENY,
-	PLAYER2STATE
+	PLAYER2STATE,
+	FIREEND
 };
 
 enum PANZER_IMAGE
 {
-	CANNONBALL,
+	SUN,
+	GROUND,
+	CONCRETE,
 	CANNON,
-	SUN
+	CANNONBALL
 };
 
 enum PANZER_ALIGNMENT
@@ -31,5 +34,8 @@ enum PANZER_FONT
 	LAZY32,
 	LAZY26
 };
+
+// some preprocessor defines
+#define CANNON_WIDTH 10
 
 #endif

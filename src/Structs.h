@@ -15,6 +15,7 @@ struct Collision
 {
 	int x_;
 	int y_;
+	int blastRadius_;
 };
 
 #endif /*STRUCTS_H_*/

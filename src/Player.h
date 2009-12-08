@@ -1,5 +1,6 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
+
 #include <string>
 
 /*
@@ -57,9 +58,10 @@ public:
 	
 	
  private:
+ 	std::string name_;	
  	int health_;
  	int points_;
- 	std::string name_;	
+ 	
 };
 
 #endif /*PLAYER_H_*/
