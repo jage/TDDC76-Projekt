@@ -202,4 +202,20 @@ private:
 };
 
 
+class InitState : public State
+{
+public:
+	InitState(GraphicsEngine*, GameWorld*);
+	~InitState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&){};
+
+	PANZER_STATES next_state();
+
+};
+
 #endif /* STATE_H_ */

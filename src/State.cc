@@ -308,3 +308,22 @@ PANZER_STATES OptionState::next_state(){
 }
 
 //OptionsState-----------------------------------------------//
+
+//InitState--------------------------------------------------//
+InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
+	: State(graphicsengine,gameworld){}
+
+void InitState::render(){
+	graphicsengine_ptr_->drawTextToScreenBuffer("Starting the game...",0,0,255,0,0);
+}
+
+void InitState::logic(){
+	gameworld_ptr_->generate_world(640,480,1);
+	cout << "Level generated, we wait so we se the beutiful splash screen..." << endl;
+	SDL_Delay(700);
+}
+
+PANZER_STATES InitState::next_state(){
+	return MENY;
+}
+
