@@ -75,14 +75,6 @@ private:
 
  void changeState(bool);
 
- //Grafiken �r tempor�r b�r integreras med GraphicsEngine
-
- SDL_Surface* play_;
- SDL_Surface* options_;
- SDL_Surface* network_;
- SDL_Surface* quit_;
- SDL_Surface* marker_;
-
  void renderMenyGfx();
 
 
@@ -96,19 +88,19 @@ class Player1State : public State
 {
 
 public:
-	//Meny();
 	Player1State(GraphicsEngine*, GameWorld*);
 	~Player1State();
 
 	void render();
 
-	void logic(){};
+	void logic();
 
-	void handle_input(SDL_Event&){};
+	void handle_input(SDL_Event&);
 
 	PANZER_STATES next_state();
 
 private:
+	PANZER_STATES nextState_;
 
 };
 
@@ -122,14 +114,15 @@ public:
 
 	void render();
 
-	void logic(){};
+	void logic();
 
-	void handle_input(SDL_Event&){};
+	void handle_input(SDL_Event&);
 
 	PANZER_STATES next_state();
 
-private:
 
+private:
+	PANZER_STATES nextState_;
 };
 
 class Fire : public State
@@ -141,7 +134,7 @@ public:
 
 	void render();
 
-	void logic(){};
+	void logic();
 
 	void handle_input(SDL_Event&){};
 

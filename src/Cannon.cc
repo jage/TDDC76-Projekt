@@ -2,7 +2,7 @@
 #include "Enums.h"
 
 Cannon::Cannon(Ammunition* ptrAmmo)
-	:Element(10,10, CANNON),fireAngle_(0),power_(0),ptr_ammunition_(ptrAmmo)	{}
+	:Element(CANNON_WIDTH,10, CANNON),fireAngle_(0),power_(0),ptr_ammunition_(ptrAmmo)	{}
 	
 void Cannon::set_angle(const double& value)
 {
@@ -14,7 +14,7 @@ void Cannon::adjust_angle(const double& delta)
 	fireAngle_+=delta;
 }
 
-const double& Cannon::get_angle() const
+const double Cannon::get_angle() const
 {
 	return fireAngle_;	
 }
@@ -37,7 +37,7 @@ Ammunition* Cannon::get_ammunition() const
 
 const bool Cannon::fired() const
 {
-	return fired_;	
+	return fired_;
 }
 
 void Cannon::fire()

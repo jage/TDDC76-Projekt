@@ -45,24 +45,32 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 
 void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 {
-	SDL_Rect destinationRectangle;
-	destinationRectangle.x = draw_element.get_x();
-	destinationRectangle.y = draw_element.get_y();
+	SDL_Rect rcDest;
+	rcDest.x = draw_element.get_x();
+	rcDest.y = draw_element.get_y();
+	rcDest.h = draw_element.get_height();
+	rcDest.w = draw_element.get_width();
+	int index = (int)draw_element.get_angle() % DEGREES; //Nödvändig för CANNON
 
-	if (draw_element.get_imgRef() == CANNON)
+	switch (draw_element.get_imgRef())
 	{
-		int index = (int)draw_element.get_angle() % DEGREES;
-		destinationRectangle.x -= cannon[index]->w / 2;
-		destinationRectangle.y-= cannon[index]->h / 2;
-		SDL_BlitSurface(cannon[index], NULL, screen, &destinationRectangle);
-	}
-	else
-	{
+	case CANNON:
+		rcDest.x -= cannon[index]->w / 2;
+		rcDest.y -= cannon[index]->h / 2;
+		SDL_BlitSurface(cannon[index], NULL, screen, &rcDest);
+		break;
+	case GROUND:
+		drawRectangle(rcDest.x, screen->h - rcDest.h, rcDest.w, rcDest.h, 0, 255, 0);
+		break;
+	case CONCRETE:
+		drawRectangle(rcDest.x, screen->h - rcDest.h, rcDest.w, rcDest.h, 240, 240, 240);
+		break;
+	default:
 		if (draw_element.get_angle() != 0.0)
 		{
 			SDL_Surface* source = NULL;
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
-			
+
 			// Skapa ny SDL_Surface
 			source = SDL_CreateRGBSurface(source_image->flags,
 				clip.w,
@@ -72,7 +80,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 				source_image->format->Gmask,
 				source_image->format->Bmask,
 				source_image->format->Amask);
-			
+
 			// Om colorkey, s�tt colorkey och m�la hela bilden "osynlig"
 			if (source_image->flags & SDL_SRCCOLORKEY)
 			{
@@ -85,14 +93,15 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 			rotaded_image = rotozoomSurface(source, draw_element.get_angle(), 1, 0);
 			SDL_FreeSurface(source);
 			SDL_SetColorKey(rotaded_image, SDL_SRCCOLORKEY, source_image->format->colorkey);
-			SDL_BlitSurface(rotaded_image, NULL, screen, &destinationRectangle);
+			SDL_BlitSurface(rotaded_image, NULL, screen, &rcDest);
 			SDL_FreeSurface(rotaded_image);
 		}
 		else
 		{
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
-			SDL_BlitSurface(source_image, &clip, screen, &destinationRectangle);
+			SDL_BlitSurface(source_image, &clip, screen, &rcDest);
 		}
+		break;
 	}
 }
 
@@ -107,7 +116,7 @@ void GraphicsEngine::showScreenBufferOnScreen()
  * d�r de 8 minst signifikanta bitarna represeterar
  * bl�tt, n�sta 8 gr�nt och n�sta 8 r�tt.
  */
-void GraphicsEngine::clearScreenBuffer(const unsigned int color)
+void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 {
 	SDL_FillRect(screen, &screen->clip_rect, color);
 }
@@ -158,7 +167,7 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
  * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  */
-SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const bool transparent)
+SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const bool& transparent)
 {
 	SDL_Surface* loadedImage = NULL;
 	SDL_Surface* optimizedImage = NULL;
@@ -219,7 +228,7 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
  * runt om. F�rg v�ljs fr�n 0-255 i respektive r�tt,
  * gr�nt och bl�tt.
  */
-void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
+void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const int& fontIndex)
 {
 	int x, y;
 	int textWidth = 0;
@@ -270,7 +279,7 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, int xScr
  * runt om. F�rg v�ljs fr�n 0-255 i respektive r�tt,
  * gr�nt och bl�tt.
  */
-void GraphicsEngine::drawTextToScreenBuffer(const string& text, int xScreenPos, int yScreenPos, int red, int green, int blue, int fontIndex)
+void GraphicsEngine::drawTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const int& fontIndex)
 {
 	int textWidth = 0;
 	int textHeight = 0;
@@ -359,10 +368,24 @@ void GraphicsEngine::loadFontsIntoMemory()
 	}
 }
 
+int GraphicsEngine::getFontNr(const PANZER_FONT& font)
+{
+	int returnval = 0;
+	switch (font)
+	{
+	case LAZY32:
+		return 0;
+	case LAZY26:
+		return 1;
+	default:
+		return 0;
+	}
+}
+
 /*
  * Ritar SDL_Surface till buffert
  */
-void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, int xScreenPos, int yScreenPos)
+void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, const int& xScreenPos, const int& yScreenPos)
 {
 	SDL_Rect rcDest;
 	rcDest.x = xScreenPos;
@@ -387,59 +410,143 @@ void GraphicsEngine::unloadButtonSpritesFromMemory()
 	}
 }
 
-void GraphicsEngine::drawButton(const int fontnr, const string& text, int xScreenPos, int yScreenPos, bool active)
+void GraphicsEngine::drawButton(const string& text, const int& xScreenPos, const int& yScreenPos, const bool& active, const PANZER_FONT& textfont, const PANZER_ALIGNMENT& align)
 {
-	int textWidth;
-	int textHeight;
-	double startWidth = buttons[0]->w;
-	double middleWidth = buttons[1]->w;
-	double endWidth = buttons[2]->w;
-	double activeWidth = buttons[3]->w;
-	double buttonHeight = buttons[0]->h;
-	int i = 0;
-	SDL_Rect rcDest;
-	SDL_Surface* sText = NULL;
+	int textWidth = 0;
+	int textHeight = 0;
+	int blitXPos = 0;
+	int blitYPos = 0;
+	double startWidth = buttons[0]->w;		//Bredden av första biten
+	double middleWidth = buttons[1]->w;		//Mittenbiten
+	double endWidth = buttons[2]->w;		//Slutbiten
+	double activeWidth = buttons[3]->w;		//aktivbiten
+	double buttonHeight = buttons[0]->h;	//höjden
+	int i = 0;								//iterationsvariabel
+	SDL_Rect rcDest;						//position av knappen
+	SDL_Surface* sText = NULL;				//tillfällig yta för texten
 
-	if (fontnr >= NROFFONTS || font < 0) {
-		cerr << "fontindex ouf of range" << endl;
-		return;
-	}
-	
-	TTF_SizeText(font[fontnr], text.c_str(), &textWidth, &textHeight);
+	TTF_SizeText(font[getFontNr(textfont)], text.c_str(), &textWidth, &textHeight);
 	
 	int nrOfMiddles = (int)(ceil((double)textWidth / middleWidth) + buttonHeight / 2 / middleWidth);
 
 	int totalButtonWidth = (int)(startWidth + nrOfMiddles * middleWidth + activeWidth + endWidth);
 	
-	rcDest.x = xScreenPos - totalButtonWidth / 2;
-	rcDest.y = (int)(yScreenPos -buttonHeight / 2);
+	switch (align)
+	{
+	case LEFT:
+		blitXPos = xScreenPos;
+		break;
+	case CENTER:
+		blitXPos = xScreenPos - totalButtonWidth / 2;
+		break;
+	case RIGHT:
+		blitXPos = xScreenPos - totalButtonWidth;
+		break;
+	}
+
+	blitYPos = (int)(yScreenPos -buttonHeight / 2);
+
+	drawEmptyButton(blitXPos, blitYPos, nrOfMiddles, active);
+
+	SDL_Color color = {255, 255, 255};
+	sText = generateTextSurface(text, LAZY26, color);
+	
+	switch (align)
+	{
+	case LEFT:
+		rcDest.x = (int)(xScreenPos + startWidth + nrOfMiddles / 2 * middleWidth - sText->w/2);
+		break;
+	case CENTER:
+		rcDest.x = (int)(xScreenPos - totalButtonWidth / 2 + startWidth + nrOfMiddles * middleWidth / 2 - sText->w / 2);
+		break;
+	case RIGHT:
+		rcDest.x = (int)(xScreenPos - endWidth - activeWidth - nrOfMiddles/2*middleWidth - sText->w/2);
+		break;
+	}
+	
+	rcDest.y = yScreenPos - sText->h / 2;
+
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+	SDL_FreeSurface(sText);
+}
+
+
+void GraphicsEngine::drawFixedWidthButton(	const string& text,
+											const int& xScreenPos,
+											const int& yScreenPos,
+											const int& width,
+											const bool& active,
+											const PANZER_FONT& textfont,
+											const int& red,
+											const int& green,
+											const int& blue)
+{
+	int nrOfMiddles = (int)((double)(width - buttons[0]->w - buttons[2]->w - buttons[3]->w) / (double)buttons[1]->w);
+
+	drawEmptyButton(xScreenPos, yScreenPos, nrOfMiddles, active);
+	SDL_Color color = {red, green, blue};
+	SDL_Surface* sText = generateTextSurface(text, textfont, color);
+
+	// Beräkna blitposition
+	int xBlitPos = xScreenPos + nrOfMiddles / 2 * buttons[1]->w - sText->w / 2;
+	int yBlitPos = yScreenPos + buttons[0]->h / 2 - sText->h / 2;
+	SDL_Rect rcDest;
+	rcDest.x = xBlitPos;
+	rcDest.y = yBlitPos;
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+	SDL_FreeSurface(sText);
+}
+
+SDL_Surface* GraphicsEngine::generateTextSurface(const string& text, const PANZER_FONT& fontname, const SDL_Color& color)
+{
+	SDL_Surface* sText = NULL;
+	sText = TTF_RenderText_Solid(font[getFontNr(fontname)], text.c_str(), color);
+	return sText;
+}
+
+void GraphicsEngine::drawEmptyButton(int xScreenPos, int yScreenPos, const int& nrOfMiddles, const bool& active)
+{
+	SDL_Rect rcDest;
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
 
 	SDL_BlitSurface(buttons[0], NULL, screen, &rcDest);
-	rcDest.x += buttons[0]->w; 
+	xScreenPos += buttons[0]->w;
+	rcDest.x =xScreenPos;
 
-	
-	for (i = 0; i < nrOfMiddles; ++i)
-	{	
+	for (int i = 0; i < nrOfMiddles; ++i) {
 		SDL_BlitSurface(buttons[1], NULL, screen, &rcDest);
-		rcDest.x += buttons[1]->w;
+		xScreenPos += buttons[1]->w;
+		rcDest.x =xScreenPos;
 	}
 
 	if (active) {
 		SDL_BlitSurface(buttons[4], NULL, screen, &rcDest);
-		rcDest.x += buttons[4]->w;
+		xScreenPos += buttons[4]->w;
 	}
 	else {
 		SDL_BlitSurface(buttons[3], NULL, screen, &rcDest);
-		rcDest.x += buttons[3]->w;
+		xScreenPos += buttons[3]->w;
 	}
 
+	rcDest.x = xScreenPos;
 	SDL_BlitSurface(buttons[2], NULL, screen, &rcDest);
+}
 
-	SDL_Color color = {255, 255, 255};
-	sText = TTF_RenderText_Solid(font[fontnr], text.c_str(), color);
-	
-	rcDest.x = (int)(xScreenPos - totalButtonWidth / 2 + startWidth + nrOfMiddles * middleWidth / 2 - sText->w / 2);
-	rcDest.y = yScreenPos - sText->h / 2;
-	SDL_BlitSurface(sText, NULL, screen, &rcDest);
-	SDL_FreeSurface(sText);
+void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos, const int &width, const int &height, const int& red, const int& green, const int& blue)
+{
+	SDL_Rect rect;
+	rect.x = xScreenPos;
+	rect.y = yScreenPos;
+	rect.w = width;
+	rect.h = height;
+	SDL_FillRect(screen, &rect, red << 16 | green << 8 | blue << 0);
+}
+
+void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
+{
+	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
+	{
+		drawToScreenBuffer(*(*it));
+	}
 }

@@ -27,17 +27,15 @@ GameEngine::GameEngine() {
 	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
 	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_));
 
-
-
 	currentState_ = MENY;
-
+	playerTurn_ = PLAYER1STATE;
 }
 
-GameEngine::~GameEngine() {
-}
+GameEngine::~GameEngine() {}
+
 void GameEngine::regulate_fps()
 {
-	unsigned int fps = 100;
+	unsigned int fps = 70;
 
 	ticks_ = SDL_GetTicks() - ticks_;
 
@@ -64,11 +62,9 @@ void GameEngine::run()
 
 	SDL_Event event;
 
-
 	while(currentState_ != EXITGAME)
 		{
 			ticks_ = SDL_GetTicks();
-
 			stateVector_.at(currentState_) ->render();
 			graphicsengine_.showScreenBufferOnScreen();
 
@@ -76,16 +72,31 @@ void GameEngine::run()
 
 			while(SDL_PollEvent(&event))
 			{
-				stateVector_.at(currentState_) ->handle_input(event);
+				if(event.type == SDL_QUIT)
+					currentState_ = EXITGAME;
+				else if((event.type == SDL_KEYDOWN) && (event.key.keysym.sym == SDLK_ESCAPE))
+					return_to_meny();
+				else
+					stateVector_.at(currentState_) ->handle_input(event);
 			}
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
 
+				if((playerTurn_ == PLAYER1STATE) && (currentState_ == FIREEND))
+				{
+					playerTurn_ = PLAYER2STATE;
+					currentState_ = PLAYER2STATE;
+				}
+				else if(currentState_ == FIREEND)
+				{
+					playerTurn_ = PLAYER1STATE;
+					currentState_ = PLAYER1STATE;
+				}
+
 			regulate_fps();
 
-		};
+		}
 
-	cout << "Thanks for using pantzer" << endl;
 	cleanup();
 }
 
@@ -98,9 +109,25 @@ bool GameEngine::init_SDL()
 
 void GameEngine::cleanup()
 {
-	SDL_Quit();
-}
 
+	cout << "Running SDL_Quit()";
+
+	SDL_Quit();
+	cout << "    [OK]" << endl;
+	}
+
+
+void GameEngine::return_to_meny()
+	{
+		if((currentState_ == PLAYER1STATE) || (currentState_ == PLAYER2STATE))
+		{	graphicsengine_.clearScreenBuffer(0);
+			graphicsengine_.showScreenBufferOnScreen();
+			graphicsengine_.drawTextToScreenBuffer("Game aborted - returning to game meny", 0,0, 255,255,255);
+			graphicsengine_.showScreenBufferOnScreen();
+			SDL_Delay(1000);
+			currentState_ = MENY;
+		}
+	}
 
 
 

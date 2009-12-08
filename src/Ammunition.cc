@@ -20,6 +20,7 @@ const Collision StandardAmmo::get_collision() const
  	Collision coll;
  	coll.x_=x_;
  	coll.y_=y_;
+ 	coll.blastRadius_=get_blastRadius();
  	
  	return coll;
 }

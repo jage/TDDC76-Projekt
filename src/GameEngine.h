@@ -41,7 +41,7 @@ private:
 
 	//Tillst�nd
 	PANZER_STATES currentState_;
-	State* prevState_;
+	PANZER_STATES playerTurn_;
     vector<State*> stateVector_;
 
     /*
@@ -62,6 +62,12 @@ private:
      * Standard �r 100 fps
      */
     void regulate_fps();
+
+    /*
+     * return_to_meny()
+     * Avbryter spelet, och vi återvändet till meny.
+     */
+    void return_to_meny();
 
 	// Kopiering och tilldelning till�ts ej (definieras ej)
     GameEngine(const GameEngine&);
