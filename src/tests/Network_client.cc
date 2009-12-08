@@ -7,12 +7,8 @@ using namespace std;
 int main() {	
 	Network client;
 	
-	if(client.connect("localhost", "12345"))
-		client.send("tutuuuuuuut");
-	else
-		cout << "Connection failed\n";
-		
-	client.disconnect();
+	client.connect("localhost", "12345");
+	// client.disconnect();
 	
 	return 0;
 }

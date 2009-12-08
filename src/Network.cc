@@ -11,127 +11,108 @@
 using boost::asio::ip::tcp;
 using namespace std;
 
-class Connection
-	: public boost::enable_shared_from_this<Connection>
+Connection::pointer Connection::create(boost::asio::io_service& io_service)
 {
-public:
-	typedef boost::shared_ptr<Connection> pointer;
+	return pointer(new Connection(io_service));
+}
 
-	static pointer create(boost::asio::io_service& io_service)
-	{
-		return pointer(new Connection(io_service));
-	}
+tcp::socket& Connection::socket()
+{
+	return socket_;
+}
 
-	tcp::socket& socket()
-	{
-		return socket_;
-	}
-
-	void start()
-	{
-		message_ = "Welcome!\n";
-		
-		boost::asio::async_read_until(socket_, response_, "\n",
-			boost::bind(&Connection::handle_read, shared_from_this(),
-			boost::asio::placeholders::error));
-		
-		boost::asio::async_write(socket_, boost::asio::buffer(message_),
-			boost::bind(&Connection::handle_write, shared_from_this(),
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred));
-		
-		boost::asio::async_write(socket_, boost::asio::buffer("> "),
-	   		boost::bind(&Connection::handle_write, shared_from_this(),
-	   		boost::asio::placeholders::error,
-	   		boost::asio::placeholders::bytes_transferred));
-	}
+void Connection::start()
+{
+	message_ = "Welcome!\n";
 	
-	void send(string msg)
-	{
-		boost::asio::async_write(socket_, boost::asio::buffer(msg),
-	   		boost::bind(&Connection::handle_write, shared_from_this(),
-	   		boost::asio::placeholders::error,
-	   		boost::asio::placeholders::bytes_transferred));
-	}
-
-private:
-	Connection(boost::asio::io_service& io_service)
-		: socket_(io_service),
-		  strand_(io_service)
-	{
-	}
-
-	void handle_write(const boost::system::error_code& /*error*/,
-		size_t /*bytes_transferred*/)
-	{
-	}
-
-	void handle_read(const boost::system::error_code&)
-	{
-		std::istream response_stream(&response_);
-		std::string msg;
-		std::getline(response_stream, msg);
-		
-		if(msg != "quit") {
-			std::cout << msg << "\n";
-			boost::asio::async_read_until(socket_, response_, "\n",
-				strand_.wrap(boost::bind(&Connection::handle_read, shared_from_this(),
-				boost::asio::placeholders::error)));
-			boost::asio::async_write(socket_, boost::asio::buffer("> "),
-		   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
-		   		boost::asio::placeholders::error,
-		   		boost::asio::placeholders::bytes_transferred)));
-		}
-		else
-		{
-			boost::asio::async_write(socket_, boost::asio::buffer("Bye!\n"),
-		   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
-		   		boost::asio::placeholders::error,
-		   		boost::asio::placeholders::bytes_transferred)));
-			
-		}
-	}
-
-	tcp::socket socket_;
-	std::string message_;
-	boost::asio::streambuf response_;
-	boost::asio::strand strand_;
-};
-
-class Server
+	boost::asio::async_read_until(socket_, response_, "\n",
+		boost::bind(&Connection::handle_read, shared_from_this(),
+		boost::asio::placeholders::error));
+	
+	boost::asio::async_write(socket_, boost::asio::buffer(message_),
+		boost::bind(&Connection::handle_write, shared_from_this(),
+		boost::asio::placeholders::error,
+		boost::asio::placeholders::bytes_transferred));
+	
+	boost::asio::async_write(socket_, boost::asio::buffer("> "),
+   		boost::bind(&Connection::handle_write, shared_from_this(),
+   		boost::asio::placeholders::error,
+   		boost::asio::placeholders::bytes_transferred));
+}
+	
+Connection::Connection(boost::asio::io_service& io_service)
+	: socket_(io_service),
+	  strand_(io_service)
 {
-public:
-	Server(boost::asio::io_service& io_service)
-		: acceptor_(io_service, tcp::endpoint(tcp::v4(), 12345)),
-		  strand_(io_service)
+}
+
+void Connection::handle_write(const boost::system::error_code& /*error*/,
+	size_t /*bytes_transferred*/)
+{
+}
+
+void Connection::handle_read(const boost::system::error_code&)
+{
+	std::istream response_stream(&response_);
+	std::string msg;
+	std::getline(response_stream, msg);
+	
+	if(msg != "quit") {
+		std::cout << msg << "\n";
+		boost::asio::async_read_until(socket_, response_, "\n",
+			strand_.wrap(boost::bind(&Connection::handle_read, shared_from_this(),
+			boost::asio::placeholders::error)));
+		boost::asio::async_write(socket_, boost::asio::buffer("> "),
+	   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
+	   		boost::asio::placeholders::error,
+	   		boost::asio::placeholders::bytes_transferred)));
+	}
+	else
 	{
+		boost::asio::async_write(socket_, boost::asio::buffer("Bye!\n"),
+	   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
+	   		boost::asio::placeholders::error,
+	   		boost::asio::placeholders::bytes_transferred)));
+	}
+}
+
+void Connection::send() {
+	boost::asio::async_write(socket_, boost::asio::buffer("Weeeeeeeeeeeeeeeeeee!"),
+   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
+   		boost::asio::placeholders::error,
+   		boost::asio::placeholders::bytes_transferred)));
+}
+
+Server::Server(boost::asio::io_service& io_service)
+	: acceptor_(io_service, tcp::endpoint(tcp::v4(), 12345)),
+	  strand_(io_service)
+{
+	start_accept();
+}
+
+Connection::pointer Server::connection() {
+	return new_connection;
+}
+
+void Server::start_accept()
+{
+	Connection::pointer new_connection =
+		Connection::create(acceptor_.io_service());
+
+	acceptor_.async_accept(new_connection->socket(),
+		strand_.wrap(boost::bind(&Server::handle_accept, this, new_connection,
+		boost::asio::placeholders::error)));
+}
+
+void Server::handle_accept(Connection::pointer new_connection,
+	const boost::system::error_code& error)
+{
+	if (!error)
+	{
+		new_connection->start();
 		start_accept();
 	}
-
-private:
-	void start_accept()
-	{
-		Connection::pointer new_connection =
-			Connection::create(acceptor_.io_service());
-
-		acceptor_.async_accept(new_connection->socket(),
-			strand_.wrap(boost::bind(&Server::handle_accept, this, new_connection,
-			boost::asio::placeholders::error)));
-	}
-
-	void handle_accept(Connection::pointer new_connection,
-		const boost::system::error_code& error)
-	{
-		if (!error)
-		{
-			new_connection->start();
-			start_accept();
-		}
-	}
-
-	tcp::acceptor acceptor_;
-	boost::asio::strand strand_;
-};
+}
 
 /*
 * Antingen lyssnar eller ansluter man
@@ -140,7 +121,7 @@ private:
 /* Konstruktor för Network */
 Network::Network() {
 	boost::asio::io_service io_service_;
-	tcp::iostream stream_;
+	Connection::pointer connection_;
 }
 
 Network::~Network() {}
@@ -163,9 +144,14 @@ void Network::listen(const string port)
 	{
 		cout << "Listening on " << port << "\n";
 
-		Server server(io_service_);
-		boost::bind(&boost::asio::io_service::run, &io_service_);
+		Server server(io_service_);		
+		
+		boost::thread t1(boost::bind(&boost::asio::io_service::run, &io_service_));
+		boost::thread t2(boost::bind(&send, &server));
+		
 	  	io_service_.run();
+		t1.join();
+		t2.join();
 	}
 	catch (std::exception& e)
 	{
@@ -184,8 +170,9 @@ bool Network::is_active()
 	return true;
 }
 
-void Network::send(const string msg)
+void Network::send(Server* server)
 {
+	cout << "SEND! MOTHAFUCKA!\n";
 }
 
 void Network::callback()
