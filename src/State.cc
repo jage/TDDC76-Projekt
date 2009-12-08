@@ -86,32 +86,32 @@ void Meny::changeState(bool up){
 		case PLAYER1STATE:
 		{
 			if(up)
-				{nextState_ = EXITGAME; cout << "play -> exit" << endl;}
+				nextState_ = EXITGAME;
 			else
-				{nextState_ = NETWORKSTATE;; cout << "play -> network" << endl;}
+				nextState_ = NETWORKSTATE;
 		} break;
 		case NETWORKSTATE:
 		{
 			if(up)
-				{nextState_ = PLAYER1STATE; cout << "net -> play" << endl;}
+				nextState_ = PLAYER1STATE;
 			else
-				{nextState_ = OPTIONSTATE; cout << "net -> opt" << endl;}
+				nextState_ = OPTIONSTATE;
 		} break;
 
 		case OPTIONSTATE:
 		{
 			if(up)
-				{nextState_ = NETWORKSTATE; cout << "opt -> net" << endl;}
+				nextState_ = NETWORKSTATE;
 			else
-				{nextState_ = EXITGAME; cout << "opt -> exit" << endl;}
+				nextState_ = EXITGAME;
 		}break;
 
 		case EXITGAME:
 		{
 			if(up)
-				{nextState_ = OPTIONSTATE; cout << "exit -> opt" << endl;}
+				nextState_ = OPTIONSTATE;
 			else
-				{nextState_ = PLAYER1STATE; cout << "exit -> play" << endl;}
+				nextState_ = PLAYER1STATE;
 		}break;
 
 	}
@@ -227,9 +227,8 @@ Fire::~Fire(){}
 
 void Fire::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	gameworld_ptr_->generate_world(640,480,1);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
-	graphicsengine_ptr_->showScreenBufferOnScreen();*/
+	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
 void Fire::logic(){ SDL_Delay(2000);}
@@ -276,13 +275,36 @@ void NetworkState::logic(){
 }
 //OptionsState-------------------------------------------------//
 OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+	 : State(graphicsengine,gameworld), nextState_(OPTIONSTATE){}
 
 void OptionState::render(){
-	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to change generate a level!",0,0,255,255,255);
 }
 
-void OptionState::logic(){
-	SDL_Delay(2000);
+void OptionState::logic(){nextState_ = OPTIONSTATE;}
+
+void OptionState::handle_input(SDL_Event& event){
+	if(event.type == SDL_KEYDOWN)
+		{
+			switch( event.key.keysym.sym )
+				{
+					case SDLK_SPACE:
+						{
+							gameworld_ptr_->generate_world(640,480,1);
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+						}; break;
+					case SDLK_RETURN:
+					{
+						nextState_ = MENY;
+					}
+					default: break;
+				}
+		}
 }
+
+PANZER_STATES OptionState::next_state(){
+	return nextState_;
+}
+
 //OptionsState-----------------------------------------------//

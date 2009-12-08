@@ -193,12 +193,13 @@ public:
 
 	void logic();
 
-	void handle_input(SDL_Event&){};
+	void handle_input(SDL_Event&);
 
-	PANZER_STATES next_state(){return MENY;};
+	PANZER_STATES next_state();
 
 private:
-
+	PANZER_STATES nextState_;
 };
+
 
 #endif /* STATE_H_ */
