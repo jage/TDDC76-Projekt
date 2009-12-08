@@ -55,16 +55,6 @@ void GameEngine::regulate_fps()
 	}
 }
 
-
-void GameEngine::return_to_meny()
-	{
-		graphicsengine_.clearScreenBuffer(0);
-		graphicsengine_.drawTextToScreenBuffer("Game aborted - returning to game meny", 0,0, 255,255,255);
-		graphicsengine_.showScreenBufferOnScreen();
-		SDL_Delay(1000);
-		currentState_ = MENY;
-	}
-
 void GameEngine::run()
 {
 	if(!init_SDL())
@@ -126,6 +116,18 @@ void GameEngine::cleanup()
 	cout << "    [OK]" << endl;
 	}
 
+
+void GameEngine::return_to_meny()
+	{
+		if((currentState_ == PLAYER1STATE) || (currentState_ == PLAYER2STATE))
+		{	graphicsengine_.clearScreenBuffer(0);
+			graphicsengine_.showScreenBufferOnScreen();
+			graphicsengine_.drawTextToScreenBuffer("Game aborted - returning to game meny", 0,0, 255,255,255);
+			graphicsengine_.showScreenBufferOnScreen();
+			SDL_Delay(1000);
+			currentState_ = MENY;
+		}
+	}
 
 
 

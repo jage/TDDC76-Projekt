@@ -1,7 +1,7 @@
 #ifndef LOCALPLAYER_H_
 #define LOCALPLAYER_H_
 
-#include "Keyboardinput.h"
+//#include "Keyboardinput.h"
 #include "Player.h"
 
 #include <string>
