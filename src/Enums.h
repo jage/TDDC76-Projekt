@@ -17,7 +17,9 @@ enum PANZER_IMAGE
 {
 	SUN,
 	GROUND,
-	CONCRETE
+	CONCRETE,
+	CANNON,
+	CANNONBALL
 };
 
 // some preprocessor defines
