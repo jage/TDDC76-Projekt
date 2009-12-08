@@ -159,17 +159,13 @@ void Meny::handle_input(SDL_Event& event){
 			}
 	}
 
-	else if( event.type == SDL_QUIT )
-	{
-		nextState_ = EXITGAME;
-		quitMeny_ = true;
-	}
 }
 
 PANZER_STATES Meny::next_state()
 {
 	if(quitMeny_)
 	{   quitMeny_ = false;
+		graphicsengine_ptr_->clearScreenBuffer(0);//Töm skärmen för ny grafik
 		return nextState_;
 	}
 	else
@@ -182,38 +178,60 @@ PANZER_STATES Meny::next_state()
 
 
 Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+	 : State(graphicsengine,gameworld), player1turn_(true) {}
 
 Player1State::~Player1State(){}
 
 void Player1State::render(){
-	cout << "Player1 state\n\n"
-		 << "next up is.....\n\n";
+
+}
+void Player1State::logic(){}
+
+void Player1State::handle_input(SDL_Event& event){
+
+		if( (event.type == SDL_KEYDOWN)  && player1turn_)
+			{
+				switch( event.key.keysym.sym )
+					{
+						case SDLK_UP: graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed up",100,100,254,254,254) ; break;
+						case SDLK_DOWN: graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed down",100,100,254,254,254); break;
+						case SDLK_RETURN: quitMeny_= true; break;
+						default: break;
+					}
+			}
+
 }
 
+void Player1State::toggle_turn()
+{
+	player1turn_ = !player1turn_;
+}
 
 PANZER_STATES Player1State::next_state()
 {
-	return PLAYER2STATE;
+		return PLAYER2STATE;
 }
 //---------------------------------------------------------------//
 
 //Player2State-----------------------------------------------------------//
 
 Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+	 : State(graphicsengine,gameworld), player2turn_(false) {}
 
 Player2State::~Player2State(){}
 
 void Player2State::render(){
-	cout << "Player2 state\n\n"
-		 << "next up is.....\n\n";
+
 }
 
+void Player2State::toggle_turn()
+{
+	player2turn_ = !player2turn_;
+}
 
 PANZER_STATES Player2State::next_state()
 {
-	return FIRE;
+	return PLAYER1STATE;
 }
 
 

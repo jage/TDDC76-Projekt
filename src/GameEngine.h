@@ -41,6 +41,7 @@ private:
 
 	//Tillst�nd
 	PANZER_STATES currentState_;
+	PANZER_STATES prevState_;
 	State* prevState_;
     vector<State*> stateVector_;
 

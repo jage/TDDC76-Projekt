@@ -30,6 +30,7 @@ GameEngine::GameEngine() {
 
 
 	currentState_ = MENY;
+	prevState_ = MENY;
 
 }
 
@@ -37,7 +38,7 @@ GameEngine::~GameEngine() {}
 
 void GameEngine::regulate_fps()
 {
-	unsigned int fps = 100;
+	unsigned int fps = 70;
 
 	ticks_ = SDL_GetTicks() - ticks_;
 
@@ -64,7 +65,6 @@ void GameEngine::run()
 
 	SDL_Event event;
 
-
 	while(currentState_ != EXITGAME)
 		{
 			ticks_ = SDL_GetTicks();
@@ -76,7 +76,10 @@ void GameEngine::run()
 
 			while(SDL_PollEvent(&event))
 			{
-				stateVector_.at(currentState_) ->handle_input(event);
+				if(event.type == SDL_QUIT)
+					currentState_ = EXITGAME;
+				else
+					stateVector_.at(currentState_) ->handle_input(event);
 			}
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
