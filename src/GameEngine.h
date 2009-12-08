@@ -63,6 +63,12 @@ private:
      */
     void regulate_fps();
 
+    /*
+     * return_to_meny()
+     * Avbryter spelet, och vi återvändet till meny.
+     */
+    void return_to_meny();
+
 	// Kopiering och tilldelning till�ts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
