@@ -524,6 +524,13 @@ void GraphicsEngine::drawEmptyButton(int xScreenPos, int yScreenPos, const int& 
 	SDL_BlitSurface(buttons[2], NULL, screen, &rcDest);
 }
 
-	
-
+void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos, const int &width, const int &height, const int& red, const int& green, const int& blue)
+{
+	SDL_Rect rect;
+	rect.x = xScreenPos;
+	rect.y = yScreenPos;
+	rect.w = width;
+	rect.h = height;
+	SDL_FillRect(screen, &rect, red << 16 | green << 8 | blue << 0);
+}
 

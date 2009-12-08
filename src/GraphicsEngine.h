@@ -36,6 +36,7 @@ public:
 	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
 	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, const int& xScreenPos, const int& yScreenPos);
 	void drawButton(const std::string& text, const int& xScreenPos, const int& yScreenPos, const bool& active, const PANZER_FONT& textfont, const PANZER_ALIGNMENT& align);
+	void drawRectangle(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& red, const int& green, const int& blue);
 	void drawFixedWidthButton(	const std::string& text,
 								const int& xScreenPos,
 								const int& yScreenPos,
