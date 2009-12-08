@@ -133,7 +133,7 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 		// check if one cannon is placed on current x-coord
 		try
 		{
-			if (CANNON_WIDTH-currX>0 || rightCannonX-currX<0)add_element(new Concrete(randomHeights[i], res, currX,height-randomHeights[i]));
+			if (CANNON_WIDTH-currX>0 || rightCannonX-currX<0)add_element(new Concrete(res, randomHeights[i], currX,height-randomHeights[i]));
 			else add_element(new Ground(res,randomHeights[i],currX,height-randomHeights[i]));
 		}
 		catch (bad_alloc)
