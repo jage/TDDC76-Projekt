@@ -14,8 +14,8 @@
  */
  
 // #define MAC
- #define LINUX
-// #define WINDOWS
+ //#define LINUX
+ #define WINDOWS
 
 #ifdef WINDOWS
 	#include "SDL.h"

@@ -359,6 +359,20 @@ void GraphicsEngine::loadFontsIntoMemory()
 	}
 }
 
+int GraphicsEngine::getFontNr(const PANZER_FONT& font)
+{
+	int returnval = 0;
+	switch (font)
+	{
+	case LAZY32:
+		return 0;
+	case LAZY26:
+		return 1;
+	default:
+		return 0;
+	}
+}
+
 /*
  * Ritar SDL_Surface till buffert
  */
@@ -387,59 +401,129 @@ void GraphicsEngine::unloadButtonSpritesFromMemory()
 	}
 }
 
-void GraphicsEngine::drawButton(const int& fontnr, const string& text, const int& xScreenPos, const int& yScreenPos, const bool& active)
+void GraphicsEngine::drawButton(const string& text, const int& xScreenPos, const int& yScreenPos, const bool& active, const PANZER_FONT& textfont, const PANZER_ALIGNMENT& align)
 {
-	int textWidth;
-	int textHeight;
-	double startWidth = buttons[0]->w;
-	double middleWidth = buttons[1]->w;
-	double endWidth = buttons[2]->w;
-	double activeWidth = buttons[3]->w;
-	double buttonHeight = buttons[0]->h;
-	int i = 0;
-	SDL_Rect rcDest;
-	SDL_Surface* sText = NULL;
+	int textWidth = 0;
+	int textHeight = 0;
+	int blitXPos = 0;
+	int blitYPos = 0;
+	double startWidth = buttons[0]->w;		//Bredden av första biten
+	double middleWidth = buttons[1]->w;		//Mittenbiten
+	double endWidth = buttons[2]->w;		//Slutbiten
+	double activeWidth = buttons[3]->w;		//aktivbiten
+	double buttonHeight = buttons[0]->h;	//höjden
+	int i = 0;								//iterationsvariabel
+	SDL_Rect rcDest;						//position av knappen
+	SDL_Surface* sText = NULL;				//tillfällig yta för texten
 
-	if (fontnr >= NROFFONTS || font < 0) {
-		cerr << "fontindex ouf of range" << endl;
-		return;
-	}
-	
-	TTF_SizeText(font[fontnr], text.c_str(), &textWidth, &textHeight);
+	TTF_SizeText(font[getFontNr(textfont)], text.c_str(), &textWidth, &textHeight);
 	
 	int nrOfMiddles = (int)(ceil((double)textWidth / middleWidth) + buttonHeight / 2 / middleWidth);
 
 	int totalButtonWidth = (int)(startWidth + nrOfMiddles * middleWidth + activeWidth + endWidth);
 	
-	rcDest.x = xScreenPos - totalButtonWidth / 2;
-	rcDest.y = (int)(yScreenPos -buttonHeight / 2);
+	switch (align)
+	{
+	case LEFT:
+		blitXPos = xScreenPos;
+		break;
+	case CENTER:
+		blitXPos = xScreenPos - totalButtonWidth / 2;
+		break;
+	case RIGHT:
+		blitXPos = xScreenPos - totalButtonWidth;
+		break;
+	}
+
+	blitYPos = (int)(yScreenPos -buttonHeight / 2);
+
+	drawEmptyButton(blitXPos, blitYPos, nrOfMiddles, active);
+
+	SDL_Color color = {255, 255, 255};
+	sText = generateTextSurface(text, LAZY26, color);
+	
+	switch (align)
+	{
+	case LEFT:
+		rcDest.x = (int)(xScreenPos + startWidth + nrOfMiddles / 2 * middleWidth - sText->w/2);
+		break;
+	case CENTER:
+		rcDest.x = (int)(xScreenPos - totalButtonWidth / 2 + startWidth + nrOfMiddles * middleWidth / 2 - sText->w / 2);
+		break;
+	case RIGHT:
+		rcDest.x = (int)(xScreenPos - endWidth - activeWidth - nrOfMiddles/2*middleWidth - sText->w/2);
+		break;
+	}
+	
+	rcDest.y = yScreenPos - sText->h / 2;
+
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+	SDL_FreeSurface(sText);
+}
+
+
+void GraphicsEngine::drawFixedWidthButton(	const string& text,
+											const int& xScreenPos,
+											const int& yScreenPos,
+											const int& width,
+											const bool& active,
+											const PANZER_FONT& textfont,
+											const int& red,
+											const int& green,
+											const int& blue)
+{
+	int nrOfMiddles = (int)((double)(width - buttons[0]->w - buttons[2]->w - buttons[3]->w) / (double)buttons[1]->w);
+
+	drawEmptyButton(xScreenPos, yScreenPos, nrOfMiddles, active);
+	SDL_Color color = {red, green, blue};
+	SDL_Surface* sText = generateTextSurface(text, textfont, color);
+
+	// Beräkna blitposition
+	int xBlitPos = xScreenPos + nrOfMiddles / 2 * buttons[1]->w - sText->w / 2;
+	int yBlitPos = yScreenPos + buttons[0]->h / 2 - sText->h / 2;
+	SDL_Rect rcDest;
+	rcDest.x = xBlitPos;
+	rcDest.y = yBlitPos;
+	SDL_BlitSurface(sText, NULL, screen, &rcDest);
+	SDL_FreeSurface(sText);
+}
+
+SDL_Surface* GraphicsEngine::generateTextSurface(const string& text, const PANZER_FONT& fontname, const SDL_Color& color)
+{
+	SDL_Surface* sText = NULL;
+	sText = TTF_RenderText_Solid(font[getFontNr(fontname)], text.c_str(), color);
+	return sText;
+}
+
+void GraphicsEngine::drawEmptyButton(int xScreenPos, int yScreenPos, const int& nrOfMiddles, const bool& active)
+{
+	SDL_Rect rcDest;
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
 
 	SDL_BlitSurface(buttons[0], NULL, screen, &rcDest);
-	rcDest.x += buttons[0]->w; 
+	xScreenPos += buttons[0]->w;
+	rcDest.x =xScreenPos;
 
-	
-	for (i = 0; i < nrOfMiddles; ++i)
-	{	
+	for (int i = 0; i < nrOfMiddles; ++i) {
 		SDL_BlitSurface(buttons[1], NULL, screen, &rcDest);
-		rcDest.x += buttons[1]->w;
+		xScreenPos += buttons[1]->w;
+		rcDest.x =xScreenPos;
 	}
 
 	if (active) {
 		SDL_BlitSurface(buttons[4], NULL, screen, &rcDest);
-		rcDest.x += buttons[4]->w;
+		xScreenPos += buttons[4]->w;
 	}
 	else {
 		SDL_BlitSurface(buttons[3], NULL, screen, &rcDest);
-		rcDest.x += buttons[3]->w;
+		xScreenPos += buttons[3]->w;
 	}
 
+	rcDest.x = xScreenPos;
 	SDL_BlitSurface(buttons[2], NULL, screen, &rcDest);
-
-	SDL_Color color = {255, 255, 255};
-	sText = TTF_RenderText_Solid(font[fontnr], text.c_str(), color);
-	
-	rcDest.x = (int)(xScreenPos - totalButtonWidth / 2 + startWidth + nrOfMiddles * middleWidth / 2 - sText->w / 2);
-	rcDest.y = yScreenPos - sText->h / 2;
-	SDL_BlitSurface(sText, NULL, screen, &rcDest);
-	SDL_FreeSurface(sText);
 }
+
+	
+
+

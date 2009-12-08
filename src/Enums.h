@@ -19,4 +19,17 @@ enum PANZER_IMAGE
 	SUN
 };
 
+enum PANZER_ALIGNMENT
+{
+	LEFT,
+	RIGHT,
+	CENTER
+};
+
+enum PANZER_FONT
+{
+	LAZY32,
+	LAZY26
+};
+
 #endif

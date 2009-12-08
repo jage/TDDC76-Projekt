@@ -35,7 +35,16 @@ public:
 	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
 	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
 	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, const int& xScreenPos, const int& yScreenPos);
-	void drawButton(const int& fontnr, const std::string& text, const int& xScreenPos, const int& yScreenPos, const bool& active);
+	void drawButton(const std::string& text, const int& xScreenPos, const int& yScreenPos, const bool& active, const PANZER_FONT& textfont, const PANZER_ALIGNMENT& align);
+	void drawFixedWidthButton(	const std::string& text,
+								const int& xScreenPos,
+								const int& yScreenPos,
+								const int& width,
+								const bool& active,
+								const PANZER_FONT& textfont,
+								const int& red = 255,
+								const int& green = 255,
+								const int& blue = 255);
 
 private:
 	SDL_Surface* screen;
@@ -54,6 +63,9 @@ private:
 	void unloadCannonSpritesFromMemory();
 	void loadButtonSpritesIntoMemory();
 	void unloadButtonSpritesFromMemory();
+	int getFontNr(const PANZER_FONT& font);
+	void drawEmptyButton(int xScreenPos, int yScreenPos, const int& nrOfMiddles, const bool& active);
+	SDL_Surface* generateTextSurface(const std::string& text, const PANZER_FONT& font, const SDL_Color& color);
 	SDL_Surface* loadImageFromDisc(const std::string&, const bool& transparent = false);
 	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
 };
