@@ -113,6 +113,7 @@ void Meny::changeState(bool up){
 			else
 				nextState_ = PLAYER1STATE;
 		}break;
+		default: break;
 
 	}
 }
@@ -190,6 +191,7 @@ Player2State::~Player2State(){}
 
 void Player2State::render(){
 graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
+graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 }
 
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
@@ -200,8 +202,8 @@ if(event.type == SDL_KEYDOWN)
 	{
 		switch( event.key.keysym.sym )
 			{
-				case SDLK_UP: {graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 pushed up",100,100,254,254,254);} ; break;
-				case SDLK_DOWN: {graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 pushed down",100,100,254,254,254);}; break;
+				case SDLK_UP: {gameworld_ptr_->get_rightCannon()->adjust_angle(10); cout << "Player 2 - UP cannon angle: " <<  gameworld_ptr_->get_rightCannon()->get_angle() << endl;} ; break;
+				case SDLK_DOWN: {gameworld_ptr_->get_rightCannon()->adjust_angle(-10); cout << "Player 2 - DOWN" << gameworld_ptr_->get_rightCannon() << endl;}; break;
 				case SDLK_RETURN: nextState_ = FIRE ; break;
 				default: break;
 			}
@@ -231,7 +233,7 @@ void Fire::render(){
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
-void Fire::logic(){ SDL_Delay(2000);}
+void Fire::logic(){ SDL_Delay(1000);}
 
 PANZER_STATES Fire::next_state()
 {
@@ -314,13 +316,13 @@ InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	: State(graphicsengine,gameworld){}
 
 void InitState::render(){
-	graphicsengine_ptr_->drawTextToScreenBuffer("Starting the game...",0,0,255,0,0);
+	cout << "Initiate the game!" << endl;
 }
 
 void InitState::logic(){
 	gameworld_ptr_->generate_world(640,480,1);
-	cout << "Level generated, we wait so we se the beutiful splash screen..." << endl;
-	SDL_Delay(700);
+	cout << "Level generated, we wait so we see the splash screen..." << endl;
+	//SDL_Delay(700);
 }
 
 PANZER_STATES InitState::next_state(){
