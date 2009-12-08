@@ -7,7 +7,7 @@ Ground::Ground(const int& width,const  int& height,const int& x, const int& y)
 void Ground::deform(const Collision& collision)
 {
 	// do some deformation
-	return	
+	return;
 }
 
 Ground::~Ground()
