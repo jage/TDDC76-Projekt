@@ -41,8 +41,7 @@ private:
 
 	//Tillst�nd
 	PANZER_STATES currentState_;
-	PANZER_STATES prevState_;
-	State* prevState_;
+	PANZER_STATES playerTurn_;
     vector<State*> stateVector_;
 
     /*

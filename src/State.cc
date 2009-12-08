@@ -178,60 +178,69 @@ PANZER_STATES Meny::next_state()
 
 
 Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), player1turn_(true) {}
+	 : State(graphicsengine,gameworld), nextState_(PLAYER1STATE) {}
 
 Player1State::~Player1State(){}
 
 void Player1State::render(){
-
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,400,125,124,0);
 }
-void Player1State::logic(){}
+void Player1State::logic(){nextState_ = PLAYER1STATE;}
 
 void Player1State::handle_input(SDL_Event& event){
 
-		if( (event.type == SDL_KEYDOWN)  && player1turn_)
+		if(event.type == SDL_KEYDOWN)
 			{
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_UP: graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed up",100,100,254,254,254) ; break;
-						case SDLK_DOWN: graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed down",100,100,254,254,254); break;
-						case SDLK_RETURN: quitMeny_= true; break;
+						case SDLK_UP:{graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed up",100,100,254,254,254);} ; break;
+						case SDLK_DOWN:{graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 pushed down",100,100,254,254,254);}; break;
+						case SDLK_RETURN: nextState_ = FIRE; break;
 						default: break;
 					}
 			}
 
 }
 
-void Player1State::toggle_turn()
-{
-	player1turn_ = !player1turn_;
-}
 
 PANZER_STATES Player1State::next_state()
 {
-		return PLAYER2STATE;
+			return nextState_;
 }
 //---------------------------------------------------------------//
 
 //Player2State-----------------------------------------------------------//
 
 Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), player2turn_(false) {}
+	 : State(graphicsengine,gameworld), nextState_(PLAYER2STATE) {}
 
 Player2State::~Player2State(){}
 
 void Player2State::render(){
-
+graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
 }
 
-void Player2State::toggle_turn()
-{
-	player2turn_ = !player2turn_;
+void Player2State::logic(){nextState_ = PLAYER2STATE;}
+
+void Player2State::handle_input(SDL_Event& event){
+
+if(event.type == SDL_KEYDOWN)
+	{
+		switch( event.key.keysym.sym )
+			{
+				case SDLK_UP: {graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 pushed up",100,100,254,254,254);} ; break;
+				case SDLK_DOWN: {graphicsengine_ptr_->clearScreenBuffer(0); graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 pushed down",100,100,254,254,254);}; break;
+				case SDLK_RETURN: nextState_ = FIRE ; break;
+				default: break;
+			}
+	}
 }
+
+
 
 PANZER_STATES Player2State::next_state()
 {
-	return PLAYER1STATE;
+	return nextState_;
 }
 
 
@@ -245,14 +254,15 @@ Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Fire::~Fire(){}
 
 void Fire::render(){
-	cout << "FIRE\n\n"
-		 << "end game.....\n\n";
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",240,240,255,0,0);
 }
 
+void Fire::logic(){ SDL_Delay(1000);}
 
 PANZER_STATES Fire::next_state()
 {
-	return EXITGAME;
+	return FIREEND;
 }
 //---------------------------------------------------------------//
 

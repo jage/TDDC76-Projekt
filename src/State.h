@@ -108,16 +108,8 @@ public:
 
 	PANZER_STATES next_state();
 
-	/*
-	 * toggle_turn()
-	 * Ändrar om det är en spelare 1 tur eller ej.
-	 * När spelet startar så är det spelare 1 tur.
-	 */
-	void toggle_turn();
-
 private:
-	bool player1turn_;
-
+	PANZER_STATES nextState_;
 
 };
 
@@ -131,22 +123,15 @@ public:
 
 	void render();
 
-	void logic(){};
+	void logic();
 
-	void handle_input(SDL_Event&){};
+	void handle_input(SDL_Event&);
 
 	PANZER_STATES next_state();
 
-	/*
-	 * toggle_turn()
-	 * Ändrar om det är en spelare 2 tur eller ej.
-	 * När spelet startar så är det spelare 1 tur.
-	 */
-	void toggle_turn();
 
 private:
-	bool player2turn_;
-
+	PANZER_STATES nextState_;
 };
 
 class Fire : public State
@@ -158,7 +143,7 @@ public:
 
 	void render();
 
-	void logic(){};
+	void logic();
 
 	void handle_input(SDL_Event&){};
 

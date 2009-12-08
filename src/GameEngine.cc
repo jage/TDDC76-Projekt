@@ -27,11 +27,8 @@ GameEngine::GameEngine() {
 	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
 	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_));
 
-
-
 	currentState_ = MENY;
-	prevState_ = MENY;
-
+	playerTurn_ = PLAYER1STATE;
 }
 
 GameEngine::~GameEngine() {}
@@ -68,7 +65,6 @@ void GameEngine::run()
 	while(currentState_ != EXITGAME)
 		{
 			ticks_ = SDL_GetTicks();
-
 			stateVector_.at(currentState_) ->render();
 			graphicsengine_.showScreenBufferOnScreen();
 
@@ -83,6 +79,20 @@ void GameEngine::run()
 			}
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
+
+			if(currentState_ == FIREEND)
+			{
+				if(playerTurn_ == PLAYER1STATE)
+				{
+					playerTurn_ = PLAYER2STATE;
+					currentState_ = PLAYER2STATE;
+				}
+				else
+				{
+					playerTurn_ = PLAYER1STATE;
+					currentState_ = PLAYER1STATE;
+				}
+			}
 
 			regulate_fps();
 
