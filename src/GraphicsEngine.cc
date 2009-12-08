@@ -543,3 +543,10 @@ void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos,
 	SDL_FillRect(screen, &rect, red << 16 | green << 8 | blue << 0);
 }
 
+void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
+{
+	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
+	{
+		drawToScreenBuffer(*(*it));
+	}
+}

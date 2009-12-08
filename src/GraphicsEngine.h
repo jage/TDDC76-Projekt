@@ -28,6 +28,7 @@ public:
 	~GraphicsEngine();
 
 	void drawToScreenBuffer(const std::vector<Element>&);
+	void drawToScreenBuffer(const std::vector<Element*>&);
 	void drawToScreenBuffer(const Element&);
 	void clearScreenBuffer(const unsigned int& color);
 	void clearScreenBuffer();
