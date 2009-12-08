@@ -1,12 +1,10 @@
 #include "Player.h"
 #include "State.h"
 
-
 using namespace std;
 
 Player::Player(const string& name, const int health, const int points)
- : health_(health), name_(name), points_(points)
-{}
+ : name_(name), health_(health), points_(points) {}
 
 const string& Player::get_name() const
 {

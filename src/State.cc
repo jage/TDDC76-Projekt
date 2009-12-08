@@ -58,7 +58,7 @@ Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld),
 	   nextState_(PLAYER1STATE),
 	   quitMeny_(false),
-	   oldgfx_(true){
+	   oldgfx_(false){
 
 	play_ = load_image("play.png");
 	network_ = load_image("network.png");
@@ -93,10 +93,10 @@ void Meny::renderMenyGfx()
 	//TODO En snygg rendering
 
 
-		graphicsengine_ptr_->drawButton(0,"   Play",50,50,(nextState_ == 0));
-		graphicsengine_ptr_->drawButton(0,"   Network",50,100,(nextState_ == 1));
-		graphicsengine_ptr_->drawButton(0,"    Options",50,150,(nextState_ == 2));
-		graphicsengine_ptr_->drawButton(0,"    Quit",50,200,(nextState_ == 3));
+		graphicsengine_ptr_->drawButton(0,"Play",50,50,(nextState_ == 0));
+		graphicsengine_ptr_->drawButton(0,"Network",50,100,(nextState_ == 1));
+		graphicsengine_ptr_->drawButton(0,"Options",50,150,(nextState_ == 2));
+		graphicsengine_ptr_->drawButton(0,"Quit",50,200,(nextState_ == 3));
 	}
 }
 
@@ -183,7 +183,7 @@ Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Player1State::~Player1State(){}
 
 void Player1State::render(){
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,400,125,124,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
 }
 void Player1State::logic(){nextState_ = PLAYER1STATE;}
 
