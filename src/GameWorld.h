@@ -7,6 +7,9 @@
 #include "MovableElement.h"
 #include "PhysicsEngine.h"
 #include "Cannon.h"
+#include "Ground.h"
+#include "Concrete.h"
+#include "PanzerException.h"
 #include <vector>
 
 typedef std::vector<Element*> ElementVector;
@@ -25,14 +28,25 @@ public:
 	const double& get_gravity() const;
 	void set_gravity(const double&);
 	ElementVector* get_elements();
+	Cannon* get_cannon1() const;
+	Cannon* get_cannon2() const;
+	bool generate_world(const int&,const int&,const int&);
 private:
 	double gravity_;
 	double wind_;
-	PhysicsEngine physEngine_;
+	PhysicsEngine* physEngine_;
 	ElementVector elements_;
 	MovableElementVector movableElements_;
-	Cannon cannon1_;
-	Cannon cannon2_;
+	Cannon* cannon1_;
+	Cannon* cannon2_;
+};
+
+class GameWorldException
+	:PanzerException
+{
+public:
+	explicit GameWorldException(const std::string& what_arg) throw()
+		:PanzerException(what_arg) {}			
 };
 
 #endif
