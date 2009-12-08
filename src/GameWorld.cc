@@ -87,16 +87,16 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 {
 	if (width % res !=0) return false; // width must be an even multiple of the resolution 
 	
-	int maxHeight((int)height*(2/3)); // max height
-	int minHeight((int)height*(1/10)); // min height of a rectangle
-	int offset(minHeight); // offset between two rectangles
+	int maxHeight((int)height*(2.0/3.0)); // max height
+	int minHeight((int)height*(1.0/10.0)); // min height of a rectangle
+	int offset(minHeight * 0.1); // offset between two rectangles
 	int noElements((int)width/res);
 	int* randomHeights;
 	
 	try
 	{
 		// allocate array
-		randomHeights = new int [noElements-1];
+		randomHeights = new int [noElements];
 	}
 	catch (bad_alloc)
 	{
@@ -133,7 +133,7 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 		// check if one cannon is placed on current x-coord
 		try
 		{
-			if (CANNON_WIDTH-currX>0 || rightCannonX-currX<0)add_element(new Concrete(res,randomHeights[i],currX,height-randomHeights[i]));
+			if (CANNON_WIDTH-currX>0 || rightCannonX-currX<0)add_element(new Concrete(randomHeights[i], res, currX,height-randomHeights[i]));
 			else add_element(new Ground(res,randomHeights[i],currX,height-randomHeights[i]));
 		}
 		catch (bad_alloc)
