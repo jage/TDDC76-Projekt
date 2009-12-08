@@ -8,9 +8,9 @@ GameWorld::GameWorld(const double& gravity,const double& wind)
 	// allocate some memory
 	try
 	{
-		physEngine_= new PhysicsEngine();
-		cannon1_ = new Cannon();
-		cannon2_= new Cannon();
+		ptr_physEngine_= new PhysicsEngine();
+		ptr_cannonL_ = new Cannon();
+		ptr_cannonR_= new Cannon();
 	}
 	catch (bad_alloc)
 	{
@@ -18,15 +18,15 @@ GameWorld::GameWorld(const double& gravity,const double& wind)
 	}
 	
 	// add cannons to element vector
-	add_element(cannon1_);
-	add_element(cannon2_);	
+	add_element(ptr_cannonL_);
+	add_element(ptr_cannonR_);	
 }
 
 GameWorld::~GameWorld()
 {
-	delete cannon1_;
-	delete cannon2_;
-	delete physEngine_;
+	delete ptr_cannonL_;
+	delete ptr_cannonR_;
+	delete ptr_physEngine_;
 }
 
 ElementVector* GameWorld::get_elements()
@@ -45,7 +45,7 @@ bool GameWorld::update_world()
 	while(it != movableElements_.end())
 	{
 		MovableElement* movElem = *it;
-		physEngine_->update_pos(movElem,gravity_,wind_);
+		ptr_physEngine_->update_pos(movElem,gravity_,wind_);
 		++it;
 	}
 	return 1; //dummy
@@ -71,14 +71,14 @@ void GameWorld::set_wind(const double& wind)
 	wind_=wind;	
 }
 
-Cannon* GameWorld::get_cannon1() const
+Cannon* GameWorld::get_leftCannon() const
 {
-	return cannon1_;	
+	return ptr_cannonL_;	
 }
 
-Cannon* GameWorld::get_cannon2() const
+Cannon* GameWorld::get_rightCannon() const
 {
-	return cannon2_;	
+	return ptr_cannonR_;	
 }
 
 bool GameWorld::generate_world(const int& width,const int& height, const int& res)
@@ -123,7 +123,7 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 	}
 	
 	// create ground elements
-	int rightCannonX(cannon2_->get_x());
+	int rightCannonX(ptr_cannonR_->get_x());
 	int currX(0); // current x-coord
 	
 	for (int i =0;i<noElements;i++)

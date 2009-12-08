@@ -28,17 +28,17 @@ public:
 	const double& get_gravity() const;
 	void set_gravity(const double&);
 	ElementVector* get_elements();
-	Cannon* get_cannon1() const;
-	Cannon* get_cannon2() const;
+	Cannon* get_leftCannon() const;
+	Cannon* get_rightCannon() const;
 	bool generate_world(const int&,const int&,const int&);
 private:
 	double gravity_;
 	double wind_;
-	PhysicsEngine* physEngine_;
+	PhysicsEngine* ptr_physEngine_;
 	ElementVector elements_;
 	MovableElementVector movableElements_;
-	Cannon* cannon1_;
-	Cannon* cannon2_;
+	Cannon* ptr_cannonL_;
+	Cannon* ptr_cannonR_;
 };
 
 class GameWorldException
