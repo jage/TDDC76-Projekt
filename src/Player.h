@@ -1,6 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
+#include "SDLInclude.h"
 #include <string>
 
 /*
@@ -50,10 +51,10 @@ public:
 	void set_points(const int);	
 	
 	/*
-	 * get_event() - en ren virtuell funktion
+	 * handle_event() - en ren virtuell funktion
 	 * Hämtar en händelse.
 	 */
-	//virtual SDL_Event get_event();
+	  SDL_Event& handle_event(SDL_Event& event);
 	
 	
 	
@@ -61,7 +62,6 @@ public:
  	std::string name_;	
  	int health_;
  	int points_;
- 	
 };
 
 #endif /*PLAYER_H_*/

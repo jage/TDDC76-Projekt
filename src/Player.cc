@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "State.h"
+#include "SDLInclude.h"
 
 using namespace std;
 
