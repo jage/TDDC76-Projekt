@@ -16,7 +16,12 @@ enum PANZER_IMAGE
 {
 	CANNONBALL,
 	CANNON,
-	SUN
+	SUN,
+	GROUND,
+	CONCRETE
 };
+
+// some preprocessor defines
+#define CANNON_WIDTH 10
 
 #endif
