@@ -1,6 +1,8 @@
 #include "GameWorld.h"
 #include <iostream>
 #include <exception>
+#include <cstdlib>
+using namespace std;
 
 GameWorld::GameWorld(const double& gravity,const double& wind)
 	:gravity_(gravity),wind_(wind) 
