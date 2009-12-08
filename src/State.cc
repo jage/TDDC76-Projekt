@@ -57,47 +57,19 @@ SDL_Surface* load_image( std::string filename )
 Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld),
 	   nextState_(PLAYER1STATE),
-	   quitMeny_(false),
-	   oldgfx_(false){
-
-	play_ = load_image("play.png");
-	network_ = load_image("network.png");
-	options_ = load_image("options.png");
-	quit_ = load_image("quit.png");
-	marker_ = load_image("marker.png");
+	   quitMeny_(false){
 }
 
 Meny::~Meny(){
-	SDL_FreeSurface(play_);
-	SDL_FreeSurface(network_);
-	SDL_FreeSurface(options_);
-	SDL_FreeSurface(quit_);
-	SDL_FreeSurface(marker_);
 }
 
 
 void Meny::renderMenyGfx()
 {
-
-	if(oldgfx_)
-	{
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(play_,50,50);
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(network_,50,100);
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(options_,50,150);
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(quit_,50,200);
-
-		graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(marker_,0,(50 + 50 * nextState_));
-	}
-	else{
-
-	//TODO En snygg rendering
-
-
-		graphicsengine_ptr_->drawButton(0,"Play",50,50,(nextState_ == 0));
-		graphicsengine_ptr_->drawButton(0,"Network",50,100,(nextState_ == 1));
-		graphicsengine_ptr_->drawButton(0,"Options",50,150,(nextState_ == 2));
-		graphicsengine_ptr_->drawButton(0,"Quit",50,200,(nextState_ == 3));
-	}
+		graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
+		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
+		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
+		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);
 }
 
 
