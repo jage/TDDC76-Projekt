@@ -53,7 +53,7 @@ class Network {
 		bool disconnect();
 		bool is_active();
 		static void send(Server*);
-		void callback();
+		static void callback(boost::asio::streambuf&);
 	private:
 		// void start_accept();
 		// void handle_accept(Connection::pointer);

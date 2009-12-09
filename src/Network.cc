@@ -52,28 +52,11 @@ void Connection::handle_write(const boost::system::error_code& /*error*/,
 }
 
 void Connection::handle_read(const boost::system::error_code&)
-{
-	std::istream response_stream(&response_);
-	std::string msg;
-	std::getline(response_stream, msg);
-	
-	if(msg != "quit") {
-		std::cout << msg << "\n";
-		boost::asio::async_read_until(socket_, response_, "\n",
-			strand_.wrap(boost::bind(&Connection::handle_read, shared_from_this(),
-			boost::asio::placeholders::error)));
-		boost::asio::async_write(socket_, boost::asio::buffer("> "),
-	   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
-	   		boost::asio::placeholders::error,
-	   		boost::asio::placeholders::bytes_transferred)));
-	}
-	else
-	{
-		boost::asio::async_write(socket_, boost::asio::buffer("Bye!\n"),
-	   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
-	   		boost::asio::placeholders::error,
-	   		boost::asio::placeholders::bytes_transferred)));
-	}
+{	
+	Network::callback(response_);
+	boost::asio::async_read_until(socket_, response_, "\n",
+	        strand_.wrap(boost::bind(&Connection::handle_read, shared_from_this(),
+	        boost::asio::placeholders::error)));
 }
 
 void Connection::send() {
@@ -175,7 +158,10 @@ void Network::send(Server* server)
 	cout << "SEND! MOTHAFUCKA!\n";
 }
 
-void Network::callback()
+void Network::callback(boost::asio::streambuf &response_)
 {
-
+	std::istream response_stream(&response_);
+	std::string msg;
+	std::getline(response_stream, msg);
+	std::cout << msg << "\n";
 }
