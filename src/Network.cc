@@ -35,10 +35,6 @@ void Connection::start()
 		boost::asio::placeholders::error,
 		boost::asio::placeholders::bytes_transferred));
 	
-	boost::asio::async_write(socket_, boost::asio::buffer("> "),
-   		boost::bind(&Connection::handle_write, shared_from_this(),
-   		boost::asio::placeholders::error,
-   		boost::asio::placeholders::bytes_transferred));
 }
 	
 Connection::Connection(boost::asio::io_service& io_service)
@@ -58,6 +54,10 @@ void Connection::handle_read(const boost::system::error_code&)
 	boost::asio::async_read_until(socket_, response_, "\n",
 	        strand_.wrap(boost::bind(&Connection::handle_read, shared_from_this(),
 	        boost::asio::placeholders::error)));
+   	boost::asio::async_write(socket_, boost::asio::buffer("> "),
+   		boost::bind(&Connection::handle_write, shared_from_this(),
+   		boost::asio::placeholders::error,
+   		boost::asio::placeholders::bytes_transferred));
 }
 
 void Connection::send() {
@@ -130,12 +130,12 @@ void Network::listen(const string port)
 
 		Server server(io_service_);		
 		
-		boost::thread t1(boost::bind(&boost::asio::io_service::run, &io_service_));
-		boost::thread t2(boost::bind(&send, &server));
+		// boost::thread t1(boost::bind(&boost::asio::io_service::run, &io_service_));
+		// boost::thread t2(boost::bind(&send, &server));
 		
 	  	io_service_.run();
-		t1.join();
-		t2.join();
+		// t1.join();
+		// t2.join();
 	}
 	catch (std::exception& e)
 	{
@@ -166,9 +166,46 @@ void Network::callback(boost::asio::streambuf &response_)
 	std::getline(response_stream, msg);
 	std::cout << msg << "\n";
 	
-	std::cout << "Creating event ...\n";
-	SDL_Event test_event;
-	test_event.type = SDL_KEYDOWN;
-	SDL_PushEvent(&test_event);
-	std::cout << "Event created!\n";
+	
+	if (msg == "quit") { // Every system needs at least one remote denial of service exploit!
+		SDL_Event event;
+		event.type = SDL_QUIT;
+		SDL_PushEvent(&event);
+	} else if (msg == "up") {
+		SDL_Event event;
+		event.type = SDL_KEYDOWN;
+		event.key.which = 0;
+		event.key.state = SDL_PRESSED;
+		event.key.keysym.sym = SDLK_UP;
+		SDL_PushEvent(&event);
+		event.type = SDL_KEYUP;
+		event.key.which = 0;
+		event.key.state = SDL_RELEASED;
+		event.key.keysym.sym = SDLK_UP;
+		SDL_PushEvent(&event);
+	} else if (msg == "down") {
+		SDL_Event event;
+		event.type = SDL_KEYDOWN;
+		event.key.which = 0;
+		event.key.state = SDL_PRESSED;
+		event.key.keysym.sym = SDLK_DOWN;
+		SDL_PushEvent(&event);
+		event.type = SDL_KEYUP;
+		event.key.which = 0;
+		event.key.state = SDL_RELEASED;
+		event.key.keysym.sym = SDLK_DOWN;
+		SDL_PushEvent(&event);
+	} else if (msg == "enter") {
+		SDL_Event event;
+		event.type = SDL_KEYDOWN;
+		event.key.which = 0;
+		event.key.state = SDL_PRESSED;
+		event.key.keysym.sym = SDLK_RETUR;
+		SDL_PushEvent(&event);
+		event.type = SDL_KEYUP;
+		event.key.which = 0;
+		event.key.state = SDL_RELEASED;
+		event.key.keysym.sym = SDLK_RETUR;
+		SDL_PushEvent(&event);
+	}
 }
