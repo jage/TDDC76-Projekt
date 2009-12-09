@@ -22,6 +22,7 @@ public:
 	const double get_angle() const;
 	const int get_height() const;
 	const int get_width() const;
+	void set_imgRef(const PANZER_IMAGE&);
 	const PANZER_IMAGE get_imgRef() const;
 	virtual ~Element() {};
 protected:
