@@ -134,6 +134,7 @@ void Meny::handle_input(SDL_Event& event){
 
 }
 
+
 PANZER_STATES Meny::next_state()
 {
 	if(quitMeny_)
@@ -167,15 +168,26 @@ void Player1State::handle_input(SDL_Event& event){
 
 		if(event.type == SDL_KEYDOWN)
 			{
+
 				switch( event.key.keysym.sym )
 					{
-				case SDLK_UP: {gameworld_ptr_->get_leftCannon()->adjust_angle(10); cout << "Player 1 - UP cannon angle: " <<  gameworld_ptr_->get_leftCannon()->get_angle() << endl;} ; break;
-								case SDLK_DOWN: {gameworld_ptr_->get_leftCannon()->adjust_angle(-10); cout << "Player 1 - DOWN cannon angle: " << gameworld_ptr_->get_leftCannon()->get_angle() << endl;}; break;
 						case SDLK_RETURN: nextState_ = FIRE; break;
 						default: break;
 					}
-			}
 
+			}
+}
+
+void Player1State::handle_keystates(Uint8* keystates)
+{
+		       if(keystates[SDLK_UP])
+				   {
+					   gameworld_ptr_->get_leftCannon()->adjust_angle(1);
+				   }
+		       else if(keystates[SDLK_DOWN])
+		       	  {
+					   gameworld_ptr_->get_leftCannon()->adjust_angle(-1);
+		       	  }
 }
 
 
@@ -207,12 +219,22 @@ if(event.type == SDL_KEYDOWN)
 	{
 		switch( event.key.keysym.sym )
 			{
-				case SDLK_UP: {gameworld_ptr_->get_rightCannon()->adjust_angle(10); cout << "Player 2 - UP cannon angle: " <<  gameworld_ptr_->get_rightCannon()->get_angle() << endl;} ; break;
-				case SDLK_DOWN: {gameworld_ptr_->get_rightCannon()->adjust_angle(-10); cout << "Player 2 - DOWN" << gameworld_ptr_->get_rightCannon()->get_angle() << endl;}; break;
 				case SDLK_RETURN: nextState_ = FIRE ; break;
 				default: break;
 			}
 	}
+}
+
+void Player2State::handle_keystates(Uint8* keystates)
+{
+		       if(keystates[SDLK_UP])
+				   {
+					   gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+				   }
+		       else if(keystates[SDLK_DOWN])
+		       	  {
+					   gameworld_ptr_->get_rightCannon()->adjust_angle(-1);
+		       	  }
 }
 
 
@@ -257,9 +279,7 @@ ExitGame::ExitGame(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 
 ExitGame::~ExitGame(){}
 
-void ExitGame::render(){
-	cout << "Ok start over, or... \n";
-}
+void ExitGame::render(){}
 
 void ExitGame::logic(){}
 

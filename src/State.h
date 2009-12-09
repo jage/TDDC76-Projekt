@@ -67,6 +67,8 @@ public:
 
 	void handle_input(SDL_Event&);
 
+	void handle_keystates(Uint8*);
+
 	PANZER_STATES next_state();
 
 private:
@@ -97,6 +99,8 @@ public:
 
 	void handle_input(SDL_Event&);
 
+	void handle_keystates(Uint8*);
+
 	PANZER_STATES next_state();
 
 private:
@@ -117,6 +121,8 @@ public:
 	void logic();
 
 	void handle_input(SDL_Event&);
+
+	void handle_keystates(Uint8*);
 
 	PANZER_STATES next_state();
 

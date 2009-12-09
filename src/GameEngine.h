@@ -14,6 +14,7 @@
 #include "SDLInclude.h"
 #include "State.h"
 
+
 //Dummyclasses
 struct Sound{};
 struct Player{};
