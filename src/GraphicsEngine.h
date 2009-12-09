@@ -51,7 +51,7 @@ public:
 private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
-	SDL_Surface* cannon[DEGREES];
+	SDL_Surface* cannon[2*DEGREES];
 	SDL_Surface* buttons[NROFBUTTONIMG];
 	TTF_Font* font[NROFFONTS];
 	int width_;
@@ -70,6 +70,7 @@ private:
 	SDL_Surface* generateTextSurface(const std::string& text, const PANZER_FONT& font, const SDL_Color& color);
 	SDL_Surface* loadImageFromDisc(const std::string&, const bool& transparent = false);
 	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
+	SDL_Surface* flipImageHorizontally(SDL_Surface*);
 };
 
 #endif
