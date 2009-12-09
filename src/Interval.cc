@@ -13,6 +13,16 @@ const bool Interval::intersect(const Interval& value) const
 	return belongs(value.lower_) || belongs(value.upper_);	
 }
 
+const int Interval::get_upper() const
+{
+	return (int)upper_;
+}
+
+const int Interval::get_lower() const
+{
+	return (int)lower_;
+}
+
 const int Interval::get_middle() const
 {
 	return (int)((upper_+lower_)*0.5);	

@@ -10,6 +10,8 @@ public:
 	Interval(const int&,const int&);
 	const bool belongs(const int&) const;
 	const bool intersect(const Interval&) const;
+	const int get_upper() const;
+	const int get_lower() const;
 	const int get_middle() const;
 	const std::string str() const;
 	virtual ~Interval() {};
