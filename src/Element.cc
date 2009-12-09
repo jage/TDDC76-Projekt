@@ -19,6 +19,11 @@ const int Element::get_x() const
 	return x_;
 }
 
+const Interval Element::get_xInterval() const
+{
+	return Interval(x_-(int)(width_/2),x_+(int)(width_/2));	
+}
+
 void Element::set_y(const int& y)
 {
 	y_=y;	

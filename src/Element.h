@@ -3,6 +3,7 @@
 
 #include "Enums.h"
 #include "Structs.h"
+#include "Interval.h"
 
 //using namespace std;
 
@@ -11,6 +12,7 @@ class Element
 public:
 	Element(const int&,const int&,const PANZER_IMAGE&,const int& x=0,const int& y=0,const double& angle=0); // w,h,imgRef,x,y,angle
 	const int get_x() const;
+	const Interval get_xInterval() const;
 	void set_x(const int&);
 	void set_x(const double&);
 	const int get_y() const;
