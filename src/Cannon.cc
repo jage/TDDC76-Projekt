@@ -7,21 +7,12 @@ Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
 	// set right cannon if not left
 	if(!leftCannon) set_imgRef(RIGHT_CANNON);
 }
-	
-void Cannon::set_angle(const double& value)
-{
-	fireAngle_=value;
-}
 
 void Cannon::adjust_angle(const double& delta)
 {
-	fireAngle_+=delta;
+	angle_+=delta;
 }
 
-const double Cannon::get_angle() const
-{
-	return fireAngle_;	
-}
 
 void Cannon::set_power(const int& value)
 {

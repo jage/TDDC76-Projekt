@@ -39,8 +39,8 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 
 /*
  * Ritar ut ett enstaka element till bufferten
- * Finns f�rroterade bilder anv�nds dessa
- * annars roteras bilder n�r de beh�vs
+ * Finns förroterade bilder används dessa
+ * annars roteras bilder när de behövs
  */
 
 void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
@@ -50,14 +50,16 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 	rcDest.y = draw_element.get_y();
 	rcDest.h = draw_element.get_height();
 	rcDest.w = draw_element.get_width();
-	int index = (int)draw_element.get_angle() % DEGREES; //Nödvändig för CANNON
+	int cannonindex = (int)((draw_element.get_angle() / 360.0 * DEGREES)) % DEGREES; //Nödvändig för CANNON
 
 	switch (draw_element.get_imgRef())
 	{
-	case CANNON:
-		rcDest.x -= cannon[index]->w / 2;
-		rcDest.y -= cannon[index]->h / 2;
-		SDL_BlitSurface(cannon[index], NULL, screen, &rcDest);
+	case RIGHT_CANNON:
+		cannonindex += DEGREES;
+	case LEFT_CANNON:
+		rcDest.x -= cannon[cannonindex]->w / 2;
+		rcDest.y -= cannon[cannonindex]->h / 2;
+		SDL_BlitSurface(cannon[cannonindex], NULL, screen, &rcDest);
 		break;
 	case GROUND:
 		drawRectangle(rcDest.x, screen->h - rcDest.h, rcDest.w, rcDest.h, 0, 255, 0);
@@ -81,7 +83,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 				source_image->format->Bmask,
 				source_image->format->Amask);
 
-			// Om colorkey, s�tt colorkey och m�la hela bilden "osynlig"
+			// Om colorkey, sätt colorkey och måla hela bilden "osynlig"
 			if (source_image->flags & SDL_SRCCOLORKEY)
 			{
 				SDL_SetColorKey(source, SDL_SRCCOLORKEY, source_image->format->colorkey);
@@ -111,10 +113,10 @@ void GraphicsEngine::showScreenBufferOnScreen()
 }
 
 /*
- * "T�mmer" bufferten genom att fylla den med
- * angiven f�rg. F�rgen ges i form av en unsigned int
- * d�r de 8 minst signifikanta bitarna represeterar
- * bl�tt, n�sta 8 gr�nt och n�sta 8 r�tt.
+ * "Tömmer" bufferten genom att fylla den med
+ * angiven färg. Färgen ges i form av en unsigned int
+ * där de 8 minst signifikanta bitarna represeterar
+ * blått, nästa 8 grönt och nästa 8 rött.
  */
 void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 {
@@ -122,8 +124,8 @@ void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 }
 
 /*
- * "T�mmer" bufferten genom att fylla den med
- * vit f�rg.
+ * "Tömmer" bufferten genom att fylla den med
+ * vit färg.
  */
 void GraphicsEngine::clearScreenBuffer()
 {
@@ -131,7 +133,7 @@ void GraphicsEngine::clearScreenBuffer()
 }
 
 /*
- * Returnerar rektangeln d�r respektive bild finns i
+ * Returnerar rektangeln där respektive bild finns i
  * sprite_sheet
  */
 SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) const
@@ -151,19 +153,13 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
 		rect.w = 154;
 		rect.h = 153;
 		break;
-	case CANNON:
-		rect.x = 253;
-		rect.y = 0;
-		rect.w = 239;
-		rect.h = 184;
-		break;
 	}
 	return rect;
 }
 
 /*
- * Laddar in bild fr�n disk och konverterar
- * den till r�tt format f�r snabb blittning.
+ * Laddar in bild från disk och konverterar
+ * den till rätt format för snabb blittning.
  * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  */
@@ -192,13 +188,14 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
 }
 
 /*
- * F�rroterar alla bilder till cannon fr�n
- * 0 upp till DEGREES. Bilden h�mtas fr�n
+ * Förroterar alla bilder till cannon från
+ * 0 upp till DEGREES. Bilden hämtas från
  * bilden dit getClippingRectangle() pekar.
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
 	SDL_Surface* unrotatedCannon =loadImageFromDisc("cannon.png", true);
+	SDL_Surface* flippedCannon = flipImageHorizontally(unrotatedCannon);
 
 	if (!unrotatedCannon) {
 		cerr << "cannon.png ej funnen" << endl;
@@ -206,17 +203,23 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 					
 	for (int i = 0; i < DEGREES; ++i)
 	{
-		cannon[i] = rotozoomSurface(unrotatedCannon, -i, 1, 1);
+		cannon[i] = rotozoomSurface(unrotatedCannon, -i * 360.0 / DEGREES, 1, 1);
+	}
+
+	for (int j = 0; j < DEGREES; ++j) 
+	{
+		cannon[DEGREES + j] = rotozoomSurface(flippedCannon, j * 360.0 / DEGREES, 1, 1);
 	}
 	SDL_FreeSurface(unrotatedCannon);
+	SDL_FreeSurface(flippedCannon);
 }
 
 /*
- * Frig�r minnet fr�n cannon
+ * Frigör minnet från cannon
  */
 void GraphicsEngine::unloadCannonSpritesFromMemory()
 {
-	for (int i = 0; i < DEGREES; ++i)
+	for (int i = 0; i < 2*DEGREES; ++i)
 	{
 		SDL_FreeSurface(cannon[i]);
 		cannon[i] = NULL;
@@ -224,9 +227,9 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 }
 
 /*
- * Skriver ut �nskad text till bufferten med svart kant
- * runt om. F�rg v�ljs fr�n 0-255 i respektive r�tt,
- * gr�nt och bl�tt.
+ * Skriver ut önskad text till bufferten med svart kant
+ * runt om. Färg väljs från 0-255 i respektive rött,
+ * grönt och blått.
  */
 void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const int& fontIndex)
 {
@@ -247,7 +250,7 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const in
 	// Centrerat
 	//xScreenPos = (screen->w - textWidth) / 2;
 
-	// H�gerjusterat
+	// Högerjusterat
 	//xScreenPos = (screen->w - textWidth) - xScreenPos;
 
 	SDL_Color textColor = {0, 0, 0, 0};
@@ -275,9 +278,9 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const in
 }
 
 /*
- * Skriver ut �nskad text till bufferten utan svart kant
- * runt om. F�rg v�ljs fr�n 0-255 i respektive r�tt,
- * gr�nt och bl�tt.
+ * Skriver ut önskad text till bufferten utan svart kant
+ * runt om. färg väljs från 0-255 i respektive rött,
+ * grönt och blått.
  */
 void GraphicsEngine::drawTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const int& fontIndex)
 {
@@ -550,3 +553,43 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
 		drawToScreenBuffer(*(*it));
 	}
 }
+
+SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
+{
+	SDL_Surface* flippedImage = NULL;
+
+	flippedImage = SDL_CreateRGBSurface(	originalImage->flags,
+									originalImage->w,
+									originalImage->h,
+									originalImage->format->BitsPerPixel,
+									originalImage->format->Rmask,
+									originalImage->format->Gmask,
+									originalImage->format->Bmask,
+									(originalImage->flags & SDL_SRCCOLORKEY) ? 0 : originalImage->format->Amask);
+	
+	if (SDL_MUSTLOCK(originalImage)) {
+		SDL_LockSurface(originalImage);
+	}
+
+	Uint32* sourcePixels = (Uint32*)originalImage->pixels;
+	Uint32* targetPixels = (Uint32*)flippedImage->pixels;
+
+	for (int x = 0, rx = flippedImage->w - 1; x < flippedImage->w; ++x, --rx) {
+		for(int y = 0; y < flippedImage->h; ++y) {
+			targetPixels[y * flippedImage->w + rx] = sourcePixels[y * originalImage->w + x];
+		}
+	}
+
+	if (SDL_MUSTLOCK(originalImage)) {
+		SDL_UnlockSurface(originalImage);
+	}
+
+	if (originalImage->flags & SDL_SRCCOLORKEY) {
+		SDL_SetColorKey(flippedImage, SDL_SRCCOLORKEY, originalImage->format->colorkey);
+	}
+
+	return flippedImage;
+}
+
+
+
