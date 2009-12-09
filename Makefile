@@ -2,13 +2,11 @@
 # Makefile för Panzer,  GNU GCC (g++)
 #
 # Filkataloger där olika delar av programvaran finns.
-PANZER2K     = src
-BUILD        = build
-TESTS        = $(PANZER2K)/tests
-
-PANZER2K = src
-BUILD    = build
-SDL      = -lSDL -lSDL_image -lSDL_ttf -lSDLmain -Wl,-framework,Cocoa
+PANZER2K  = src
+BUILD     = build
+TESTS     = $(PANZER2K)/tests
+SDL      += -lSDL -lSDL_image -lSDL_ttf -lSDLmain -Wl,-framework,Cocoa
+BOOST_LD  = -L/opt/local/lib/ -lboost_system-mt -lboost_thread-mt
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
@@ -76,16 +74,29 @@ $(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
 $(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
 
+$(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
+
 # make Element
 Element: $(BUILD)/Element.o
 
 # make Cannon
-
 Cannon: $(BUILD)/Cannon.o
 
 # make GameWorld
-
 GameWorld: $(BUILD)/GameWorld.o
+
+# make Network
+Network: $(BUILD)/Network.o
+
+tests: Network_client Network_server
+
+Network_client: $(BUILD)/Network.o
+	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_client $(BUILD)/Network.o $(TESTS)/Network_client.cc
+
+Network_server: $(BUILD)/Network.o
+	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_server $(BUILD)/Network.o $(TESTS)/Network_server.cc
+
 
 # 'make clean' tar bort objektkodsfiler och 'core'
 clean:
