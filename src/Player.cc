@@ -1,29 +1,39 @@
 #include "Player.h"
+#include "State.h"
+#include "SDLInclude.h"
 
-Player::Player(int health, std::string name, int points):health_(health),name_(name),points_(points){}
+using namespace std;
 
-int Player::get_health()
+Player::Player(const string& name, const int health, const int points)
+ : name_(name), health_(health), points_(points) {}
+
+const string& Player::get_name() const
 {
-	return health_
+	return name_;
 }
 
-int Player::set_health()
+void Player::set_name(const string& name)
 {
+	name_ = name;
 }
 
-std::string Player::get_name()
+const int& Player::get_health() const
 {
+	return health_;
 }
 
-void Player::set_name()
+void Player::set_health(const int health)
 {
+	health_ = health;
 }
 
-int Player::get_points()
+const int& Player::get_points() const
 {
+	return points_;
 }
 
-void Player::set_points()
+void Player::set_points(const int points)
 {
+	points_ = points;
 }
 

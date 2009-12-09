@@ -3,20 +3,18 @@
 
 #include <iostream>
 #include <vector>
-#include "Interfaces.h"
-
-using namespace std;
+#include "MovableElement.h"
 
 class PhysicsEngine {
 	
 	public:
-		PhysicsEngine();
-		void update_pos(vector<Element&>, double&);
-		void update_pos(Element&, double&);
+		void update_pos(MovableElement*, const double&, const double&); 		//indata: (element, gravitation, wind)
 
 	private:
-		void calc_new_pos(Movable&, double&);
-
+		void update_x(MovableElement*);						//indata: (element, gravitation)
+		void update_y(MovableElement*);						//indata: (element, gravitation)
+		void update_dx(MovableElement*, const double);
+		void update_dy(MovableElement*, const double);
 };
 #endif /*PHYSICSENGINE_H_*/
 

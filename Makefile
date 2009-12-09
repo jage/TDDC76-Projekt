@@ -9,22 +9,22 @@ TESTS        = $(PANZER2K)/tests
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++
-CCFLAGS  +=	-std=c++98 -I/Library/Frameworks/SDL.framework/Headers -I/opt/local/include
-BOOST_LD  = -L/opt/local/lib/ -lboost_system-mt
+CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
-OBJECTS_LIST = Panzer2k.o Element.o GameEngine.o GameWorld.o State.o \
-				GraphicsEngine.o
+OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
+			   	PhysicsEngine.o State.o Player.o LocalPlayer.o GameEngine.o GameWorld.o \
+			 	SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
+
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
 
-
 # Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(OBJECTS)
-
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(OBJECTS)
+	
 # Delmal
 $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Panzer2k.cc -o $(BUILD)/Panzer2k.o
@@ -32,34 +32,55 @@ $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 $(BUILD)/Element.o: $(PANZER2K)/Element.h $(PANZER2K)/Element.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Element.cc -o $(BUILD)/Element.o
 
+$(BUILD)/Cannon.o: $(PANZER2K)/Cannon.h $(PANZER2K)/Cannon.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Cannon.cc -o $(BUILD)/Cannon.o
+
+$(BUILD)/Ground.o: $(PANZER2K)/Ground.h $(PANZER2K)/Ground.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Ground.cc -o $(BUILD)/Ground.o
+
+$(BUILD)/Concrete.o: $(PANZER2K)/Concrete.h $(PANZER2K)/Concrete.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Concrete.cc -o $(BUILD)/Concrete.o
+
 $(BUILD)/GameEngine.o: $(PANZER2K)/GameEngine.h $(PANZER2K)/GameEngine.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GameEngine.cc -o $(BUILD)/GameEngine.o
 
 $(BUILD)/GameWorld.o: $(PANZER2K)/GameWorld.h $(PANZER2K)/GameWorld.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GameWorld.cc -o $(BUILD)/GameWorld.o
 
+$(BUILD)/Interval.o: $(PANZER2K)/Interval.h $(PANZER2K)/Interval.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Interval.cc -o $(BUILD)/Interval.o
+
 $(BUILD)/GraphicsEngine.o: $(PANZER2K)/GraphicsEngine.h $(PANZER2K)/GraphicsEngine.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/GraphicsEngine.cc -o $(BUILD)/GraphicsEngine.o
+
+$(BUILD)/MovableElement.o: $(PANZER2K)/MovableElement.h $(PANZER2K)/MovableElement.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/MovableElement.cc -o $(BUILD)/MovableElement.o	
+
+$(BUILD)/PhysicsEngine.o: $(PANZER2K)/PhysicsEngine.h $(PANZER2K)/PhysicsEngine.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/PhysicsEngine.cc -o $(BUILD)/PhysicsEngine.o
+
+$(BUILD)/SDL_rotozoom.o: $(PANZER2K)/SDL_rotozoom.h $(PANZER2K)/SDL_rotozoom.c
+	gcc $(CCFLAGS) -c $(PANZER2K)/SDL_rotozoom.c -o $(BUILD)/SDL_rotozoom.o
 
 $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/State.cc -o $(BUILD)/State.o
 
-$(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
+$(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Player.cc -o $(BUILD)/Player.o
+
+$(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
 
 # make Element
 Element: $(BUILD)/Element.o
 
-# make Network
-Network: $(BUILD)/Network.o
+# make Cannon
 
-tests: Network_client Network_server
+Cannon: $(BUILD)/Cannon.o
 
-Network_client: $(BUILD)/Network.o
-	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_client $(BUILD)/Network.o $(TESTS)/Network_client.cc
+# make GameWorld
 
-Network_server: $(BUILD)/Network.o
-	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_server $(BUILD)/Network.o $(TESTS)/Network_server.cc
+GameWorld: $(BUILD)/GameWorld.o
 
 # 'make clean' tar bort objektkodsfiler och 'core'
 clean:

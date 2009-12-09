@@ -1,56 +1,30 @@
 #include "PhysicsEngine.h"
+#include <math.h>
+#include <stdlib.h>
 
-using namespace std;
 
-
+double dt_ = 0.0125;
 /*
- * Konstruktor till PhysicsEngine
+ * update_pos beräknar den nya positionen för ett givet MovableElement-objekt samt en given gravitation.
  */
-PhysicsEngine::PhysicsEngine() {
+void PhysicsEngine::update_pos(MovableElement* element, const double& gravity, const double& wind) {
+	update_dx(element, wind);
+	update_dy(element, gravity);
+	update_x(element);
+	update_y(element);
 }
 
-
-/*
- * update_pos(std::vector<Element&> vec_element, double& gravitation)
- * updaterar positionen hos Element-objekt av typen Movable, givet en viss gravitation.
- */
-void PhysicsEngine::update_pos(std::vector<Element&> vec_element, double& gravitation) {
-	
-	std::iterator it = vec_element.begin();
-
-	while(it != vec_element.end())
-	{
-		if (dynamic_cast<Movable&>(*it))
-		{
-			calc_new_pos(*it, graviation);		//använder calc_new_pos för enstaka element
-		}
-	}
+void PhysicsEngine::update_x(MovableElement* element){
+	element->set_x(element->get_x() + element->get_dx() * dt_);
+}
+void PhysicsEngine::update_y(MovableElement* element){
+	element->set_y(element->get_y() + element->get_dy() * dt_);
 }
 
-
-/*
- * update_pos(Element& element, double& gravitation)
- * updaterar positionen om Element-objektet är av typen Movable, givet en viss gravitation.
- */
-void PhysicsEngine::update_pos(Element& element, double& gravitation) {
-
-	if (dynamic_cast<Movable&>(element))
-	{
-		calc_new_pos(element, graviation);		//använder calc_new_pos om element är av typen Movable
-	}
+void PhysicsEngine::update_dx(MovableElement* element, const double wind){
+	element->set_dx(element->get_dx() - wind * abs(element->get_dx()) * element->get_windFactor() * dt_);
 }
 
-
-/*
- * calc_new_pos beräknar den nya positionen för ett givet Movable-objekt samt en given gravitation.
- */
-void PhysicsEngine::calc_new_pos(Movable& element, double& gravitation) {
-	element.set_velocity(
-			element.get_velocity().dx,
-			sqrt(sqr(element.get_velocity().dy) - 2*gravitation*element.get_velocity().dy)
-			);
+void PhysicsEngine::update_dy(MovableElement* element, const double gravity){
+	element->set_dy(element->get_dy() - gravity * dt_ * 100);
 }
-
-
-
-

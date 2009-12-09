@@ -7,3 +7,4 @@
 .cproject
 .DS_Store
 *.orig
+SDLInclude.h

@@ -11,6 +11,7 @@
 #include <vector>
 #include "GameWorld.h"
 #include "GraphicsEngine.h"
+#include "SDLInclude.h"
 #include "State.h"
 
 //Dummyclasses
@@ -24,7 +25,7 @@ public:
 
 	/*
 	 * run() - funktionen startar speloopen.
-	 * TODO Loopen körs tills loppen hamnar i tillståndet
+	 * Loopen körs tills loppen hamnar i tillståndet
 	 * ExitGame
 	 */
 	void run();
@@ -36,16 +37,43 @@ private:
 	Sound sound_;
 	Player player1;
 	Player player2;
+	unsigned int ticks_;
 
-
-	//Tillstånd
+	//Tillst�nd
 	PANZER_STATES currentState_;
-	State* prevState_;
-    vector<State*> stateVector_;
+	PANZER_STATES playerTurn_;
+	std::vector<State*> stateVector_;
 
-	// Kopiering och tilldelning tillåts ej (definieras ej)
+    /*
+     * init()
+     * Initerar SDL, returnerar true ifall vi lyckades
+     */
+    bool init_SDL();
+
+    /*
+     * cleanup()
+     * St�dar i minnet n�r spelet avslutas
+     */
+    void cleanup();
+
+    /*
+     * regulate_fps()
+     * Reglerar frames/second, s� att vi inte tar all processorkraft
+     * Standard �r 100 fps
+     */
+    void regulate_fps();
+
+    /*
+     * return_to_meny()
+     * Avbryter spelet, och vi återvändet till meny.
+     */
+    void return_to_meny();
+
+	// Kopiering och tilldelning till�ts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
+
+
 
 };
 

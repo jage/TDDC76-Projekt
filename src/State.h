@@ -10,7 +10,7 @@
 
 #include "GraphicsEngine.h"
 #include "GameWorld.h"
-#include "State.h"
+#include "SDLInclude.h"
 #include <iostream>
 
 
@@ -25,7 +25,8 @@ public:
 
 	/*
 	 * render()
-	 * Rita tillst�ndsspecifik grafik p� sk�rmen
+	 * Rita tillst�ndsspecifik grafik p� sk�rmen
+	 * OBS Uppdaterar inte spelskärmen, GameEngine gör detta
 	 */
 	virtual void render() = 0;
 
@@ -38,9 +39,8 @@ public:
 	/*
 	 * handle_input()
 	 * Bestämmer hur tillståndet svara på användarens interaktion
-	 * TODO SDL_Event istället för att läsa på en inström
 	 */
-	virtual void handle_input(std::istream&) = 0;
+	virtual void handle_input(SDL_Event&) = 0;
 
 	/*
 	 * next_state()
@@ -54,7 +54,6 @@ protected:
 
 };
 
-
 class Meny : public State
 {
 public:
@@ -62,29 +61,24 @@ public:
 	Meny(GraphicsEngine*, GameWorld*);
 	~Meny();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
 	void logic(){};
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
-	void handle_input(std::istream&);
+	void handle_input(SDL_Event&);
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
+
+private:
+ PANZER_STATES nextState_;
+ bool quitMeny_;
+
+ void changeState(bool);
+
+ void renderMenyGfx();
+
+
+
 
 private:
 
@@ -94,36 +88,41 @@ class Player1State : public State
 {
 
 public:
-	//Meny();
 	Player1State(GraphicsEngine*, GameWorld*);
 	~Player1State();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
-	void logic(){};
+	void logic();
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
-	void handle_input(std::istream&){};
+	void handle_input(SDL_Event&);
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
+	PANZER_STATES nextState_;
 
+};
+
+class Player2State : public State
+{
+
+public:
+	//Meny();
+	Player2State(GraphicsEngine*, GameWorld*);
+	~Player2State();
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&);
+
+	PANZER_STATES next_state();
+
+
+private:
+	PANZER_STATES nextState_;
 };
 
 class Fire : public State
@@ -133,28 +132,12 @@ public:
 	Fire(GraphicsEngine*, GameWorld*);
 	~Fire();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
-	void logic(){};
+	void logic();
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
-	void handle_input(std::istream&){};
+	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
@@ -168,31 +151,70 @@ public:
 	ExitGame(GraphicsEngine*, GameWorld*);
 	~ExitGame();
 
-
-	/*
-	 * Skriver ut menyalternativ till användaren på standard utsrömmen
-	 */
 	void render();
 
-	/*
-	 * logic()
-	 * Saknar egentlig funktion
-	 */
-	void logic(){};
+	void logic();
 
-	/*
-	 * handle_event()
-	 * Svarar på användarens knapptryckningar
-	 */
-	void handle_input(std::istream&){};
+	void handle_input(SDL_Event&){};
 
-	/*
-	 * next_state()
-	 * Nästa tillstånd för Meny
-	 */
 	PANZER_STATES next_state();
 
 private:
+
+};
+
+class NetworkState : public State
+{
+
+public:
+	NetworkState(GraphicsEngine*, GameWorld*);
+	~NetworkState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&){};
+
+	PANZER_STATES next_state(){return MENY;};
+
+private:
+
+};
+
+class OptionState : public State
+{
+
+public:
+	OptionState(GraphicsEngine*, GameWorld*);
+	~OptionState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&);
+
+	PANZER_STATES next_state();
+
+private:
+	PANZER_STATES nextState_;
+};
+
+
+class InitState : public State
+{
+public:
+	InitState(GraphicsEngine*, GameWorld*);
+	~InitState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&){};
+
+	PANZER_STATES next_state();
 
 };
 
