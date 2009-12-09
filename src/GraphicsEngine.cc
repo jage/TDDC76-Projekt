@@ -189,8 +189,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
 
 /*
  * Förroterar alla bilder till cannon från
- * 0 upp till DEGREES. Bilden hämtas från
- * bilden dit getClippingRectangle() pekar.
+ * 0 upp till DEGREES.
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
