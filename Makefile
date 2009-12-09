@@ -17,8 +17,8 @@ CCFLAGS  += -arch x86_64 -I/opt/local/include -I/opt/local/include -L/opt/local/
 # Objektkodsmoduler som ingår i Panzer 2K
 
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
-			   	PhysicsEngine.o State.o Player.o LocalPlayer.o GameEngine.o GameWorld.o \
-			 	SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
+			   	PhysicsEngine.o State.o Player.o LocalPlayer.o NetworkPlayer.o GameEngine.o \
+				Network.o GameWorld.o SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
@@ -26,7 +26,7 @@ all: panzer2k
 
 # Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(OBJECTS)
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(BOOST_LD) $(OBJECTS)
 
 # Delmal
 $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
@@ -73,6 +73,9 @@ $(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
 
 $(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
+
+$(BUILD)/NetworkPlayer.o: $(PANZER2K)/NetworkPlayer.h $(PANZER2K)/NetworkPlayer.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/NetworkPlayer.cc -o $(BUILD)/NetworkPlayer.o
 
 $(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
