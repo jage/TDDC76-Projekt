@@ -7,6 +7,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
+#include "SDLInclude.h"
 
 using boost::asio::ip::tcp;
 using namespace std;
@@ -164,4 +165,10 @@ void Network::callback(boost::asio::streambuf &response_)
 	std::string msg;
 	std::getline(response_stream, msg);
 	std::cout << msg << "\n";
+	
+	std::cout << "Creating event ...\n";
+	SDL_Event test_event;
+	test_event.type = SDL_KEYDOWN;
+	SDL_PushEvent(&test_event);
+	std::cout << "Event created!\n";
 }

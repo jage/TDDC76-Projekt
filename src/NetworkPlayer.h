@@ -1,6 +1,7 @@
 #ifndef LOCALPLAYER_H_
 #define LOCALPLAYER_H_
 
+#include "Network.h"
 #include "Player.h"
 #include "SDLInclude.h"
 

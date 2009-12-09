@@ -276,6 +276,7 @@ NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 
 void NetworkState::render(){
 	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("You will be a server!",0,0,255,255,255);
 }
 
 void NetworkState::logic(){

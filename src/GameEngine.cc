@@ -62,7 +62,7 @@ void GameEngine::run()
 		throw logic_error("Gick ej att initera SDL");
 
 	SDL_Event event;
-
+	
 	while(currentState_ != EXITGAME)
 		{
 			ticks_ = SDL_GetTicks();
