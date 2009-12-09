@@ -14,6 +14,8 @@
 #include <vector>
 #include <ctime>
 
+#define PI 3.14159265
+
 typedef std::vector<Element*> ElementVector;
 typedef std::vector<MovableElement*> MovableElementVector;
 

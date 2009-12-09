@@ -2,6 +2,7 @@
 #include <iostream>
 #include <exception>
 #include <cstdlib>
+#include <math.h>
 using namespace std;
 
 GameWorld::GameWorld(const double& gravity,const double& wind)
@@ -87,6 +88,14 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 {
 	if ((width-2*ptr_cannonL_->get_width()) % res !=0) return false; // width must be an even multiple of the resolution minus two widths of the cannons
 	
+	//clear world
+	elements_.clear();
+	movableElements_.clear();
+	
+	//move cannons to correct x-coords
+	ptr_cannonL_->set_x(ptr_cannonL_->get_width()*0.5);
+	ptr_cannonR_->set_x(width-ptr_cannonR_->get_width()*0.5);
+	
 	int startHeight(0);
 	int endHeight(0);
 	int maxHeight(0);
@@ -95,74 +104,80 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 	int noElements(0);
 	
 	maxHeight= (int)(height*(2/3.0));
-	minHeight= (int)(height*(1/10.0));
-	offset=(int)(minHeight * 0.1);
+	minHeight= (int)(height*0.1);
+	offset=(int)(minHeight*0.2);
 	noElements= (int)width/res;
 	
-	int* randomHeights;
+	int* calculatedHeights;
 	try
 	{
 		// allocate array
-		randomHeights = new int [noElements];
+		calculatedHeights = new int [noElements];
 	}
 	catch (bad_alloc)
 	{
 		throw GameWorldException("Can't allocate enough memory");	
 	}
 	
-	int randomHeight(0);
-	int prevHeight(0);
+	double calculatedHeight(0);
 	
-	// now generate random heights of rectangles
+	// now generate heights of rectangles
 	
 	// feed rand with seed
 	srand(time(NULL));
 	
+	double omega (0);
+	double phase(0);	// random generated phase
+	double amplitude(0);	// random generated amplitude
+			
+	omega = 2*PI*(1/(rand() % (width*2) + (0.25*width))); // between (1/4)width and 2*width;
+	phase = rand() % 2*omega;		
+	amplitude= rand() % maxHeight +minHeight;
+	
+	// use sinus	
 	for (int i =0;i<noElements;i++)
 	{	
-		// generate new height and check if its ok
-		do 
-		{
-			randomHeight= rand() % maxHeight + minHeight;
+			// calculate height with sinus
+			calculatedHeight = minHeight+amplitude*sin(omega*i+phase);
 			
-			// i=0
-			if (prevHeight==0) prevHeight=randomHeight;
-		}
-		while(abs(randomHeight-prevHeight)>offset);
-		
-		// we got a ok height, store it
-		randomHeights[i]=randomHeight;
-		prevHeight = randomHeight;
+			// if < minHeight -> set minHeight
+			if (calculatedHeight<minHeight) calculatedHeight=minHeight;
+			
+			calculatedHeights[i]=(int)calculatedHeight;
 	}
 	
 	// create ground elements
-	Interval leftCannonInterval(0,ptr_cannonL_->get_width());
-	Interval rightCannonInterval(width-ptr_cannonR_->get_width(),width);
-	
-	startHeight = randomHeights[0];
-	endHeight = randomHeights[noElements-1];
+	Interval currInterval(0,res);
+	startHeight = calculatedHeights[ptr_cannonL_->get_xInterval().get_upper()];
+	endHeight = calculatedHeights[ptr_cannonR_->get_xInterval().get_lower()];
 		
 	for (int i =0;i<noElements;i++)
 	{
 		// check if one cannon is placed on current x-coord
 		try
 		{
-			if(leftCannonInterval.belongs(i*res)) add_element(new Concrete(res,startHeight,i*res,height-startHeight));
-			else if(rightCannonInterval.belongs(i*res)) add_element(new Concrete(res,endHeight,i*res,height-endHeight));
-			else add_element(new Ground(res,randomHeights[i],i*res,height-randomHeights[i]));
+			if(ptr_cannonL_->get_xInterval().intersect(currInterval)) add_element(new Concrete(res,startHeight,i*res,height-startHeight));
+			else if(ptr_cannonR_->get_xInterval().intersect(currInterval)) add_element(new Concrete(res,endHeight,i*res,height-endHeight));
+			else add_element(new Ground(res,calculatedHeights[i],i*res,height-calculatedHeights[i]));
 		}
 		catch (bad_alloc)
 		{
-			delete [] randomHeights;
+			delete [] calculatedHeights;
 			throw GameWorldException("Can't allocate enough memory");	
 		}
+		
+		currInterval=Interval(i*res,i*res +res);
 	}
 	
-	// place out the cannons
-	ptr_cannonL_->set_y(height-startHeight);
-	ptr_cannonL_->set_x(leftCannonInterval.get_middle());
-	ptr_cannonR_->set_y(height-endHeight);
-	ptr_cannonR_->set_x(rightCannonInterval.get_middle());
-	delete []randomHeights;
+	// place out the cannons on correct heights
+	ptr_cannonL_->set_y(height-startHeight-50);
+	ptr_cannonR_->set_y(height-endHeight-50);
+	
+		cout << "left cannon x: " << ptr_cannonL_->get_x() << "y: " << ptr_cannonL_->get_y() << endl;
+	cout << "right cannon x: " << ptr_cannonR_->get_x() << "y: " << ptr_cannonR_->get_y() << endl;
+	
+	 
+	
+	delete []calculatedHeights;
 	return true;
 }
