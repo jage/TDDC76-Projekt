@@ -182,11 +182,11 @@ void Player1State::handle_keystates(Uint8* keystates)
 {
 		       if(keystates[SDLK_UP])
 				   {
-					   gameworld_ptr_->get_leftCannon()->adjust_angle(1); cout << "Player 1 - UP cannon angle: " <<  gameworld_ptr_->get_leftCannon()->get_angle() << endl;
+					   gameworld_ptr_->get_leftCannon()->adjust_angle(1);
 				   }
 		       else if(keystates[SDLK_DOWN])
 		       	  {
-					   gameworld_ptr_->get_leftCannon()->adjust_angle(-1); cout << "Player 1 - DOWN cannon angle: " <<  gameworld_ptr_->get_leftCannon()->get_angle() << endl;
+					   gameworld_ptr_->get_leftCannon()->adjust_angle(-1);
 		       	  }
 }
 
