@@ -6,10 +6,15 @@ PANZER2K     = src
 BUILD        = build
 TESTS        = $(PANZER2K)/tests
 
+PANZER2K = src
+BUILD    = build
+SDL      = -lSDL -lSDL_image -lSDL_ttf -lSDLmain -Wl,-framework,Cocoa
+
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
-CCC       = g++
-CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
+CCC       = g++ -g
+CPPFLAGS += -std=c++98
+CCFLAGS  += -arch x86_64 -I/opt/local/include -I/opt/local/include -L/opt/local/lib -L/usr/lib
 
 # Objektkodsmoduler som ingår i Panzer 2K
 
@@ -24,7 +29,7 @@ all: panzer2k
 # Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(OBJECTS)
-	
+
 # Delmal
 $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Panzer2k.cc -o $(BUILD)/Panzer2k.o
