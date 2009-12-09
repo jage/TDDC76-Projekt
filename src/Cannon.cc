@@ -7,7 +7,7 @@ Cannon::Cannon(Ammunition* ptrAmmo)
 
 void Cannon::adjust_angle(const double& delta)
 {
-	angle_+=delta;
+	set_angle(get_angle() + delta);
 }
 
 

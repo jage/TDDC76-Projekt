@@ -36,7 +36,7 @@ const int Element::get_y() const
 
 void Element::set_angle(const double& angle)
 {
-	angle_=angle;	
+		angle_=(int)(angle + ((angle < 0) ? 360:0)) % 360;
 }
 
 const double Element::get_angle() const
