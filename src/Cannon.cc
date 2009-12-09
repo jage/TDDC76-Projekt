@@ -1,13 +1,16 @@
 #include "Cannon.h"
 #include "Enums.h"
 
-Cannon::Cannon(Ammunition* ptrAmmo)
-	:Element(50,58, CANNON),power_(0),ptr_ammunition_(ptrAmmo)	{}
-	
+Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
+	:Element(50,58, LEFT_CANNON),fireAngle_(0),power_(0),ptr_ammunition_(ptrAmmo)
+{
+	// set right cannon if not left
+	if(!leftCannon) set_imgRef(RIGHT_CANNON);
+}
 
 void Cannon::adjust_angle(const double& delta)
 {
-	angle_+=delta;
+	set_angle(get_angle() + delta);
 }
 
 
