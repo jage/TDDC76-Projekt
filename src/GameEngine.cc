@@ -11,6 +11,7 @@
 #include "State.h"
 #include "Enums.h"
 #include "SDLInclude.h"
+#include "LocalPlayer.h"
 #include <stdexcept>
 #include <vector>
 
@@ -30,6 +31,7 @@ GameEngine::GameEngine() {
 
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
+
 
 }
 
