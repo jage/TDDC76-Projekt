@@ -329,6 +329,7 @@ void GraphicsEngine::init()
 	}
 	source_image = loadImageFromDisc("sprite_sheet.bmp");
 	cannonball = loadImageFromDisc("cannonball.png", true);
+	backgroundImage = loadImageFromDisc("panzer.bmp");
 	loadButtonSpritesIntoMemory();
 	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
@@ -341,6 +342,7 @@ void GraphicsEngine::uninit()
 {
 	SDL_FreeSurface(source_image);
 	SDL_FreeSurface(cannonball);
+	SDL_FreeSurface(backgroundImage);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
 	unloadButtonSpritesFromMemory();
@@ -719,4 +721,9 @@ void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int
 	{
 		SDL_FillRect(screen, &rcDest,  (i * 255 / width) << 16 | (255 - i * 255 / width) << 8 | 0 << 0 );
 	}
+}
+
+void GraphicsEngine::drawBackgroundToScreenBuffer()
+{
+	SDL_BlitSurface(backgroundImage, NULL, screen, NULL);
 }

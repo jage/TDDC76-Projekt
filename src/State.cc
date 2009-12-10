@@ -154,7 +154,9 @@ PANZER_STATES Meny::next_state()
 
 
 Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
-	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE), player_ptr_(player) {}
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE), player_ptr_(player) {
+		fire_power_ = 0;
+	}
 
 Player1State::~Player1State() {}
 
@@ -162,7 +164,10 @@ void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	if (fire_power_ != 0)
+		graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
+	
 }
 void Player1State::logic()
 {
@@ -178,17 +183,18 @@ void Player1State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
-				graphicsengine_ptr_->showScreenBufferOnScreen();
-				Network::send("127.0.0.1", "12346", "enter_pressed");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-				Network::send("127.0.0.1", "12346", "up");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-				Network::send("127.0.0.1", "12346", "down");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
@@ -204,7 +210,8 @@ void Player1State::handle_input(SDL_Event& event){
 					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_leftCannon()->fire();
 					audio_ptr_->playSound(0);
-					Network::send("127.0.0.1", "12346", "enter_released");
+					if (player_ptr_->network())
+						Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
@@ -222,14 +229,18 @@ PANZER_STATES Player1State::next_state()
 //Player2State-----------------------------------------------------------//
 
 Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
-	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE), player_ptr_(player) {}
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE), player_ptr_(player) {
+		fire_power_ = 0;
+	}
 
-Player2State::~Player2State(){}
+Player2State::~Player2State() {}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	if (fire_power_ != 0)
+		graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 35, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
@@ -243,35 +254,36 @@ void Player2State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 35, 200, 20, fire_power_);
-				graphicsengine_ptr_->showScreenBufferOnScreen();
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
-				gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
-				gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
 
 	}
 	else if(event.type == SDL_KEYUP)
-	{
-		string s;
-		stringstream out;
-		out << fire_power_;
-		s = out.str();
-		
+	{		
 		switch(event.key.keysym.sym)
 		{
 			case SDLK_RETURN:
 				if (fire_power_ != 0)
 				{
 					nextState_ = FIRE;
-					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
-					gameworld_ptr_->get_rightCannon()->fire();
+					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
+					gameworld_ptr_->get_leftCannon()->fire();
 					audio_ptr_->playSound(0);
+					if (player_ptr_->network())
+						Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
