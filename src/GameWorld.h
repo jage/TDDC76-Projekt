@@ -38,7 +38,7 @@ public:
 	MovableElementVector* get_MovableElemets();
 	Cannon* get_leftCannon() const;
 	Cannon* get_rightCannon() const;
-	bool generate_world(const int&);
+	bool generate_world(const int& seed=0);
 private:
 	int width_;
 	int height_;

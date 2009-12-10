@@ -228,7 +228,7 @@ Player2State::~Player2State(){}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
@@ -243,7 +243,7 @@ void Player2State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				graphicsengine_ptr_->drawPowerBarToScreenBuffer(435, 35, 200, 20, fire_power_);
+				graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 35, 200, 20, fire_power_);
 				graphicsengine_ptr_->showScreenBufferOnScreen();
 			break;
 			case SDLK_UP:
