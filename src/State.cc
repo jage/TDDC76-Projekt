@@ -177,11 +177,11 @@ void Player1State::handle_input(SDL_Event& event){
 							Network::send("127.0.0.1", "12345", "enter");
 							break;
 						case SDLK_UP:
-							gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+							gameworld_ptr_->get_leftCannon()->adjust_angle(1);
 							Network::send("127.0.0.1", "12345", "up");
 							break;
 						case SDLK_DOWN:
-							gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+							gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
 							Network::send("127.0.0.1", "12345", "down");
 							break;
 						default: break;
