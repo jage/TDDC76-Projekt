@@ -7,7 +7,9 @@ public:
 	Explosion(const int&,const int&,const int&);
 	const int distance(const int&,const int&) const;	// get distance from explosion epicentrum
 	const bool intersect(const int&,const int&) const; // is the point in the "explosion circle"
-	const int decreasedHeight(const int&,const int&) const;	// get new decreased height if in radius
+	const int get_x() const;
+	const int get_y() const;
+	const int newY(const int&,const int&) const;	// get new decreased height if in radius
 	virtual ~Explosion() {}
 private:
 	int x_;
