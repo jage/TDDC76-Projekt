@@ -4,7 +4,7 @@
 # Filkataloger d�r olika delar av programvaran finns.
 PANZER2K = src
 BUILD    = build
-SDL      = -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
+SDL      = -lSDL -lSDL_image -lSDL_ttf
 
 # Kompilator och flaggor som p�verkar kompilering, inkludering, etc. 
 # L�gg till '-g' i CCFLAGS om kompilering f�r avlusning ska g�ras.
@@ -14,7 +14,7 @@ CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
 # Objektkodsmoduler som ing�r i Panzer 2K
 
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
-			   	PhysicsEngine.o State.o Player.o LocalPlayer.o Audio.o GameEngine.o GameWorld.o \
+			   	PhysicsEngine.o State.o Player.o LocalPlayer.o GameEngine.o GameWorld.o \
 			 	SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
@@ -71,8 +71,8 @@ $(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
 $(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
 	
-$(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
+#$(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
+#	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
 
 # make Element
 
