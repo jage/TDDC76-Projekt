@@ -4,7 +4,7 @@
 #include "State.h"
 #include "Enums.h"
 #include "SDLInclude.h"
-#include "LocalPlayer.h"
+#include "Player.h"
 #include <stdexcept>
 #include <vector>
 
@@ -13,20 +13,21 @@ using namespace std;
 GameEngine::GameEngine() {
 
 
-	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_, &soundplayer_, player1_ptr_));
 	stateVector_.push_back(new NetworkState(&graphicsengine_, &gameworld_, &soundplayer_));
 	stateVector_.push_back(new OptionState(&graphicsengine_, &gameworld_, &soundplayer_));
 	stateVector_.push_back(new ExitGame(&graphicsengine_, &gameworld_, &soundplayer_));
 	stateVector_.push_back(new Fire(&graphicsengine_, &gameworld_, &soundplayer_));
 	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_, &soundplayer_));
-	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_, &soundplayer_));
+	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_, &soundplayer_, player2_ptr_));
 	stateVector_.push_back(new InitState(&graphicsengine_,&gameworld_, &soundplayer_));
+	stateVector_.push_back(new SetNameState(&graphicsengine_,&gameworld_,&soundplayer_,player1_ptr_,player2_ptr_));
 
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
 
-	player1_ptr_ = new LocalPlayer();
-	player2_ptr_ = new LocalPlayer();
+	player1_ptr_ = new Player();
+	player2_ptr_ = new Player();
 
 }
 

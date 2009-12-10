@@ -1,7 +1,7 @@
 #
-# Makefile för Panzer,  GNU GCC (g++)
+# Makefile fï¿½r Panzer,  GNU GCC (g++)
 #
-# Filkataloger där olika delar av programvaran finns.
+# Filkataloger dï¿½r olika delar av programvaran finns.
 PANZER2K  = src
 BUILD     = build
 TESTS     = $(PANZER2K)/tests
@@ -12,8 +12,8 @@ BOOST_LD  = -lboost_system-mt -lboost_thread-mt
 CPPFLAGS  += -DWITH_NETWORK
 endif
 
-# Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
-# Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
+# Kompilator och flaggor som pï¿½verkar kompilering, inkludering, etc. 
+# Lï¿½gg till '-g' i CCFLAGS om kompilering fï¿½r avlusning ska gï¿½ras.
 CCC       = g++
 CPPFLAGS += -std=c++98 -pedantic -Wall -Wextra -g
 
@@ -23,16 +23,16 @@ CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
 endif
 
 
-# Objektkodsmoduler som ingår i Panzer 2K
+# Objektkodsmoduler som ingï¿½r i Panzer 2K
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
-			   	PhysicsEngine.o State.o Player.o LocalPlayer.o NetworkPlayer.o GameEngine.o \
+			   	PhysicsEngine.o State.o Player.o GameEngine.o \
 				GameWorld.o SDL_rotozoom.o GraphicsEngine.o Network.o Audio.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
 
-# Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
+# Huvudmï¿½l - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(BOOST_LD) $(OBJECTS)
 
@@ -79,12 +79,6 @@ $(BUILD)/State.o: $(PANZER2K)/State.h $(PANZER2K)/State.cc
 $(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Player.cc -o $(BUILD)/Player.o
 
-$(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
-
-$(BUILD)/NetworkPlayer.o: $(PANZER2K)/NetworkPlayer.h $(PANZER2K)/NetworkPlayer.cc
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/NetworkPlayer.cc -o $(BUILD)/NetworkPlayer.o
-
 $(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
 
@@ -117,7 +111,7 @@ Network_server: $(BUILD)/Network.o
 clean:
 	@ \rm -rf $(BUILD)/*.o core
 
-# 'make zap' tar också bort det körbara programmet och reservkopior (filer
+# 'make zap' tar ocksï¿½ bort det kï¿½rbara programmet och reservkopior (filer
 # som slutar med tecknet '~')
 zap: clean
 	@ \rm -rf $(BUILD)/* *~

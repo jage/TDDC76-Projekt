@@ -153,8 +153,8 @@ PANZER_STATES Meny::next_state()
 
 
 
-Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE) {}
+Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE), player_ptr_(player) {}
 
 Player1State::~Player1State() {}
 
@@ -205,8 +205,8 @@ PANZER_STATES Player1State::next_state()
 
 //Player2State-----------------------------------------------------------//
 
-Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE) {}
+Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE), player_ptr_(player) {}
 
 Player2State::~Player2State(){}
 
@@ -309,16 +309,85 @@ void NetworkState::logic(){
 }
 //OptionsState-------------------------------------------------//
 OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine, gameworld, audio), nextState_(OPTIONSTATE){}
+	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), quitOptions_(false){}
 
 void OptionState::render(){
-	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to save the current level",0,40,255,0,255);
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawFixedWidthButton("Set player name",20,50,200,(nextState_ == 8),LAZY26,255,255,255);
+	graphicsengine_ptr_->drawFixedWidthButton("Select level",20,100,200,(nextState_ == 9),LAZY26,255,255,255);
+	graphicsengine_ptr_->drawFixedWidthButton("Meny",20,150,200,(nextState_ == 5),LAZY26,255,255,255);
 }
 
-void OptionState::logic(){nextState_ = OPTIONSTATE;}
+void OptionState::logic(){}
+
+void OptionState::changeState(bool up){
+
+	switch(nextState_)
+		{
+			case SETNAMESTATE:
+			{
+				if(up)
+					nextState_ = MENY;
+				else
+					nextState_ = SELECTLEVEL;
+			} break;
+			case SELECTLEVEL:
+			{
+				if(up)
+					nextState_ = SETNAMESTATE;
+				else
+					nextState_ = MENY;
+			} break;
+			case MENY:
+			{
+				if(up)
+					nextState_ = SELECTLEVEL;
+				else
+					nextState_ = SETNAMESTATE;
+			} break;
+		}
+}
+
 
 void OptionState::handle_input(SDL_Event& event){
+	if(event.type == SDL_KEYDOWN)
+		{
+			switch( event.key.keysym.sym )
+				{
+					case SDLK_UP: changeState(true); break;
+					case SDLK_DOWN: changeState(false); break;
+					case SDLK_RETURN:
+					{
+						quitOptions_ = true;
+					}
+					default: break;
+				}
+		}
+}
+
+PANZER_STATES OptionState::next_state(){
+
+		if(quitOptions_)
+		{   quitOptions_ = false;
+			graphicsengine_ptr_->clearScreenBuffer(0);//Töm skärmen för ny grafik
+			return nextState_;
+		}
+		else
+			return OPTIONSTATE;
+}
+
+//OptionsState-----------------------------------------------//
+
+//OptionsState-------------------------------------------------//
+SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1, Player* player2)
+	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
+
+void SetNameState::render(){
+}
+
+void SetNameState::logic(){nextState_ = OPTIONSTATE;}
+
+void SetNameState::handle_input(SDL_Event& event){
 	if(event.type == SDL_KEYDOWN)
 		{
 			switch( event.key.keysym.sym )
@@ -338,7 +407,7 @@ void OptionState::handle_input(SDL_Event& event){
 		}
 }
 
-PANZER_STATES OptionState::next_state(){
+PANZER_STATES SetNameState::next_state(){
 	return nextState_;
 }
 
