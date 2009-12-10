@@ -379,8 +379,15 @@ void GraphicsEngine::loadFontsIntoMemory()
 	{
 		cerr << TTF_GetError() << endl;
 	}
+	
 	font[1] = TTF_OpenFont("lazy.ttf", 26);
 	if (!font[1])
+	{
+		cerr << TTF_GetError() << endl;
+	}
+	
+	font[2] = TTF_OpenFont("paper_cut.ttf", 32);
+	if (!font[2])
 	{
 		cerr << TTF_GetError() << endl;
 	}
@@ -399,6 +406,8 @@ int GraphicsEngine::getFontNr(const PANZER_FONT& font)
 		return 0;
 	case LAZY26:
 		return 1;
+	case PAPER_CUT32:
+		return 2;
 	default: //Om fonten ej finns, välj den första
 		return 0;
 	}
