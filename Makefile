@@ -13,7 +13,7 @@ CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
 
 # Objektkodsmoduler som ing�r i Panzer 2K
 
-OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
+OBJECTS_LIST = Element.o Interval.o Ammunition.o Explosion.o Ground.o Cannon.o Concrete.o MovableElement.o \
 			   	PhysicsEngine.o State.o Player.o LocalPlayer.o Audio.o GameEngine.o GameWorld.o \
 			 	SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
 
@@ -73,6 +73,12 @@ $(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
 	
 $(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
+	
+$(BUILD)/Explosion.o: $(PANZER2K)/Explosion.h $(PANZER2K)/Explosion.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Explosion.cc -o $(BUILD)/Explosion.o
+	
+$(BUILD)/Ammunition.o: $(PANZER2K)/Ammunition.h $(PANZER2K)/Ammunition.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Ammunition.cc -o $(BUILD)/Ammunition.o
 
 # make Element
 
