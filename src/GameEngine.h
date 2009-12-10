@@ -35,8 +35,8 @@ private:
 	GameWorld gameworld_;
 	GraphicsEngine graphicsengine_;
 	Audio soundplayer_;
-	Player player1;
-	Player player2;
+	Player* player1_ptr_;
+	Player* player2_ptr_;
 	unsigned int ticks_;
 
 	//Tillst�nd
