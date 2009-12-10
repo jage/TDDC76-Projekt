@@ -337,15 +337,48 @@ PANZER_STATES ExitGame::next_state()
 
 //NetworkState--------------------------------------------------//
 NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine,gameworld, audio) {}
+	 : State(graphicsengine,gameworld, audio), nextState_(NETWORKSTATE), input_(""), port_("12345"), switchinput_(true) {}
 
 void NetworkState::render(){
-	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("You will be a server!",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Hit z to return to meny",0,40,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("IP: " ,0,80,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer(input_,50,80,0,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Port: " ,0,120,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer( port_ ,80,120,255,0,255,LAZY26);
 }
 
-void NetworkState::logic(){
-	SDL_Delay(2000);
+void NetworkState::logic()
+{
+	nextState_ = NETWORKSTATE;
+}
+
+void NetworkState::handle_input(SDL_Event& event){
+
+	SDL_EnableUNICODE(1);
+	if (event.type == SDL_KEYDOWN)
+	{
+		if(event.key.keysym.sym > 27)
+		{
+			if(switchinput_)
+				input_.push_back(char(event.key.keysym.unicode));
+			else
+				port_.push_back(char(event.key.keysym.unicode));
+		}
+		if(event.key.keysym.sym == SDLK_RETURN)
+			{
+				switchinput_ = false;
+				port_.clear();
+			}
+		if(event.key.keysym.sym == SDLK_z)
+				nextState_ = MENY;
+
+	}
+}
+
+PANZER_STATES NetworkState::next_state(){
+	return nextState_;
 }
 //OptionsState-------------------------------------------------//
 OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
