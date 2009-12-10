@@ -51,20 +51,6 @@ void Connection::handle_write(const boost::system::error_code& /*error*/,
 void Connection::handle_read(const boost::system::error_code&)
 {	
 	Network::callback(response_);
-	boost::asio::async_read_until(socket_, response_, "\n",
-	        strand_.wrap(boost::bind(&Connection::handle_read, shared_from_this(),
-	        boost::asio::placeholders::error)));
-   	boost::asio::async_write(socket_, boost::asio::buffer("> "),
-   		boost::bind(&Connection::handle_write, shared_from_this(),
-   		boost::asio::placeholders::error,
-   		boost::asio::placeholders::bytes_transferred));
-}
-
-void Connection::send() {
-	boost::asio::async_write(socket_, boost::asio::buffer("Weeeeeeeeeeeeeeeeeee!"),
-   		strand_.wrap(boost::bind(&Connection::handle_write, shared_from_this(),
-   		boost::asio::placeholders::error,
-   		boost::asio::placeholders::bytes_transferred)));
 }
 
 Server::Server(boost::asio::io_service& io_service, const string port)
@@ -111,7 +97,8 @@ Network::Network() {
 
 Network::~Network() {}
 
-// Doesn't actually connect, just sets hostname and port
+// Ansluter inte i den här implementationen med iostream, 
+//   utan sätter bara hostname och port
 bool Network::connect(const string hostname, const string port)
 {
 	hostname_ = hostname;
@@ -120,20 +107,14 @@ bool Network::connect(const string hostname, const string port)
 	return true;
 }
 
+// Lyssnar på 0.0.0.0:<port>
 void Network::listen(const string port)
 {
 	try
 	{
 		cout << "Listening on " << port << "\n";
-
 		Server server(io_service_, port);		
-		
-		// boost::thread t1(boost::bind(&boost::asio::io_service::run, &io_service_));
-		// boost::thread t2(boost::bind(&send, &server));
-		
 	  	io_service_.run();
-		// t1.join();
-		// t2.join();
 	}
 	catch (std::exception& e)
 	{
@@ -142,17 +123,19 @@ void Network::listen(const string port)
 }
 
 
+// Används inte i den här implementationen med tcp::iostream
 bool Network::disconnect()
 {
-	stream_.close();
 	return true;
 }
 
+// Används inte i den här implementationen med tcp::iostream
 bool Network::is_active()
 {
-	return stream_.good();
+	return true
 }
 
+// Ansluter till <hostname> och <port>, skickar <msg> och kopplar sedan från
 void Network::send(const string hostname, const string port, const string msg)
 {
     tcp::iostream s(hostname, port);
@@ -161,6 +144,7 @@ void Network::send(const string hostname, const string port, const string msg)
 	s.close();
 }
 
+// Funktion som körs för varje meddelande servern tar emot
 void Network::callback(boost::asio::streambuf &response_)
 {
 	std::istream response_stream(&response_);
@@ -168,7 +152,9 @@ void Network::callback(boost::asio::streambuf &response_)
 	std::getline(response_stream, msg);
 	std::cout << msg << "\n";
 	
-	if (msg == "quit") { // Every system needs at least one remote denial of service exploit!
+	// Översätter strängmeddelande till SDL_Event, emuleror tangentbord
+	
+	if (msg == "quit") { // Om man håller på och förlorar, skicka en quit till motståndaren! :-)
 		SDL_Event event;
 		event.type = SDL_QUIT;
 		SDL_PushEvent(&event);

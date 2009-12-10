@@ -19,7 +19,6 @@ class Connection
 		static boost::shared_ptr<Connection> create(boost::asio::io_service& io_service);
 		boost::asio::ip::tcp::socket& socket();
 		void start();
-		void send();
 	private:
 		Connection(boost::asio::io_service& io_service);
 		void handle_write(const boost::system::error_code&, size_t);
