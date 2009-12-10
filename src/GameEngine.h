@@ -55,7 +55,7 @@ private:
     /*
      * regulate_fps()
      * Reglerar frames/second, s� att vi inte tar all processorkraft
-     * Standard �r 100 fps
+     * Standard �r 70 fps
      */
     void regulate_fps();
 
