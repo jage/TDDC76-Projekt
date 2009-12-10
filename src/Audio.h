@@ -13,25 +13,25 @@ public:
 
 	void init();
 	void uninit();
-	
 	void playMusic(const int& musicIndex, const int& loop);
 	void playSound(const int& soundIndex);
 	void setMusicVolume(const int& volume);
-	void setSoundVolume(const int& volume);
-	const int getMusicVolume();
-	const int getSoundVolume();
 	void stopMusic();
 	void stopAllSound();
+	const int getMusicVolume();
+	void setSoundVolume(const int& volume);
+	const int getSoundVolume();
 
 private:
-	void loadMusicIntoMemory();
-	void unloadMusicFromMemory();
-	void loadSoundsIntoMemory();
-	void unloadSoundsFromMemory();
 	bool SDL_Audio_Enabled_;
 	int currentlySelectedMusic_;
 	int musicVolume_;
 	int soundVolume_;
 	Mix_Chunk* sound_[NROFSOUNDS];
 	Mix_Music* musicTrack_[NROFMUSICTRACKS];
+	void loadMusicIntoMemory();
+	void unloadMusicFromMemory();
+	void loadSoundsIntoMemory();
+	void unloadSoundsFromMemory();
+
 };

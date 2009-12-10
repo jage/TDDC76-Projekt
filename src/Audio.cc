@@ -57,7 +57,6 @@ void Audio::loadMusicIntoMemory()
 	}
 
 	Mix_VolumeMusic(musicVolume_);
-	Mix_Vol
 }
 
 void Audio::unloadMusicFromMemory()
