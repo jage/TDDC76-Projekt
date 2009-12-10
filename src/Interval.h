@@ -8,6 +8,7 @@ class Interval
 {
 public:
 	Interval(const int&,const int&);
+	Interval(const double&,const double&);
 	const bool belongs(const int&) const;
 	const bool intersect(const Interval&) const;
 	const int get_upper() const;
