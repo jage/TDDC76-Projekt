@@ -390,6 +390,8 @@ void NetworkState::handle_input(SDL_Event& event){
 }
 
 PANZER_STATES NetworkState::next_state(){
+
+	input_.clear();
 	return nextState_;
 }
 //OptionsState-------------------------------------------------//
