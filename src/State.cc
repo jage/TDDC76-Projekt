@@ -41,6 +41,7 @@ void Meny::render(){
 		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Play",230,230,255,255,255,PAPER_CUT32);
 
 }
 
