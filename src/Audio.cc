@@ -20,11 +20,16 @@ void Audio::init()
 		if (SDL_Init(SDL_INIT_AUDIO) == -1)
 		{
 			cerr << "Unable to init SDL" << endl;
+			return;
 		}
 	}
-	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 512) == 0)
-	{
-		SDL_Audio_Enabled_=true;
+	Mix_Init(MIX_INIT_OGG);
+	if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 512) == 0) {
+		SDL_Audio_Enabled_ = true;
+	}
+	else {
+		cerr << "Unable to start Mixer" << endl;
+		return;
 	}
 	Mix_AllocateChannels(16);
 	loadMusicIntoMemory();
@@ -55,7 +60,6 @@ void Audio::loadMusicIntoMemory()
 	{
 		cerr << Mix_GetError() << endl;
 	}
-
 	Mix_VolumeMusic(musicVolume_);
 }
 

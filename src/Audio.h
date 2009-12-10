@@ -1,3 +1,7 @@
+#ifndef AUDIO_H_
+#define AUDIO_H_
+
+
 #include "SDL_mixer.h"
 #include "SDL.h"
 
@@ -35,3 +39,4 @@ private:
 	void unloadSoundsFromMemory();
 
 };
+#endif
