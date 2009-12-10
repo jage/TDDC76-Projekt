@@ -41,8 +41,6 @@ public:
 	bool check_collision();
 	bool check_collision(MovableElement*, Element*);
 	bool generate_world(const int& seed=0);
-
-
 private:
 	int width_;
 	int height_;

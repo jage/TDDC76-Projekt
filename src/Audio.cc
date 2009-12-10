@@ -38,12 +38,14 @@ void Audio::init()
 
 void Audio::uninit()
 {
-	stopAllAudio();
-	Mix_AllocateChannels(0);
-	unloadSoundsFromMemory();
-	unloadMusicFromMemory();
-	Mix_CloseAudio();
-	SDL_Audio_Enabled_ = false;
+	if (SDL_Audio_Enabled_) {
+		stopAllAudio();
+		Mix_AllocateChannels(0);
+		unloadSoundsFromMemory();
+		unloadMusicFromMemory();
+		Mix_CloseAudio();
+		SDL_Audio_Enabled_ = false;
+	}
 }
 
 void Audio::stopSound() const
@@ -74,8 +76,10 @@ void Audio::unloadMusicFromMemory()
 
 	for (int musicIndex = 0; musicIndex < NROFMUSICTRACKS; musicIndex++)
 	{
-		Mix_FreeMusic(musicTrack_[musicIndex]);
-		musicTrack_[musicIndex] = NULL;
+		if (musicTrack_[musicIndex] != NULL) {
+			Mix_FreeMusic(musicTrack_[musicIndex]);
+			musicTrack_[musicIndex] = NULL;
+		}
 	}
 }
 
@@ -126,8 +130,10 @@ void Audio::unloadSoundsFromMemory()
 
 	for (int soundIndex = 0; soundIndex < NROFSOUNDS; soundIndex++)
 	{
-		Mix_FreeChunk(sound_[soundIndex]);
-		sound_[soundIndex] = NULL;
+		if (sound_[soundIndex] != NULL) {
+			Mix_FreeChunk(sound_[soundIndex]);
+			sound_[soundIndex] = NULL;
+		}
 	}
 }
 

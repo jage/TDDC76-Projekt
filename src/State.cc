@@ -20,38 +20,6 @@ State::State(GraphicsEngine* graphicengine, GameWorld* gameworld, Audio* audio)
 
 State::~State() {}
 //--------------------------------------------------------------//
-
-
-
-//Tempor�r funktion Graphics engine b�r ta hand om allt
-SDL_Surface* load_image( std::string filename )
-	  {
-	      //Temporary storage for the image that's loaded
-	      SDL_Surface* loadedImage = NULL;
-
-	      //The optimized image that will be used
-	      SDL_Surface* optimizedImage = NULL;
-
-	      //Load the image
-	      loadedImage = IMG_Load( filename.c_str() );
-
-	      //If nothing went wrong in loading the image
-	      if( loadedImage != NULL )
-	      {
-	          //Create an optimized image
-	          optimizedImage = SDL_DisplayFormat( loadedImage );
-
-	          //Free the old image
-	          SDL_FreeSurface( loadedImage );
-	      }
-	      else
-	    	  cerr << "Image not found!" << endl;
-
-	      //Return the optimized image
-	      return optimizedImage;
-	  }
-
-
 //Meny-----------------------------------------------------------//
 
 //Meny::Meny(){}
@@ -66,18 +34,13 @@ Meny::~Meny(){
 }
 
 
-void Meny::renderMenyGfx()
-{
+void Meny::render(){
+		graphicsengine_ptr_->clearScreenBuffer(0);
+		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
 		graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);
-}
-
-
-void Meny::render(){
-		graphicsengine_ptr_->clearScreenBuffer(0);
-		renderMenyGfx();
 
 }
 
@@ -164,12 +127,9 @@ void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
-<<<<<<< HEAD:src/State.cc
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
-=======
 	if (fire_power_ != 0)
 		graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
->>>>>>> 30543cc5ce321b703f285016ca0cd5aa72aabd04:src/State.cc
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 	
 }
@@ -368,8 +328,8 @@ NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 
 void NetworkState::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("You will be a server!",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Hit z to return to meny",0,40,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Enter toggles IP/Port input",0,0,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("z exits",0,40,255,255,255,LAZY26);
 	graphicsengine_ptr_->drawTextToScreenBuffer("IP: " ,0,80,255,255,255,LAZY26);
 	graphicsengine_ptr_->drawTextToScreenBuffer(input_,50,80,0,255,255,LAZY26);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Port: " ,0,120,255,255,255,LAZY26);
@@ -395,8 +355,11 @@ void NetworkState::handle_input(SDL_Event& event){
 		}
 		if(event.key.keysym.sym == SDLK_RETURN)
 			{
-				switchinput_ = false;
-				port_.clear();
+				switchinput_ = !switchinput_;
+				if(switchinput_)
+					input_.clear();
+				else
+					port_.clear();
 			}
 		if(event.key.keysym.sym == SDLK_z)
 				nextState_ = MENY;
@@ -405,8 +368,6 @@ void NetworkState::handle_input(SDL_Event& event){
 }
 
 PANZER_STATES NetworkState::next_state(){
-
-	input_.clear();
 	return nextState_;
 }
 //OptionsState-------------------------------------------------//
