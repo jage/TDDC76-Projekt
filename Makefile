@@ -23,8 +23,8 @@ CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
 endif
 
 # Objektkodsmoduler som ing�r i Panzer 2K
-OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
-			   	PhysicsEngine.o State.o Player.o GameEngine.o \
+OBJECTS_LIST = Element.o Interval.o Ammunition.o Explosion.o Ground.o Cannon.o Concrete.o MovableElement.o \
+			   	PhysicsEngine.o State.o Player.o  GameEngine.o \
 				GameWorld.o SDL_rotozoom.o GraphicsEngine.o Network.o Audio.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
