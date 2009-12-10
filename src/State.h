@@ -97,6 +97,7 @@ public:
 
 private:
 	PANZER_STATES nextState_;
+	int fire_power_;
 
 };
 
@@ -119,6 +120,7 @@ public:
 
 private:
 	PANZER_STATES nextState_;
+	int fire_power_;
 };
 
 class Fire : public State

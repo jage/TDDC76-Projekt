@@ -185,13 +185,15 @@ void Network::callback(boost::asio::streambuf &response_)
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_DOWN;
 		SDL_PushEvent(&event);
-	} else if (msg == "enter") {
+	} else if (msg == "enter_pressed") {
 		SDL_Event event;
 		event.type = SDL_KEYDOWN;
 		event.key.which = 0;
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_RETURN;
 		SDL_PushEvent(&event);
+	} else if (msg == "enter_released") {
+		SDL_Event event;
 		event.type = SDL_KEYUP;
 		event.key.which = 0;
 		event.key.state = SDL_RELEASED;

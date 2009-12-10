@@ -171,30 +171,47 @@ void Player1State::logic()
 
 void Player1State::handle_input(SDL_Event& event){
 
-		if(event.type == SDL_KEYDOWN)
-			{
+	if(event.type == SDL_KEYDOWN)
+	{
+		switch(event.key.keysym.sym)
+		{
+			case SDLK_RETURN:
+				if (fire_power_ != 100)
+					fire_power_++;
+				graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
+				graphicsengine_ptr_->showScreenBufferOnScreen();
+				Network::send("127.0.0.1", "12346", "enter_pressed");
+			break;
+			case SDLK_UP:
+				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
+				Network::send("127.0.0.1", "12346", "up");
+			break;
+			case SDLK_DOWN:
+				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
+				Network::send("127.0.0.1", "12346", "down");
+			break;
+			default: break;
+		}
 
-				switch( event.key.keysym.sym )
-					{
-					   	case SDLK_RETURN: 
-					   		nextState_ = FIRE;
-							gameworld_ptr_->get_leftCannon()->fire();
-					   		audio_ptr_->playSound(0);
-					   		Network::send("127.0.0.1", "12345", "enter");
-					   		break;
-					   	case SDLK_UP:
-					   		gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-					   		Network::send("127.0.0.1", "12345", "up");
-					   		break;
-					   	case SDLK_DOWN:
-					   		gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-					   		Network::send("127.0.0.1", "12345", "down");
-					   		break;
-						
-						default: break;
-					}
+	}
+	else if(event.type == SDL_KEYUP)
+	{		
+		switch(event.key.keysym.sym)
+		{
+			case SDLK_RETURN:
+				if (fire_power_ != 0)
+				{
+					nextState_ = FIRE;
+					gameworld_ptr_->get_leftCannon()->fire();
+					audio_ptr_->playSound(0);
+					Network::send("127.0.0.1", "12346", "enter_released");
+					fire_power_ = 0;
+				}
+			break;
+			default: break;
+		}
+	}
 
-			}
 }
 
 PANZER_STATES Player1State::next_state()
@@ -220,23 +237,46 @@ void Player2State::render(){
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
 
 void Player2State::handle_input(SDL_Event& event){
-
-if(event.type == SDL_KEYDOWN)
+	if(event.type == SDL_KEYDOWN)
 	{
-		switch( event.key.keysym.sym )
-			{
-				case SDLK_RETURN: 
+		switch(event.key.keysym.sym)
+		{
+			case SDLK_RETURN:
+				if (fire_power_ != 100)
+					fire_power_++;
+				graphicsengine_ptr_->drawPowerBarToScreenBuffer(435, 35, 200, 20, fire_power_);
+				graphicsengine_ptr_->showScreenBufferOnScreen();
+			break;
+			case SDLK_UP:
+				gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+			break;
+			case SDLK_DOWN:
+				gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+			break;
+			default: break;
+		}
+
+	}
+	else if(event.type == SDL_KEYUP)
+	{
+		string s;
+		stringstream out;
+		out << fire_power_;
+		s = out.str();
+		
+		switch(event.key.keysym.sym)
+		{
+			case SDLK_RETURN:
+				if (fire_power_ != 0)
+				{
 					nextState_ = FIRE;
 					gameworld_ptr_->get_rightCannon()->fire();
-					break;
-				case SDLK_UP:
-					gameworld_ptr_->get_rightCannon()->adjust_angle(1);
-					break;
-				case SDLK_DOWN:
-					gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
-					break;
-				default: break;
-			}
+					audio_ptr_->playSound(0);
+					fire_power_ = 0;
+				}
+			break;
+			default: break;
+		}
 	}
 }
 
