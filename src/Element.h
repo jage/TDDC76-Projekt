@@ -3,6 +3,7 @@
 
 #include "Enums.h"
 #include "Structs.h"
+#include "Interval.h"
 
 //using namespace std;
 
@@ -13,6 +14,7 @@ public:
 
 	const int get_x() const;
 	const double get_x_pos() const;
+	const Interval get_xInterval() const;
 	void set_x(const int&);
 	void set_x(const double&);
 
