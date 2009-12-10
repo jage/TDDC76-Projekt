@@ -222,8 +222,10 @@ bool GameWorld::check_collision(){
 
 	while( movableElements_it != movableElements_.end())
 	{
-		if((*movableElements_it)->get_y() > 480)
+		if((*movableElements_it)->get_y() > 480) {
+			movableElements_.erase(movableElements_it);
 			return true;
+		}
 		while(elements_it != elements_.end()){
 			if(*movableElements_it != *elements_it){
 				if(check_collision(*movableElements_it, *elements_it))
