@@ -1,5 +1,7 @@
-#include "SDL_mixer.h"
-#include "SDL.h"
+#ifndef AUDIO_
+#define AUDIO_
+#include "SDL/SDL_mixer.h"
+#include "SDL/SDL.h"
 
 #define NROFMUSICTRACKS 1
 #define NROFSOUNDS 12
@@ -34,3 +36,4 @@ private:
 	Mix_Chunk* sound_[NROFSOUNDS];
 	Mix_Music* musicTrack_[NROFMUSICTRACKS];
 };
+#endif

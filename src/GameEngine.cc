@@ -11,6 +11,7 @@
 #include "State.h"
 #include "Enums.h"
 #include "SDLInclude.h"
+#include "Audio.h"
 #include <stdexcept>
 #include <vector>
 
@@ -30,6 +31,9 @@ GameEngine::GameEngine() {
 
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
+
+	//sound_.init();
+	sound_.loadMusicIntoMemory();
 }
 
 GameEngine::~GameEngine() {}
@@ -61,6 +65,7 @@ void GameEngine::run()
 	if(!init_SDL())
 		throw logic_error("Gick ej att initera SDL");
 
+	sound_.playMusic(0,1);
 	SDL_Event event;
 
 	while(currentState_ != EXITGAME)

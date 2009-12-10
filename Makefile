@@ -1,27 +1,27 @@
 #
-# Makefile för Panzer,  GNU GCC (g++)
+# Makefile fï¿½r Panzer,  GNU GCC (g++)
 #
-# Filkataloger där olika delar av programvaran finns.
+# Filkataloger dï¿½r olika delar av programvaran finns.
 PANZER2K = src
 BUILD    = build
-SDL      = -lSDL -lSDL_image -lSDL_ttf
+SDL      = -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 
-# Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
-# Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
+# Kompilator och flaggor som pï¿½verkar kompilering, inkludering, etc. 
+# Lï¿½gg till '-g' i CCFLAGS om kompilering fï¿½r avlusning ska gï¿½ras.
 CCC       = g++
 CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
 
-# Objektkodsmoduler som ingår i Panzer 2K
+# Objektkodsmoduler som ingï¿½r i Panzer 2K
 
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
-			   	PhysicsEngine.o State.o Player.o LocalPlayer.o GameEngine.o GameWorld.o \
+			   	PhysicsEngine.o State.o Player.o LocalPlayer.o Audio.o GameEngine.o GameWorld.o \
 			 	SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
 
-# Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
+# Huvudmï¿½l - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(OBJECTS)
 	
@@ -70,6 +70,9 @@ $(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
 
 $(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
+	
+$(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
 
 # make Element
 
@@ -87,7 +90,7 @@ GameWorld: $(BUILD)/GameWorld.o
 clean:
 	@ \rm -rf $(BUILD)/*.o core
 
-# 'make zap' tar också bort det körbara programmet och reservkopior (filer
+# 'make zap' tar ocksï¿½ bort det kï¿½rbara programmet och reservkopior (filer
 # som slutar med tecknet '~')
 zap: clean
 	@ \rm -rf $(BUILD)/* *~
