@@ -8,7 +8,7 @@ const int Explosion::distance(const int& x,const int& y) const
 {
 		double d(0);
 		
-		d= sqrt(pow(x-x_,2)+pow(y-y_,2));
+		d= sqrt(pow((double)(x-x_),2)+pow((double)(y-y_),2));
 		
 		return (int)d;
 }
@@ -21,7 +21,7 @@ const bool Explosion::intersect(const int& x,const int& y) const
 const int Explosion::decreasedHeight(const int& x,const int& y) const
 {
 	// only do calculation if point is in the circle (no imaginary roots please)
-	if (intersect(x,y)) return (int)(ceil(y_+sqrt(pow(radius_,2)-pow(x-x_,2))));
+	if (intersect(x,y)) return (int)(ceil(y_+sqrt(pow((double)radius_,2)-pow((double)(x-x_),2))));
 	else return 0;
 }
 
