@@ -3,59 +3,53 @@
 
 #include "SDLInclude.h"
 #include <string>
+#include <iostream>
 
 /*
- * Player - abstrakt basklass för alla trädnodsklasser.
+ * Player - abstrakt basklass fï¿½r alla trï¿½dnodsklasser.
  */
 
 class Player
 {
 public:
-	Player(const std::string&, const int, const int);
+	Player(const std::string& = "", const int  = 100, const int = 0);
 	virtual ~Player(){};
 	 
 	 /*
 	  * get_name()
-	  * Hämtar en spelares(Players) namn.
+	  * Hï¿½mtar en spelares(Players) namn.
 	  */
 	const std::string& get_name() const;
 	
 	/*
 	 * set_name()
-	 * Sätter en spelares(Player) namn.
+	 * Sï¿½tter en spelares(Player) namn.
 	 */
 	void set_name(const std::string& n);
 	 
 	/*
 	 * get_health()
-	 * Hämtar en spelares(Players) hälsa i form av ett heltal. 
+	 * Hï¿½mtar en spelares(Players) hï¿½lsa i form av ett heltal. 
 	 */
 	const int& get_health() const;
 	
 	/*
 	 * set_health(int)
-	 * Sätter en spelares(Player) hälsa. 
+	 * Sï¿½tter en spelares(Player) hï¿½lsa. 
 	 */
 	void set_health(const int);
 	
 	/*
 	 * get_points()
-	 * Hämtar en spelares(Player) poäng.
+	 * Hï¿½mtar en spelares(Player) poï¿½ng.
 	 */
 	const int& get_points() const;
 	
 	/*
 	 * set_points()
-	 * Sätter en spelares(Player) poäng.
+	 * Sï¿½tter en spelares(Player) poï¿½ng.
 	 */
 	void set_points(const int);	
-	
-	/*
-	 * handle_event() - en ren virtuell funktion
-	 * Hämtar en händelse.
-	 */
-	  SDL_Event& handle_event(SDL_Event& event);
-	
 	
 	
  private:
