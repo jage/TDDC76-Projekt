@@ -54,9 +54,9 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 
 	switch (draw_element.get_imgRef())
 	{
-	case RIGHT_CANNON:
-		cannonindex += DEGREES;
 	case LEFT_CANNON:
+		cannonindex += DEGREES;
+	case RIGHT_CANNON:
 		rcDest.x -= cannon[cannonindex]->w / 2;
 		rcDest.y -= cannon[cannonindex]->h / 2;
 		SDL_BlitSurface(cannon[cannonindex], NULL, screen, &rcDest);
@@ -189,8 +189,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
 
 /*
  * Förroterar alla bilder till cannon från
- * 0 upp till DEGREES. Bilden hämtas från
- * bilden dit getClippingRectangle() pekar.
+ * 0 upp till DEGREES.
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {

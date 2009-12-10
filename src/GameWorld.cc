@@ -3,6 +3,7 @@
 #include <exception>
 #include <cstdlib>
 #include <math.h>
+#include "Interfaces.h"
 using namespace std;
 
 GameWorld::GameWorld(const double& gravity,const double& wind)
@@ -90,6 +91,8 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 	
 	//clear world
 	elements_.clear();
+	elements_.push_back(ptr_cannonL_);
+	elements_.push_back(ptr_cannonR_);
 	movableElements_.clear();
 	
 	//move cannons to correct x-coords
@@ -170,14 +173,31 @@ bool GameWorld::generate_world(const int& width,const int& height, const int& re
 	}
 	
 	// place out the cannons on correct heights
-	ptr_cannonL_->set_y(height-startHeight-50);
-	ptr_cannonR_->set_y(height-endHeight-50);
+	ptr_cannonL_->set_y(height-startHeight);
+	ptr_cannonR_->set_y(height-endHeight);
 	
 		cout << "left cannon x: " << ptr_cannonL_->get_x() << "y: " << ptr_cannonL_->get_y() << endl;
 	cout << "right cannon x: " << ptr_cannonR_->get_x() << "y: " << ptr_cannonR_->get_y() << endl;
 	
-	 
-	
+//	 // test deform
+//	 vector<Element*>::iterator it;
+//	 Collision testColl;
+//	 testColl.x_=425;
+//	 testColl.blastRadius_ =35;
+//	 
+//	Destructable* dp;
+//	 	
+//	while( it != elements_.end() )
+//		{
+//			dp=dynamic_cast<Destructable*>(*it);
+//			
+//      		if(dp!=0)
+//      		{
+//    			dp->deform(testColl);  			
+//      		}
+//      		++it;
+//		}
+		
 	delete []calculatedHeights;
 	return true;
 }
