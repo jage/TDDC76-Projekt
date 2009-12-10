@@ -617,7 +617,8 @@ void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos,
 	rect.y = yScreenPos;
 	rect.w = width;
 	rect.h = height;
-	SDL_FillRect(screen, &rect, red << 16 | green << 8 | blue << 0);
+	SDL_Color color = {red, green, blue};
+	SDL_FillRect(screen, &rect, color.r << 16 | color.g << 8 | color.b << 0);
 }
 
 /*
@@ -629,6 +630,10 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
 {
 	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
 	{
+		if (!(*it)) {
+			cerr << "Trying to blit NULL pointer" << endl;
+			return;
+		}
 		drawToScreenBuffer(**it);
 	}
 }
