@@ -7,14 +7,14 @@
 class Cannon : public Element
 {
 public:
-	Cannon(Ammunition* ammo=0,const bool& leftCannon=true);
+	Cannon(Ammunition* ammo=new StandardAmmo(),const bool& leftCannon=true);
 	void set_angle(const double&);	// sets fire angle
 	void adjust_angle(const double&); // increase/decrease fire angle
 	void set_power(const int&);
 	const double get_power() const;
 	void change_ammunition(Ammunition*); // change ammunition
 	Ammunition* get_ammunition() const; // get pointer to current ammunition
-	void fire();	// fire the cannon
+	Ammunition* fire();	// fire the cannon
 	void disarm();
 	const bool fired() const; // is the cannon fired?
 	virtual ~Cannon();

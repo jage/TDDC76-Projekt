@@ -1,5 +1,7 @@
 #include "Cannon.h"
 #include "Enums.h"
+#include "math.h"
+#include "iostream"
 
 Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
 	:Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo)
@@ -16,7 +18,7 @@ void Cannon::adjust_angle(const double& delta)
 
 void Cannon::set_power(const int& value)
 {
-	power_=value;	
+	power_=value;
 }
 
 void Cannon::change_ammunition(Ammunition* newAmmo)
@@ -35,9 +37,17 @@ const bool Cannon::fired() const
 	return fired_;
 }
 
-void Cannon::fire()
+Ammunition* Cannon::fire()
 {
+	//std::cout << ptr_ammunition_->get_dx();
+	Ammunition* newAmmo;
+	*newAmmo = *ptr_ammunition_;
+
+
+	newAmmo->set_dx(power_*cos(get_angle()));
+	newAmmo->set_dy(power_*sin(get_angle()));
 	fired_=true;
+	return newAmmo;
 }
 
 void Cannon::disarm()
