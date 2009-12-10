@@ -1,11 +1,4 @@
-/*
- * GameEngine.cpp
- *
- *  Created on: Nov 22, 2009
- *      Author: rosjo
- */
-
-#include "iostream"
+#include <iostream>
 #include "GameEngine.h"
 #include "GraphicsEngine.h"
 #include "State.h"
@@ -32,6 +25,8 @@ GameEngine::GameEngine() {
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
 
+	player1_ptr_ = new LocalPlayer();
+	player2_ptr_ = new LocalPlayer();
 
 }
 

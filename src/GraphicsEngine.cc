@@ -686,5 +686,21 @@ SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
 	return flippedImage;
 }
 
+void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage)
+{
+	SDL_Rect rcDest;
+	
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
+	rcDest.w = 1;
+	rcDest.h = height;
+
+	rcDest.w = 1;
+
+	for (int i = 0; i < width  * percentage / 100.0; ++i, ++rcDest.x)
+	{
+		SDL_FillRect(screen, &rcDest,  (i * 255 / width) << 16 | (255 - i * 255 / width) << 8 | 0 << 0 );
+	}
+}
 
 
