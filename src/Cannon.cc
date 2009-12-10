@@ -40,12 +40,13 @@ const bool Cannon::fired() const
 Ammunition* Cannon::fire()
 {
 	//std::cout << ptr_ammunition_->get_dx();
-	Ammunition* newAmmo;
-	*newAmmo = *ptr_ammunition_;
+	Ammunition* newAmmo = ptr_ammunition_->clone();
 
+	newAmmo->set_x(get_x());
+	newAmmo->set_y(get_y());
 
 	newAmmo->set_dx(power_*cos(get_angle()));
-	newAmmo->set_dy(power_*sin(get_angle()));
+	newAmmo->set_dy(-power_*sin(get_angle()));
 	fired_=true;
 	return newAmmo;
 }
