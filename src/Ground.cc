@@ -17,10 +17,7 @@ void Ground::deform(const Explosion& expl)
 	{
 		// do some deformation	
 		int new_y(expl.newY(get_x(),get_y()));
-		//cout << "- - - - - - " << endl;
-		//cout << "pos: " << get_x() << " " << get_y() << " distance to expl: " << expl.distance(get_x(),get_y()) << endl;
 		height_=height_-(new_y-get_y());
-		//cout << "new y: " << new_y << " new height: " << height_ <<  endl;
 		y_=new_y;
 	}
 }
