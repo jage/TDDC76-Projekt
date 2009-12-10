@@ -20,14 +20,14 @@ using namespace std;
 GameEngine::GameEngine() {
 
 
-	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new NetworkState(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new OptionState(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new ExitGame(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new Fire(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_));
-	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_));
-	stateVector_.push_back(new InitState(&graphicsengine_,&gameworld_));
+	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new NetworkState(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new OptionState(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new ExitGame(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new Fire(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new Meny(&graphicsengine_, &gameworld_, &soundplayer_));
+	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_, &soundplayer_));
+	stateVector_.push_back(new InitState(&graphicsengine_,&gameworld_, &soundplayer_));
 
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
@@ -65,6 +65,7 @@ void GameEngine::run()
 
 	//sound_.playMusic(0,1);
 	SDL_Event event;
+	soundplayer_.playMusic(0,0);
 
 	while(currentState_ != EXITGAME)
 		{
@@ -122,6 +123,7 @@ void GameEngine::cleanup()
 {
 
 	cout << "Running SDL_Quit()";
+	soundplayer_.uninit();
 
 	SDL_Quit();
 	cout << "    [OK]" << endl;
