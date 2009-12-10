@@ -187,8 +187,8 @@ bool GameWorld::generate_world(const int& seed)
 	}
 	
 	// place out the cannons on correct heights
-	ptr_cannonL_->set_y(height_-startHeight);
-	ptr_cannonR_->set_y(height_-endHeight);
+	ptr_cannonL_->set_y(height_-startHeight-15);
+	ptr_cannonR_->set_y(height_-endHeight-15);
 	
 /*	 // test deform
 	 Collision testColl;
