@@ -228,7 +228,7 @@ Player2State::~Player2State(){}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
@@ -243,7 +243,7 @@ void Player2State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				graphicsengine_ptr_->drawPowerBarToScreenBuffer(435, 35, 200, 20, fire_power_);
+				graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 35, 200, 20, fire_power_);
 				graphicsengine_ptr_->showScreenBufferOnScreen();
 			break;
 			case SDLK_UP:
@@ -423,9 +423,14 @@ SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
 
 void SetNameState::render(){
+	graphicsengine_ptr_->drawTextToScreenBuffer("Choose your character:",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("1.Daniel",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("2.Johannes",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("3.Johan",0,0,255,255,255);
 }
 
-void SetNameState::logic(){nextState_ = OPTIONSTATE;}
+void SetNameState::logic(){nextState_ = SETNAMESTATE;}
 
 void SetNameState::handle_input(SDL_Event& event){
 	if(event.type == SDL_KEYDOWN)
@@ -440,7 +445,7 @@ void SetNameState::handle_input(SDL_Event& event){
 						}; break;
 					case SDLK_RETURN:
 					{
-						nextState_ = MENY;
+						nextState_ = OPTIONSTATE;
 					}
 					default: break;
 				}
@@ -477,7 +482,7 @@ void SelectLevelState::handle_input(SDL_Event& event){
 						}; break;
 					case SDLK_RETURN:
 					{
-						nextState_ = MENY;
+						nextState_ = OPTIONSTATE;
 					}
 					default: break;
 				}
