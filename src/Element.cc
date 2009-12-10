@@ -11,23 +11,17 @@ const int Element::get_x() const {
 const double Element::get_x_pos() const {
 	return x_;
 }
-
 void Element::set_x(const int& x){
 	x_ = x;
 }
-
+void Element::set_x(const double& x){
+	x_ = x;
+}
 const Interval Element::get_xInterval() const
 {
 	return Interval(x_-(int)(width_/2),x_+(int)(width_/2));	
 }
 
-void Element::set_y(const int& y)
-{
-	y_=y;	
-}
-void Element::set_x(const double& x){
-	x_ = x;
-}
 
 
 const int Element::get_y() const {
