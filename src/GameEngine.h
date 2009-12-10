@@ -23,13 +23,14 @@ public:
 
 private:
 
+	Player* player1_ptr_;
+	Player* player2_ptr_;
 	GameWorld gameworld_;
 	GraphicsEngine graphicsengine_;
 	Audio soundplayer_;
 	unsigned int ticks_;
 
-	Player* player1_ptr_;
-	Player* player2_ptr_;
+
 
 	PANZER_STATES currentState_;
 	PANZER_STATES playerTurn_;

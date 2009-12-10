@@ -8,15 +8,15 @@
 
 using namespace std;
 
-GameWorld::GameWorld(const int& width,const int& height,const double& gravity,const double& wind)
-	:width_(width),height_(height),gravity_(gravity),wind_(wind) 
+GameWorld::GameWorld( Player* player1, Player* player2, const int& width,const int& height,const double& gravity,const double& wind)
+	:width_(width),height_(height),gravity_(gravity),wind_(wind), player1_(player1), player2_(player2)
 {
 	// allocate some memory
 	try
 	{
 		ptr_physEngine_= new PhysicsEngine();
-		ptr_cannonL_ = new Cannon(new StandardAmmo(),true);
-		ptr_cannonR_= new Cannon(new StandardAmmo(),false);
+		ptr_cannonL_ = new Cannon(player1_, new StandardAmmo(),true);
+		ptr_cannonR_= new Cannon(player2_, new StandardAmmo(),false);
 	}
 	catch (bad_alloc)
 	{
