@@ -73,6 +73,11 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 	case CONCRETE:
 		drawRectangle(rcDest.x, screen->h - rcDest.h, rcDest.w, rcDest.h, 240, 240, 240);
 		break;
+	case CANNONBALL:
+		rcDest.x -= cannonball->w / 2;
+		rcDest.y -= cannonball->h / 2;
+		SDL_BlitSurface(cannonball, NULL, screen, &rcDest);
+		break;
 	default:
 		if (draw_element.get_angle() != 0.0)
 		{
@@ -340,6 +345,7 @@ void GraphicsEngine::init()
 		return;
 	}
 	source_image = loadImageFromDisc("sprite_sheet.bmp");
+	cannonball = loadImageFromDisc("cannonball.png", true);
 	loadButtonSpritesIntoMemory();
 	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
@@ -351,6 +357,7 @@ void GraphicsEngine::init()
 void GraphicsEngine::uninit()
 {
 	SDL_FreeSurface(source_image);
+	SDL_FreeSurface(cannonball);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
 	unloadButtonSpritesFromMemory();

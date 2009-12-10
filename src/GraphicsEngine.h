@@ -51,6 +51,7 @@ public:
 private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
+	SDL_Surface* cannonball;
 	SDL_Surface* cannon[2*DEGREES];
 	SDL_Surface* buttons[NROFBUTTONIMG];
 	TTF_Font* font[NROFFONTS];
