@@ -53,7 +53,7 @@ const PANZER_IMAGE Element::get_imgRef() const {
 	return imgRef_;
 }
 
-void Element::set_imgReg(const PANZER_IMAGE& imgRef)
+void Element::set_imgRef(const PANZER_IMAGE& imgRef)
 {
 	imgRef_=imgRef;	
 }
