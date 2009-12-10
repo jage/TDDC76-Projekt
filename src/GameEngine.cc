@@ -81,13 +81,6 @@ void GameEngine::run()
 					stateVector_.at(currentState_) ->handle_input(event);
 			}
 
-			Uint8* keystates = SDL_GetKeyState(NULL);
-			if(currentState_ == PLAYER1STATE)
-				dynamic_cast<Player1State*>(stateVector_.at(currentState_))->handle_keystates(keystates);
-			if(currentState_ == PLAYER2STATE)
-				dynamic_cast<Player2State*>(stateVector_.at(currentState_))->handle_keystates(keystates);
-
-
 			currentState_ = stateVector_.at(currentState_)->next_state();
 
 				if((playerTurn_ == PLAYER1STATE) && (currentState_ == FIREEND))

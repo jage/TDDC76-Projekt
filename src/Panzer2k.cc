@@ -5,7 +5,7 @@
 
 void start_network() {
 	Network server;
-	server.listen("12345");
+	server.listen("12346");
 }
 
 int main(int argc, char* args[])

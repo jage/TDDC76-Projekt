@@ -172,28 +172,23 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_RETURN: Network::send("127.0.0.1", "12346", "enter"); nextState_ = FIRE; break;
+						case SDLK_RETURN: 
+							nextState_ = FIRE;
+							Network::send("127.0.0.1", "12345", "enter");
+							break;
+						case SDLK_UP:
+							gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+							Network::send("127.0.0.1", "12345", "up");
+							break;
+						case SDLK_DOWN:
+							gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+							Network::send("127.0.0.1", "12345", "down");
+							break;
 						default: break;
 					}
 
 			}
 }
-
-void Player1State::handle_keystates(Uint8* keystates)
-{
-		       if(keystates[SDLK_UP])
-				   {
-					   gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-						Network::send("127.0.0.1", "12346", "up");
-				   }
-		       else if(keystates[SDLK_DOWN])
-		       	  {
-					   gameworld_ptr_->get_leftCannon()->adjust_angle(-1);
-						Network::send("127.0.0.1", "12346", "down");
-					
-		       	  }
-}
-
 
 PANZER_STATES Player1State::next_state()
 {
@@ -223,25 +218,19 @@ if(event.type == SDL_KEYDOWN)
 	{
 		switch( event.key.keysym.sym )
 			{
-				case SDLK_RETURN: nextState_ = FIRE ; break;
+				case SDLK_RETURN: 
+					nextState_ = FIRE;
+					break;
+				case SDLK_UP:
+					gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+					break;
+				case SDLK_DOWN:
+					gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+					break;
 				default: break;
 			}
 	}
 }
-
-void Player2State::handle_keystates(Uint8* keystates)
-{
-		       if(keystates[SDLK_UP])
-				   {
-					   gameworld_ptr_->get_rightCannon()->adjust_angle(1);
-				   }
-		       else if(keystates[SDLK_DOWN])
-		       	  {
-					   gameworld_ptr_->get_rightCannon()->adjust_angle(-1);
-		       	  }
-}
-
-
 
 PANZER_STATES Player2State::next_state()
 {
@@ -345,7 +334,9 @@ PANZER_STATES OptionState::next_state(){
 
 //InitState--------------------------------------------------//
 InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	: State(graphicsengine,gameworld){}
+	: State(graphicsengine,gameworld){
+		SDL_EnableKeyRepeat(100, 10);
+	}
 
 void InitState::render(){
 	cout << "Initiate the game!" << endl;

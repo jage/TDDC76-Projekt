@@ -168,7 +168,6 @@ void Network::callback(boost::asio::streambuf &response_)
 	std::getline(response_stream, msg);
 	std::cout << msg << "\n";
 	
-	
 	if (msg == "quit") { // Every system needs at least one remote denial of service exploit!
 		SDL_Event event;
 		event.type = SDL_QUIT;
