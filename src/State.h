@@ -99,7 +99,7 @@ public:
 private:
 	PANZER_STATES nextState_;
 	Player* player_ptr_;
-
+	int fire_power_;
 };
 
 class Player2State : public State
@@ -122,6 +122,7 @@ public:
 private:
 	PANZER_STATES nextState_;
 	Player* player_ptr_;
+	int fire_power_;
 };
 
 class Fire : public State
