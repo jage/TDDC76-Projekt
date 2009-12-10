@@ -12,7 +12,7 @@
 class Player
 {
 public:
-	Player(const std::string& = "", const int  = 100, const int = 0, const std::string& hostname = "", const std::string& host = "");
+	Player(const std::string& = "", const int  = 100, const int = 0, const std::string& hostname = "", const std::string& port = "");
 	virtual ~Player(){};
 	 
 	 /*

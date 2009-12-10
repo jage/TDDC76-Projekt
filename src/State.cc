@@ -183,18 +183,18 @@ void Player1State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				if (player_ptr_->network())
-					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-				if (player_ptr_->network())
-					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-				if (player_ptr_->network())
-					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
@@ -210,8 +210,8 @@ void Player1State::handle_input(SDL_Event& event){
 					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_leftCannon()->fire();
 					audio_ptr_->playSound(0);
-					if (player_ptr_->network())
-						Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
+					// if (player_ptr_->network())
+					// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
@@ -254,18 +254,18 @@ void Player2State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				if (player_ptr_->network())
-					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
-				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-				if (player_ptr_->network())
-					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
+				gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
-				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-				if (player_ptr_->network())
-					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
+				gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
@@ -279,11 +279,11 @@ void Player2State::handle_input(SDL_Event& event){
 				if (fire_power_ != 0)
 				{
 					nextState_ = FIRE;
-					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
-					gameworld_ptr_->get_leftCannon()->fire();
+					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
+					gameworld_ptr_->get_rightCannon()->fire();
 					audio_ptr_->playSound(0);
-					if (player_ptr_->network())
-						Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
+					// if (player_ptr_->network())
+					// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
