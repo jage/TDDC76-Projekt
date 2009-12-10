@@ -56,8 +56,8 @@ Ammunition* Cannon::fire()
 	std::cout <<"y: " << newAmmo->get_y() <<std::endl;
 
 
-	newAmmo->set_dx(power_*cos(3.14/180 * get_angle()));
-	newAmmo->set_dy(-power_*sin(3.14/180 * get_angle()));
+	newAmmo->set_dx(10*power_*cos(3.14/180 * get_angle()));
+	newAmmo->set_dy(-10*power_*sin(3.14/180 * get_angle()));
 
 	std::cout <<"vinkel: " << get_angle() <<std::endl;
 
