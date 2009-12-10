@@ -12,8 +12,7 @@ BOOST_LD  = -L/opt/local/lib/ -lboost_system-mt -lboost_thread-mt
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++ -g
 CPPFLAGS += -std=c++98
-CCFLAGS  += -arch x86_64 -I/opt/local/include -I/opt/local/include -L/opt/local/lib -L/usr/lib
-
+CCFLAGS  += 
 # Objektkodsmoduler som ingår i Panzer 2K
 
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
