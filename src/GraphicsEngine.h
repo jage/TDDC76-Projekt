@@ -74,7 +74,7 @@ private:
 	SDL_Surface* generateTextSurface(const std::string& text, const PANZER_FONT& font, const SDL_Color& color);
 	SDL_Surface* loadImageFromDisc(const std::string&, const bool& transparent = false);
 	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
-	SDL_Surface* flipImageHorizontally(SDL_Surface*);
+	SDL_Surface* flipImage(SDL_Surface*, const int& flags);
 };
 
 #endif

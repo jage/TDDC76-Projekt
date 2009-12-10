@@ -12,7 +12,12 @@ Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
 
 void Cannon::adjust_angle(const double& delta)
 {
-	Element::set_angle(get_angle() + delta);
+	if (imgRef_ == LEFT_CANNON) {
+		Element::set_angle(get_angle() + delta);
+	}
+	else {
+		Element::set_angle(get_angle() - delta);
+	}
 }
 
 
