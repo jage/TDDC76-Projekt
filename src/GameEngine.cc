@@ -28,9 +28,6 @@ GameEngine::GameEngine() {
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
 
-
-	gameworld_.set_wind(.1*((rand()%200) - 100));
-
 }
 
 GameEngine::~GameEngine() {}
@@ -90,11 +87,13 @@ void GameEngine::run()
 				{
 					playerTurn_ = PLAYER2STATE;
 					currentState_ = PLAYER2STATE;
+					gameworld_.set_wind(.1*((rand()%200) - 100));
 				}
 				else if(currentState_ == FIREEND)
 				{
 					playerTurn_ = PLAYER1STATE;
 					currentState_ = PLAYER1STATE;
+					gameworld_.set_wind(.1*((rand()%200) - 100));
 				}
 
 			regulate_fps();
