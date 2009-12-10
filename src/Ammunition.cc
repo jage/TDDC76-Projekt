@@ -23,3 +23,8 @@ const Explosion StandardAmmo::get_explosion() const
  	return expl;
 }
 
+StandardAmmo* StandardAmmo::clone() const
+{
+	return new StandardAmmo();	
+}
+
