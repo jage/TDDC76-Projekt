@@ -165,7 +165,10 @@ void Player1State::render(){
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
-void Player1State::logic(){nextState_ = PLAYER1STATE;}
+void Player1State::logic()
+{
+	nextState_ = PLAYER1STATE;
+}
 
 void Player1State::handle_input(SDL_Event& event){
 
