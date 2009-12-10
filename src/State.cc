@@ -205,7 +205,7 @@ Player2State::~Player2State() {}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",400,0,125,254,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
 	graphicsengine_ptr_->drawPowerBarToScreenBuffer(405,35,200,20,player_ptr_->get_health());
