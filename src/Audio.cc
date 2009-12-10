@@ -42,8 +42,10 @@ void Audio::uninit()
 	Mix_AllocateChannels(0);
 	unloadSoundsFromMemory();
 	unloadMusicFromMemory();
-	Mix_CloseAudio();
-	SDL_Audio_Enabled_ = false;
+	if (SDL_Audio_Enabled_) {
+		Mix_CloseAudio();
+		SDL_Audio_Enabled_ = false;
+	}
 }
 
 void Audio::stopSound() const
