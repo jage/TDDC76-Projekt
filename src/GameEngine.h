@@ -16,10 +16,6 @@
 #include "Audio.h"
 
 
-//Dummyclasses
-struct Sound{};
-struct Player{};
-
 class GameEngine {
 public:
 	GameEngine();
@@ -37,9 +33,6 @@ private:
 	GameWorld gameworld_;
 	GraphicsEngine graphicsengine_;
 	Audio soundplayer_;
-
-	Player player1;
-	Player player2;
 	unsigned int ticks_;
 
 	//Tillst�nd

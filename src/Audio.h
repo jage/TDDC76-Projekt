@@ -1,7 +1,5 @@
 ﻿#ifndef AUDIO_H_
 #define AUDIO_H_
-
-
 #include "SDLInclude.h"
 
 #define NROFMUSICTRACKS 1
@@ -33,6 +31,7 @@ private:
 	int soundVolume_;
 	Mix_Chunk* sound_[NROFSOUNDS];
 	Mix_Music* musicTrack_[NROFMUSICTRACKS];
+
 	void loadMusicIntoMemory();
 	void unloadMusicFromMemory();
 	void loadSoundsIntoMemory();
@@ -40,3 +39,4 @@ private:
 
 };
 #endif
+

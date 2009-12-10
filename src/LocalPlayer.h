@@ -13,7 +13,7 @@ public:
 	
 	/*
 	 *	handle_event
-	 *  Hanterar en händelse och retunerar händelsen om det är en keyboard händelse, annars returneras inget!?!? 
+	 *  Hanterar en hï¿½ndelse och retunerar hï¿½ndelsen om det ï¿½r en keyboard hï¿½ndelse, annars returneras inget.
 	 */
 	 
 	SDL_Event& handle_event(SDL_Event& event);

@@ -1,5 +1,5 @@
 #include "Element.h"
-#include "iostream"
+#include <iostream>
 
 // Constructor
 Element::Element(const int& width, const int& height, const PANZER_IMAGE& ImgRef, const int& x,const int& y,const double& angle)
@@ -39,7 +39,7 @@ const double Element::get_angle() const {
 	return angle_;
 }
 void Element::set_angle(const double& angle) {
-	angle_ = angle;
+	angle_ = ((int)(angle + ((angle < 0) ? 360 : 0)) % 360);
 }
 
 const int Element::get_width() const {
