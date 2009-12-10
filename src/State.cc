@@ -478,7 +478,7 @@ void SetNameState::handle_input(SDL_Event& event){
 							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Daniel - the harbringer",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
-							/*player1_ptr_->set_name("Daniel - the harbringer");*/
+							player1_ptr_->set_name("Daniel - the harbringer");
 						}; break;
 						
 						case SDLK_2:
