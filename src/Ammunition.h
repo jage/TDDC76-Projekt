@@ -3,13 +3,14 @@
 
 #include "MovableElement.h"
 #include "Structs.h"
+#include "Explosion.h"
 
 class Ammunition : public MovableElement
 {
 public:
 	Ammunition();
-	virtual const double get_blast_radius() const =0;
-	virtual const Collision get_collision() const=0;
+	virtual const int get_blastRadius() const =0;
+	virtual const Explosion get_explosion() const=0;
 	virtual ~Ammunition(){};
 };
 
@@ -23,8 +24,8 @@ public:
 class StandardAmmo: public Ammunition
 {
 	public:
-		const double get_blastRadius() const;
-		const Collision get_collision() const;
+		const int get_blastRadius() const;
+		const Explosion get_explosion() const;
 };
 
 #endif /*AMMUNITION_H_*/

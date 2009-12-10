@@ -3,6 +3,7 @@
 
 #include "Enums.h"
 #include "Structs.h"
+#include "Explosion.h"
 
 //using namespace std;
 
@@ -21,7 +22,7 @@ public:
 class Destructable
 {
 public:
-	virtual void deform(const Collision&)=0;
+	virtual void deform(const Explosion&)=0;
 };
 
 #endif /*INTERFACES_H_*/

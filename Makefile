@@ -22,9 +22,8 @@ SDL      += -lSDLmain -Wl,-framework,Cocoa
 CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
 endif
 
-
 # Objektkodsmoduler som ingår i Panzer 2K
-OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
+OBJECTS_LIST = Element.o Interval.o Ammunition.o Explosion.o Ground.o Cannon.o Concrete.o MovableElement.o \
 			   	PhysicsEngine.o State.o Player.o LocalPlayer.o NetworkPlayer.o GameEngine.o \
 				GameWorld.o SDL_rotozoom.o GraphicsEngine.o Network.o Audio.o Panzer2k.o
 
@@ -90,6 +89,12 @@ $(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
 
 $(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
+	
+$(BUILD)/Explosion.o: $(PANZER2K)/Explosion.h $(PANZER2K)/Explosion.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Explosion.cc -o $(BUILD)/Explosion.o
+	
+$(BUILD)/Ammunition.o: $(PANZER2K)/Ammunition.h $(PANZER2K)/Ammunition.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Ammunition.cc -o $(BUILD)/Ammunition.o
 
 
 # make Element

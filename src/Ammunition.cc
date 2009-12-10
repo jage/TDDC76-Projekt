@@ -1,5 +1,6 @@
 #include "Ammunition.h"
 #include "Enums.h"
+#include "Explosion.h"
 
 // Abstract ammunition class
 Ammunition::Ammunition()
@@ -10,18 +11,15 @@ Ammunition::Ammunition()
 // Derived ammunition types
 
 // Standard
-const double StandardAmmo::get_blastRadius() const
+const int StandardAmmo::get_blastRadius() const
 {
 	return 10; // for modification	
 }
 
-const Collision StandardAmmo::get_collision() const
+const Explosion StandardAmmo::get_explosion() const
 {
- 	Collision coll;
- 	coll.x=x_;
- 	coll.y=y_;
- 	coll.blastRadius=get_blastRadius();
+ 	Explosion expl(get_x(),get_y(),get_blastRadius());
  	
- 	return coll;
+ 	return expl;
 }
 
