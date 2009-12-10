@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Player::Player(const string& name, const int health, const int points, const std::string hostname, const std::string port)
+Player::Player(const string& name, const int health, const int points, const std::string& hostname, const std::string& port)
  : name_(name), health_(health), points_(points), hostname_(hostname), port_(port) {}
 
 const string& Player::get_name() const
@@ -39,7 +39,7 @@ void Player::set_points(const int points)
 
 bool Player::network()
 {
-	return hostname_ != "" && port_ != "";
+	return (hostname_ != "" && port_ != "");
 }
 
 void Player::set_hostname(const std::string& hostname)
