@@ -223,7 +223,7 @@ bool GameWorld::check_collision(){
 	bool has_collided = false;
 	while( movableElements_it != movableElements_.end())
 	{
-		if((*movableElements_it)->get_y() > 480) {
+		if((*movableElements_it)->get_y() > 480 || (*movableElements_it)->get_x() < 0 || (*movableElements_it)->get_x() > width_) {
 			movableElements_.erase(movableElements_it);
 			return true;
 		}
