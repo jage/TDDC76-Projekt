@@ -195,7 +195,7 @@ bool GameWorld::generate_world(const int& seed)
 	ptr_cannonL_->set_y(height_-startHeight-15);
 	ptr_cannonR_->set_y(height_-endHeight-15);
 	
-	 // test deform
+	/* // test deform
 	 Explosion testExpl(315,350,48);
 	 
 	Destructable* dp;
@@ -209,7 +209,7 @@ bool GameWorld::generate_world(const int& seed)
 		if (dp!=0) dp->deform(testExpl);
 		
 		++it;
-	}
+	}*/
 	 		
 	delete []calculatedHeights;
 	return true;
