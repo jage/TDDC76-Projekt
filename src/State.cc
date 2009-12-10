@@ -37,10 +37,15 @@ Meny::~Meny(){
 void Meny::render(){
 		graphicsengine_ptr_->clearScreenBuffer(0);
 		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
-		graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
+		/*graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
-		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);
+		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);*/
+		graphicsengine_ptr_->drawTextToScreenBuffer("Play",20,100,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Network",20,170,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Options",20,240,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Quit",20,310,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("[ ",0,((nextState_ * 70) + 100), 0,0,255,PAPER_CUT72);
 
 }
 
@@ -450,7 +455,7 @@ void SetNameState::render(){
 	
 	
 	graphicsengine_ptr_->drawTextToScreenBuffer("Press the number of your character:",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("1-D.Å",0,50,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("1-D.ï¿½",0,50,255,255,255);
 	graphicsengine_ptr_->drawTextToScreenBuffer("2-J.R",0,90,255,255,255);
 	graphicsengine_ptr_->drawTextToScreenBuffer("3-J.W",0,130,255,255,255);
 	graphicsengine_ptr_->drawTextToScreenBuffer("4-J.R",0,170,255,255,255);
