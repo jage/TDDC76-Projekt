@@ -168,14 +168,14 @@ bool GameWorld::generate_world(const int& seed)
 			
 			// if < minHeight -> set minHeight
 			if (calculatedHeight<minHeight) calculatedHeight=minHeight;
-			
+
 			calculatedHeights[i]=(int)calculatedHeight;
 	}
-	
+
 	// create ground elements
 	startHeight = calculatedHeights[ptr_cannonL_->get_xInterval().get_upper()];
 	endHeight = calculatedHeights[ptr_cannonR_->get_xInterval().get_lower()];
-		
+
 	for (int i =0;i<noElements;i++)
 	{
 		// check if one cannon is placed on current x-coord
@@ -191,27 +191,27 @@ bool GameWorld::generate_world(const int& seed)
 			throw GameWorldException("Can't allocate enough memory");	
 		}
 	}
-	
+
 	// place out the cannons on correct heights
 	ptr_cannonL_->set_y(height_-startHeight-15);
 	ptr_cannonR_->set_y(height_-endHeight-15);
-	
+
 	/* // test deform
-	 Explosion testExpl(315,350,48);
-	 
+	Explosion testExpl(315,350,48);
+
 	Destructable* dp;
-	
+
 	vector<Element*>::iterator it = elements_.begin();
 	while(it != elements_.end())
 	{
-		Element* elem = *it;
-		dp = dynamic_cast<Destructable*>(elem);
-		
-		if (dp!=0) dp->deform(testExpl);
-		
-		++it;
+	Element* elem = *it;
+	dp = dynamic_cast<Destructable*>(elem);
+
+	if (dp!=0) dp->deform(testExpl);
+
+	++it;
 	}*/
-	 		
+
 	delete []calculatedHeights;
 	return true;
 }
@@ -220,16 +220,39 @@ bool GameWorld::check_collision(){
 	ElementVector::iterator elements_it = elements_.begin();
 	MovableElementVector::iterator movableElements_it = movableElements_.begin();
 
+	bool has_collided = false;
 	while( movableElements_it != movableElements_.end())
 	{
 		if((*movableElements_it)->get_y() > 480) {
 			movableElements_.erase(movableElements_it);
 			return true;
 		}
-		while(elements_it != elements_.end()){
-			if(*movableElements_it != *elements_it){
+		while(elements_it != elements_.end())
+		{
+			if(*movableElements_it != *elements_it)
+			{
 				if(check_collision(*movableElements_it, *elements_it))
 				{
+					if (Ammunition* ammo_ptr= dynamic_cast<Ammunition*>(*movableElements_it))
+					{
+
+						Explosion testExpl(ammo_ptr->get_x(), ammo_ptr->get_y(), ammo_ptr->get_blastRadius());
+
+						Destructable* dp;
+
+						vector<Element*>::iterator it = elements_.begin();
+						while(it != elements_.end())
+						{
+							Element* elem = *it;
+							dp = dynamic_cast<Destructable*>(elem);
+
+							if (dp!=0)
+							{
+								dp->deform(testExpl);
+							}
+							++it;
+						}
+					}
 					movableElements_.erase(movableElements_it);
 					return true;
 				}
@@ -243,27 +266,25 @@ bool GameWorld::check_collision(){
 }
 
 bool GameWorld::check_collision(MovableElement* movableElement, Element* element){
-
-
-
-
-	double El = element->get_x() - element->get_width()/2;			//Element left bound
-	double Er = element->get_x() + element->get_width()/2;			//Element right bound
-	double Eu = element->get_y() - element->get_height()/2;			//Element upper bound
-	double Ed = element->get_y() + element->get_height()/2;			//Element down bound
+	double El = 0, Er = 0, Eu = 0, Ed = 0;
+	if(dynamic_cast<Ground*>(element) || dynamic_cast<Concrete*>(element))
+	{
+		El = element->get_x();
+		Er = element->get_x() + element->get_width() - 1;
+		Eu = element->get_y();
+		Ed = element->get_y() + element->get_height();
+	}
+	else {
+		El = element->get_x() - element->get_width()/2;			//Element left bound
+		Er = element->get_x() + element->get_width()/2;			//Element right bound
+		Eu = element->get_y() - element->get_height()/2;			//Element upper bound
+		Ed = element->get_y() + element->get_height()/2;			//Element down bound
+	}
 
 	double Ml = movableElement->get_x() - movableElement->get_width()/2;	//MovableElement left bound
 	double Mr = movableElement->get_x() + movableElement->get_width()/2;	//MovableElement right bound
 	double Mu = movableElement->get_y() - movableElement->get_height()/2;	//MovableElement upper bound
 	double Md = movableElement->get_y() + movableElement->get_height()/2;	//MovableElement down bound
-
-	if(dynamic_cast<Ground*>(element) || dynamic_cast<Concrete*>(element))
-	{
-		El = element->get_x() + element->get_width()/2;
-		Er = element->get_x() + element->get_width()/2;
-		Eu = element->get_y() + element->get_height()/2;
-		Ed = element->get_y() + element->get_height()/2;
-	}
 
 	if(Md < Eu)
 		return false;

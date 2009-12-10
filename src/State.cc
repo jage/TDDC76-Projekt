@@ -37,10 +37,16 @@ Meny::~Meny(){
 void Meny::render(){
 		graphicsengine_ptr_->clearScreenBuffer(0);
 		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
-		graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
+		/*graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
-		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);
+		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);*/
+		graphicsengine_ptr_->drawTextToScreenBuffer("Play",26,100,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("Quit",26,310,255,255,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("[",0,((nextState_ * 70) + 100), 100,0,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("]",300,((nextState_ * 70) + 100), 100,0,255,PAPER_CUT72);
 
 }
 
@@ -125,7 +131,7 @@ Player1State::~Player1State() {}
 
 void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
 	if (fire_power_ != 0)
@@ -147,18 +153,19 @@ void Player1State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				// if (player_ptr_->network())
-				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
+				player_ptr_->network();
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-				// if (player_ptr_->network())
-				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-				// if (player_ptr_->network())
-				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
@@ -174,8 +181,8 @@ void Player1State::handle_input(SDL_Event& event){
 					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_leftCannon()->fire());
 					audio_ptr_->playSound(0);
-					// if (player_ptr_->network())
-					// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
+					if (player_ptr_->network())
+						Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
@@ -219,18 +226,18 @@ void Player2State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				// if (player_ptr_->network())
-				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
 				gameworld_ptr_->get_rightCannon()->adjust_angle(1);
-				// if (player_ptr_->network())
-				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
 				gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
-				// if (player_ptr_->network())
-				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
+				if (player_ptr_->network())
+					Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
@@ -247,8 +254,8 @@ void Player2State::handle_input(SDL_Event& event){
 					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_rightCannon()->fire());
 					audio_ptr_->playSound(0);
-					// if (player_ptr_->network())
-					// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
+					if (player_ptr_->network())
+						Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
@@ -290,12 +297,12 @@ PANZER_STATES Fire::next_state()
 {
 	if(gameworld_ptr_->check_collision())
 	{
-		std::cout << 1;
+		//std::cout << 1;
 		return FIREEND;
 	}
 	else
 	{
-		std::cout << 0;
+		//std::cout << 0;
 		return FIRE;
 	}
 }
@@ -446,11 +453,17 @@ SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
 
 void SetNameState::render(){
-	graphicsengine_ptr_->drawTextToScreenBuffer("Choose your character:",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("1.Daniel",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("2.Johannes",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("3.Johan",0,0,255,255,255);
+	
+	
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press the number of your character:",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("1-D.A",0,50,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("2-J.R",0,90,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("3-J.W",0,130,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("4-J.R",0,170,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("5-V.D",0,210,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("6-J.E",0,250,255,255,255);
+	
+
 }
 
 void SetNameState::logic(){nextState_ = SETNAMESTATE;}
@@ -460,11 +473,48 @@ void SetNameState::handle_input(SDL_Event& event){
 		{
 			switch( event.key.keysym.sym )
 				{
-					case SDLK_SPACE:
+					case SDLK_1:
 						{
-							gameworld_ptr_->generate_world(1);
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+							graphicsengine_ptr_->drawTextToScreenBuffer("Daniel - the Bloodseeker",150,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							player1_ptr_->set_name("Daniel - the Bloodseeker");
+						}; break;
+						
+						case SDLK_2:
+						{
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Johannes - the Earthshaker",150,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							player1_ptr_->set_name("Johannes - Earthshaker");
+						}; break;
+						case SDLK_3:
+						{
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Doombringer",150,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							player1_ptr_->set_name("Johan - the Doombringer");
+						}; break;
+						case SDLK_4:
+						{
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Jonas - the Slayer",150,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							player1_ptr_->set_name("Jonas - the Slayer");
+						}; break;
+						case SDLK_5:
+						{
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Viktor - the Soul Keeper",150,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							player1_ptr_->set_name("Viktor - the Soul Keeper");
+						}; break;
+						case SDLK_6:
+						{
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Lifestealer",150,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							player1_ptr_->set_name("Johan - the Lifestealer");
 						}; break;
 					case SDLK_RETURN:
 					{

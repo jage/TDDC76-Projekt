@@ -11,7 +11,7 @@ Ammunition::Ammunition()
 // Standard
 const int StandardAmmo::get_blastRadius() const
 {
-	return 10; // for modification	
+	return 50; // for modification	
 }
 
 const Explosion StandardAmmo::get_explosion() const
