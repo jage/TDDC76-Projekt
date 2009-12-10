@@ -27,6 +27,8 @@ void Audio::init()
 		SDL_Audio_Enabled_=true;
 	}
 	Mix_AllocateChannels(16);
+	loadMusicIntoMemory();
+	loadSoundsIntoMemory();
 }
 
 
@@ -55,6 +57,7 @@ void Audio::loadMusicIntoMemory()
 	}
 
 	Mix_VolumeMusic(musicVolume_);
+	Mix_Vol
 }
 
 void Audio::unloadMusicFromMemory()
