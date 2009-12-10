@@ -3,14 +3,15 @@
 #include <stdlib.h>
 
 
-double dt_ = 0.0125;
+double dt_ = 0.01;
 /*
  * update_pos beräknar den nya positionen för ett givet MovableElement-objekt samt en given gravitation.
  */
 void PhysicsEngine::update_pos(MovableElement* element, const double& gravity, const double& wind) {
+	std::cout << "wind: " << wind << std::endl;
 	update_x(element);
 	update_y(element);
-	update_dx(element, wind * 100);
+	update_dx(element, wind * 3);
 	update_dy(element, gravity);
 }
 

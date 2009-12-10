@@ -28,6 +28,7 @@ class StandardAmmo: public Ammunition
 		const int get_blastRadius() const;
 		StandardAmmo* clone() const;
 		const Explosion get_explosion() const;
+		const double get_windFactor() const;
 };
 
 #endif /*AMMUNITION_H_*/

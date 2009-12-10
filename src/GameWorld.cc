@@ -244,7 +244,7 @@ bool GameWorld::check_collision(){
 
 bool GameWorld::check_collision(MovableElement* movableElement, Element* element){
 
-	return false;
+
 
 
 	double El = element->get_x() - element->get_width()/2;			//Element left bound

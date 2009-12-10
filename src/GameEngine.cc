@@ -30,6 +30,8 @@ GameEngine::GameEngine() {
 	player1_ptr_ = new Player();
 	player2_ptr_ = new Player();
 
+	gameworld_.set_wind(.1*((rand()%200) - 100));
+
 }
 
 GameEngine::~GameEngine() {}
