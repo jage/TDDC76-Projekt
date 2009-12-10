@@ -1,11 +1,4 @@
-/*
- * GameEngine.cpp
- *
- *  Created on: Nov 22, 2009
- *      Author: rosjo
- */
-
-#include "iostream"
+#include <iostream>
 #include "GameEngine.h"
 #include "GraphicsEngine.h"
 #include "State.h"
