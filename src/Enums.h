@@ -34,7 +34,8 @@ enum PANZER_ALIGNMENT
 enum PANZER_FONT
 {
 	LAZY32,
-	LAZY26
+	LAZY26,
+	PAPER_CUT32
 };
 
 #endif
