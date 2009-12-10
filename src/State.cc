@@ -10,12 +10,13 @@
 #include "SDLInclude.h"
 #include <string>
 #include "Network.h"
+#include "Audio.h"
 
 using namespace std;
 
 //State---------------------------------------------------------//
-State::State(GraphicsEngine* graphicengine, GameWorld* gameworld)
-	: graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld){}
+State::State(GraphicsEngine* graphicengine, GameWorld* gameworld, Audio* audio)
+: graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld), audio_ptr_(audio) {}
 
 State::~State() {}
 //--------------------------------------------------------------//
@@ -55,8 +56,8 @@ SDL_Surface* load_image( std::string filename )
 
 //Meny::Meny(){}
 
-Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld),
+Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine, gameworld, audio),
 	   nextState_(PLAYER1STATE),
 	   quitMeny_(false){
 }
@@ -152,8 +153,8 @@ PANZER_STATES Meny::next_state()
 
 
 
-Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), nextState_(PLAYER1STATE) {}
+Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE) {}
 
 Player1State::~Player1State() {}
 
@@ -172,17 +173,9 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_RETURN: 
+						case SDLK_RETURN:
 							nextState_ = FIRE;
-							Network::send("127.0.0.1", "12345", "enter");
-							break;
-						case SDLK_UP:
-							gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-							Network::send("127.0.0.1", "12345", "up");
-							break;
-						case SDLK_DOWN:
-							gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-							Network::send("127.0.0.1", "12345", "down");
+							audio_ptr_->playSound(0);
 							break;
 						default: break;
 					}
@@ -198,8 +191,8 @@ PANZER_STATES Player1State::next_state()
 
 //Player2State-----------------------------------------------------------//
 
-Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), nextState_(PLAYER2STATE) {}
+Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE) {}
 
 Player2State::~Player2State(){}
 
@@ -242,8 +235,8 @@ PANZER_STATES Player2State::next_state()
 
 
 
-Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio) {}
 
 Fire::~Fire(){}
 
@@ -267,8 +260,8 @@ PANZER_STATES Fire::next_state()
 
 
 
-ExitGame::ExitGame(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+ExitGame::ExitGame(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio) {}
 
 ExitGame::~ExitGame(){}
 
@@ -284,8 +277,8 @@ PANZER_STATES ExitGame::next_state()
 
 
 //NetworkState--------------------------------------------------//
-NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio) {}
 
 void NetworkState::render(){
 	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
@@ -296,8 +289,8 @@ void NetworkState::logic(){
 	SDL_Delay(2000);
 }
 //OptionsState-------------------------------------------------//
-OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), nextState_(OPTIONSTATE){}
+OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine, gameworld, audio), nextState_(OPTIONSTATE){}
 
 void OptionState::render(){
 	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
@@ -313,7 +306,7 @@ void OptionState::handle_input(SDL_Event& event){
 				{
 					case SDLK_SPACE:
 						{
-							gameworld_ptr_->generate_world(640,480,1);
+							gameworld_ptr_->generate_world(1);
 							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 						}; break;
@@ -333,17 +326,15 @@ PANZER_STATES OptionState::next_state(){
 //OptionsState-----------------------------------------------//
 
 //InitState--------------------------------------------------//
-InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	: State(graphicsengine,gameworld){
-		SDL_EnableKeyRepeat(100, 10);
-	}
+InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	: State(graphicsengine,gameworld, audio){}
 
 void InitState::render(){
 	cout << "Initiate the game!" << endl;
 }
 
 void InitState::logic(){
-	gameworld_ptr_->generate_world(640,480,1);
+	gameworld_ptr_->generate_world(1);
 	cout << "Level generated, we wait so we see the splash screen..." << endl;
 	//SDL_Delay(700);
 }

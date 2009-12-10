@@ -13,13 +13,14 @@
 #include "SDLInclude.h"
 #include <iostream>
 #include "Network.h"
+#include "Audio.h"
 
 
 
 class State {
 public:
 
-	State(GraphicsEngine*, GameWorld*);
+	State(GraphicsEngine*, GameWorld*, Audio*);
 
 	virtual ~State();
 
@@ -52,6 +53,7 @@ public:
 protected:
 	GraphicsEngine* graphicsengine_ptr_;
 	GameWorld*	   gameworld_ptr_;
+	Audio*			audio_ptr_;
 
 };
 
@@ -59,7 +61,7 @@ class Meny : public State
 {
 public:
 	//Meny();
-	Meny(GraphicsEngine*, GameWorld*);
+	Meny(GraphicsEngine*, GameWorld*, Audio*);
 	~Meny();
 
 	void render();
@@ -89,7 +91,7 @@ class Player1State : public State
 {
 
 public:
-	Player1State(GraphicsEngine*, GameWorld*);
+	Player1State(GraphicsEngine*, GameWorld*, Audio*);
 	~Player1State();
 
 	void render();
@@ -110,7 +112,7 @@ class Player2State : public State
 
 public:
 	//Meny();
-	Player2State(GraphicsEngine*, GameWorld*);
+	Player2State(GraphicsEngine*, GameWorld*, Audio*);
 	~Player2State();
 
 	void render();
@@ -130,7 +132,7 @@ class Fire : public State
 {
 public:
 
-	Fire(GraphicsEngine*, GameWorld*);
+	Fire(GraphicsEngine*, GameWorld*, Audio*);
 	~Fire();
 
 	void render();
@@ -149,7 +151,7 @@ class ExitGame : public State
 {
 
 public:
-	ExitGame(GraphicsEngine*, GameWorld*);
+	ExitGame(GraphicsEngine*, GameWorld*, Audio*);
 	~ExitGame();
 
 	void render();
@@ -168,7 +170,7 @@ class NetworkState : public State
 {
 
 public:
-	NetworkState(GraphicsEngine*, GameWorld*);
+	NetworkState(GraphicsEngine*, GameWorld*, Audio*);
 	~NetworkState(){};
 
 	void render();
@@ -187,7 +189,7 @@ class OptionState : public State
 {
 
 public:
-	OptionState(GraphicsEngine*, GameWorld*);
+	OptionState(GraphicsEngine*, GameWorld*, Audio*);
 	~OptionState(){};
 
 	void render();
@@ -206,7 +208,7 @@ private:
 class InitState : public State
 {
 public:
-	InitState(GraphicsEngine*, GameWorld*);
+	InitState(GraphicsEngine*, GameWorld*, Audio*);
 	~InitState(){};
 
 	void render();

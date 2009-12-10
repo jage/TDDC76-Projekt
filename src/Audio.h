@@ -1,5 +1,8 @@
-#include "SDL_mixer.h"
-#include "SDL.h"
+﻿#ifndef AUDIO_H_
+#define AUDIO_H_
+
+
+#include "SDLInclude.h"
 
 #define NROFMUSICTRACKS 1
 #define NROFSOUNDS 12
@@ -35,3 +38,4 @@ private:
 	void unloadSoundsFromMemory();
 
 };
+#endif

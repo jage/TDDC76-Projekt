@@ -5,7 +5,7 @@
 PANZER2K  = src
 BUILD     = build
 TESTS     = $(PANZER2K)/tests
-SDL      += -lSDL -lSDL_image -lSDL_ttf -lSDLmain -Wl,-framework,Cocoa
+SDL      += -lSDL -lSDLmain -lSDL_image -lSDL_ttf -lSDL_mixer -Wl,-framework,Cocoa
 BOOST_LD  = -L/opt/local/lib/ -lboost_system-mt -lboost_thread-mt
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
@@ -18,7 +18,7 @@ CCFLAGS  += -arch x86_64 -I/opt/local/include -I/opt/local/include -L/opt/local/
 
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
 			   	PhysicsEngine.o State.o Player.o LocalPlayer.o NetworkPlayer.o GameEngine.o \
-				Network.o GameWorld.o SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
+				Network.o GameWorld.o SDL_rotozoom.o GraphicsEngine.o Audio.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
@@ -79,6 +79,10 @@ $(BUILD)/NetworkPlayer.o: $(PANZER2K)/NetworkPlayer.h $(PANZER2K)/NetworkPlayer.
 
 $(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
+
+$(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
+
 
 # make Element
 Element: $(BUILD)/Element.o
