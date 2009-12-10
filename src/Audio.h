@@ -1,9 +1,8 @@
-#ifndef AUDIO_H_
+﻿#ifndef AUDIO_H_
 #define AUDIO_H_
 
 
-#include "SDL_mixer.h"
-#include "SDL.h"
+#include "SDLInclude.h"
 
 #define NROFMUSICTRACKS 1
 #define NROFSOUNDS 12

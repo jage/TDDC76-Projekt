@@ -2,7 +2,10 @@
 #include "Enums.h"
 #include "Interval.h"
 #include <cstdlib>
+#include <iostream>
 #include <math.h>
+
+using namespace std;
 
 Ground::Ground(const int& width,const  int& height,const int& x, const int& y)
 	:Element(width,height,GROUND,x,y) {}
@@ -10,14 +13,17 @@ Ground::Ground(const int& width,const  int& height,const int& x, const int& y)
 void Ground::deform(const Collision& coll)
 {
 	// define borders
-	Interval blastInterval(coll.x_-coll.blastRadius_,coll.y_+coll.blastRadius_);
+	Interval blastInterval(coll.x-coll.blastRadius,coll.x+coll.blastRadius);
 	
 	// in region of hit
-	if (get_xInterval().intersect(blastInterval))
+	if (blastInterval.intersect(get_xInterval()))
 	{
-		double decrease =coll.blastRadius_*exp(-0.5*(x_-coll.blastRadius_)); 
+		
+		//double decrease =coll.blastRadius_*exp(-0.5*(x_-coll.blastRadius_));
+		double decrease(5);
+		cout << "im deformed! with " << decrease << " pixels." << endl;  
 		height_= height_ -(int)decrease;
-		x_=x_+(int)decrease;
+		y_=y_+(int)decrease;
 	}
 }
 
