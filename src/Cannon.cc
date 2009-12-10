@@ -40,6 +40,11 @@ void Cannon::fire()
 	fired_=true;
 }
 
+void Cannon::disarm()
+{
+	fired_=false;
+}
+
 Cannon::~Cannon()
 {
 	delete ptr_ammunition_;
