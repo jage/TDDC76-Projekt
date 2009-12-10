@@ -290,12 +290,12 @@ PANZER_STATES Fire::next_state()
 {
 	if(gameworld_ptr_->check_collision())
 	{
-		std::cout << 1;
+		//std::cout << 1;
 		return FIREEND;
 	}
 	else
 	{
-		std::cout << 0;
+		//std::cout << 0;
 		return FIRE;
 	}
 }
