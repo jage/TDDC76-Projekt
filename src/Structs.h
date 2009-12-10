@@ -10,12 +10,4 @@ struct Velocity
 	double dy_;
 };
 
-// Collision
-struct Collision
-{
-	int x;
-	int y;
-	int blastRadius;
-};
-
 #endif /*STRUCTS_H_*/
