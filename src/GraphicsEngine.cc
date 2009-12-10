@@ -157,12 +157,6 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
 	SDL_Rect rect;
 	switch (picture_nr)
 	{
-	case CANNONBALL:
-		rect.x = 0;
-		rect.y = 0;
-		rect.w = 250;
-		rect.h = 277;
-		break;
 	case SUN:
 		rect.x = 742;
 		rect.y = 0;
