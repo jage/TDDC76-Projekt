@@ -62,7 +62,7 @@ void GameEngine::run()
 		throw logic_error("Gick ej att initera SDL");
 
 	SDL_Event event;
-	soundplayer_.playMusic(0,0);
+	//soundplayer_.playMusic(0,0);
 
 	while(currentState_ != EXITGAME)
 		{
