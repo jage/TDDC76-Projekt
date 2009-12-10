@@ -38,11 +38,11 @@ void Audio::init()
 
 void Audio::uninit()
 {
-	stopAllAudio();
-	Mix_AllocateChannels(0);
-	unloadSoundsFromMemory();
-	unloadMusicFromMemory();
 	if (SDL_Audio_Enabled_) {
+		stopAllAudio();
+		Mix_AllocateChannels(0);
+		unloadSoundsFromMemory();
+		unloadMusicFromMemory();
 		Mix_CloseAudio();
 		SDL_Audio_Enabled_ = false;
 	}
