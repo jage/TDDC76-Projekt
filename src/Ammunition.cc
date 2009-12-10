@@ -4,7 +4,7 @@
 
 // Abstract ammunition class
 Ammunition::Ammunition()
-: MovableElement(100, 100, CANNONBALL, 10, 10, 10)
+: MovableElement(100, 100, CANNONBALL)
 {
 }
 

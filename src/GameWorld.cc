@@ -14,8 +14,8 @@ GameWorld::GameWorld(const int& width,const int& height,const double& gravity,co
 	try
 	{
 		ptr_physEngine_= new PhysicsEngine();
-		ptr_cannonL_ = new Cannon(0,true);
-		ptr_cannonR_= new Cannon(0,false);
+		ptr_cannonL_ = new Cannon(new StandardAmmo(),true);
+		ptr_cannonR_= new Cannon(new StandardAmmo(),false);
 	}
 	catch (bad_alloc)
 	{
