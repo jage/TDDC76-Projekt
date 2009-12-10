@@ -66,18 +66,13 @@ Meny::~Meny(){
 }
 
 
-void Meny::renderMenyGfx()
-{
+void Meny::render(){
+		graphicsengine_ptr_->clearScreenBuffer(0);
+		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
 		graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
 		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);
-}
-
-
-void Meny::render(){
-		graphicsengine_ptr_->clearScreenBuffer(0);
-		renderMenyGfx();
 
 }
 

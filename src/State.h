@@ -72,11 +72,6 @@ private:
 
  void changeState(bool);
 
- void renderMenyGfx();
-
-
-
-
 private:
 
 };
