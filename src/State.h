@@ -72,11 +72,6 @@ private:
 
  void changeState(bool);
 
- void renderMenyGfx();
-
-
-
-
 private:
 
 };
@@ -174,11 +169,15 @@ public:
 
 	void logic();
 
-	void handle_input(SDL_Event&){};
+	void handle_input(SDL_Event&);
 
-	PANZER_STATES next_state(){return MENY;};
+	PANZER_STATES next_state();
 
 private:
+	PANZER_STATES nextState_;
+	string	input_;
+	string  port_;
+	bool switchinput_;
 
 };
 

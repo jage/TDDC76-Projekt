@@ -12,7 +12,7 @@
 class Player
 {
 public:
-	Player(const std::string& = "", const int  = 100, const int = 0);
+	Player(const std::string& = "", const int  = 100, const int = 0, const std::string& hostname = "", const std::string& port = "");
 	virtual ~Player(){};
 	 
 	 /*
@@ -51,11 +51,26 @@ public:
 	 */
 	void set_points(const int);	
 	
+	/*
+	 * network()
+	 * true if the opponent is a remote player
+	 */
+	bool network();
 	
+	/*
+	 *
+	 */
+	void set_hostname(const std::string&);
+	void set_port(const std::string&);
+	const std::string& get_hostname() const;
+	const std::string& get_port() const;
+
  private:
  	std::string name_;	
  	int health_;
  	int points_;
+	std::string hostname_;
+	std::string port_;
 };
 
 #endif /*PLAYER_H_*/

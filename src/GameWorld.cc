@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <math.h>
 #include "Interfaces.h"
+#include "Ground.h"
 
 using namespace std;
 
@@ -195,13 +196,8 @@ bool GameWorld::generate_world(const int& seed)
 	ptr_cannonL_->set_y(height_-startHeight-15);
 	ptr_cannonR_->set_y(height_-endHeight-15);
 	
-/*	 // test deform
-	 Collision testColl;
-	 
-	 srand(time(NULL));
-	 
-	 testColl.x= rand() % width_;
-	 testColl.blastRadius =70;
+	/* // test deform
+	 Explosion testExpl(315,350,48);
 	 
 	Destructable* dp;
 	
@@ -211,11 +207,72 @@ bool GameWorld::generate_world(const int& seed)
 		Element* elem = *it;
 		dp = dynamic_cast<Destructable*>(elem);
 		
-		if (dp!=0) dp->deform(testColl);
+		if (dp!=0) dp->deform(testExpl);
 		
 		++it;
 	}*/
 	 		
 	delete []calculatedHeights;
+	return true;
+}
+
+bool GameWorld::check_collision(){
+	ElementVector::iterator elements_it = elements_.begin();
+	MovableElementVector::iterator movableElements_it = movableElements_.begin();
+
+	while( movableElements_it != movableElements_.end())
+	{
+		if((*movableElements_it)->get_y() > 480) {
+			movableElements_.erase(movableElements_it);
+			return true;
+		}
+		while(elements_it != elements_.end()){
+			if(*movableElements_it != *elements_it){
+				if(check_collision(*movableElements_it, *elements_it))
+				{
+					movableElements_.erase(movableElements_it);
+					return true;
+				}
+			}
+			++elements_it;
+		}
+		++movableElements_it;
+	}
+
+	return false;
+}
+
+bool GameWorld::check_collision(MovableElement* movableElement, Element* element){
+
+	return false;
+
+
+	double El = element->get_x() - element->get_width()/2;			//Element left bound
+	double Er = element->get_x() + element->get_width()/2;			//Element right bound
+	double Eu = element->get_y() - element->get_height()/2;			//Element upper bound
+	double Ed = element->get_y() + element->get_height()/2;			//Element down bound
+
+	double Ml = movableElement->get_x() - movableElement->get_width()/2;	//MovableElement left bound
+	double Mr = movableElement->get_x() + movableElement->get_width()/2;	//MovableElement right bound
+	double Mu = movableElement->get_y() - movableElement->get_height()/2;	//MovableElement upper bound
+	double Md = movableElement->get_y() + movableElement->get_height()/2;	//MovableElement down bound
+
+	if(dynamic_cast<Ground*>(element) || dynamic_cast<Concrete*>(element))
+	{
+		El = element->get_x() + element->get_width()/2;
+		Er = element->get_x() + element->get_width()/2;
+		Eu = element->get_y() + element->get_height()/2;
+		Ed = element->get_y() + element->get_height()/2;
+	}
+
+	if(Md < Eu)
+		return false;
+	if(Ed < Mu)
+		return false;
+	if(Mr < El )
+		return false;
+	if(Er < Ml)
+		return false;
+
 	return true;
 }

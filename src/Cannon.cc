@@ -7,12 +7,20 @@ Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
 	:Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo)
 {
 	// set right cannon if not left
-	if(!leftCannon) set_imgRef(RIGHT_CANNON);
+	if(!leftCannon) {
+		set_imgRef(RIGHT_CANNON);
+		Element::set_angle(180);
+	}
 }
 
 void Cannon::adjust_angle(const double& delta)
 {
-	Element::set_angle(get_angle() + delta);
+	if (imgRef_ == LEFT_CANNON) {
+		Element::set_angle(get_angle() + delta);
+	}
+	else {
+		Element::set_angle(get_angle() - delta);
+	}
 }
 
 
@@ -39,14 +47,23 @@ const bool Cannon::fired() const
 
 Ammunition* Cannon::fire()
 {
-	//std::cout << ptr_ammunition_->get_dx();
 	Ammunition* newAmmo = ptr_ammunition_->clone();
 
-	newAmmo->set_x(get_x());
-	newAmmo->set_y(get_y());
+	newAmmo->set_x(get_x() + 65*cos(3.14/180 * get_angle()));
+	newAmmo->set_y(get_y() - 65*sin(3.14/180 * get_angle()) - 20);
 
-	newAmmo->set_dx(power_*cos(get_angle()));
-	newAmmo->set_dy(-power_*sin(get_angle()));
+	std::cout <<"x: " << newAmmo->get_x() <<std::endl;
+	std::cout <<"y: " << newAmmo->get_y() <<std::endl;
+
+
+	newAmmo->set_dx(10*power_*cos(3.14/180 * get_angle()));
+	newAmmo->set_dy(-10*power_*sin(3.14/180 * get_angle()));
+
+	std::cout <<"vinkel: " << get_angle() <<std::endl;
+
+	std::cout <<"dx: " << newAmmo->get_dx() <<std::endl;
+	std::cout <<"dy: " << newAmmo->get_dy() <<std::endl <<std::endl;
+
 	fired_=true;
 	return newAmmo;
 }

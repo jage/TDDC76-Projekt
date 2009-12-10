@@ -35,6 +35,7 @@ public:
 	void clearScreenBuffer(const unsigned int& color = (0xff << 16 | 0xff << 8 | 0xff << 0));
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
+	void drawBackgroundToScreenBuffer();
 	void drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage);
 	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& font = LAZY32);
 	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& fontName = LAZY32);
@@ -55,6 +56,7 @@ private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
 	SDL_Surface* cannonball;
+	SDL_Surface* backgroundImage;
 	SDL_Surface* cannon[2*DEGREES];
 	SDL_Surface* buttons[NROFBUTTONIMG];
 	TTF_Font* font[NROFFONTS];
@@ -74,7 +76,7 @@ private:
 	SDL_Surface* generateTextSurface(const std::string& text, const PANZER_FONT& font, const SDL_Color& color);
 	SDL_Surface* loadImageFromDisc(const std::string&, const bool& transparent = false);
 	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
-	SDL_Surface* flipImageHorizontally(SDL_Surface*);
+	SDL_Surface* flipImage(SDL_Surface*, const int& flags);
 };
 
 #endif
