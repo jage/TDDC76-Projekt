@@ -60,9 +60,9 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 
 	switch (draw_element.get_imgRef())
 	{
-	case LEFT_CANNON:
-		cannonindex += DEGREES;
 	case RIGHT_CANNON:
+		cannonindex += DEGREES;
+	case LEFT_CANNON:
 		rcDest.x -= cannon[cannonindex]->w / 2;
 		rcDest.y -= cannon[cannonindex]->h / 2;
 		SDL_BlitSurface(cannon[cannonindex], NULL, screen, &rcDest);
@@ -202,7 +202,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
 	SDL_Surface* unrotatedCannon =loadImageFromDisc("cannon.png", true);
-	SDL_Surface* flippedCannon = flipImageHorizontally(unrotatedCannon);
+	SDL_Surface* flippedCannon = flipImage(unrotatedCannon, 0);
 
 	if (!unrotatedCannon) {
 		cerr << "cannon.png ej funnen" << endl;
@@ -211,12 +211,12 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 					
 	for (int i = 0; i < DEGREES; ++i)
 	{
-		cannon[i] = rotozoomSurface(unrotatedCannon, -i * 360.0 / DEGREES, 1, 1);
+		cannon[i] = rotozoomSurface(flippedCannon, i * 360.0 / DEGREES, 1, 1);
 	}
 
 	for (int j = 0; j < DEGREES; ++j) 
 	{
-		cannon[DEGREES + j] = rotozoomSurface(flippedCannon, j * 360.0 / DEGREES, 1, 1);
+		cannon[DEGREES + j] = rotozoomSurface(unrotatedCannon, -180 + j * 360.0 / DEGREES, 1, 1);
 	}
 	SDL_FreeSurface(unrotatedCannon);
 	SDL_FreeSurface(flippedCannon);
@@ -329,6 +329,7 @@ void GraphicsEngine::init()
 	}
 	source_image = loadImageFromDisc("sprite_sheet.bmp");
 	cannonball = loadImageFromDisc("cannonball.png", true);
+	backgroundImage = loadImageFromDisc("panzer.bmp");
 	loadButtonSpritesIntoMemory();
 	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
@@ -341,6 +342,7 @@ void GraphicsEngine::uninit()
 {
 	SDL_FreeSurface(source_image);
 	SDL_FreeSurface(cannonball);
+	SDL_FreeSurface(backgroundImage);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
 	unloadButtonSpritesFromMemory();
@@ -652,7 +654,7 @@ void GraphicsEngine::drawToScreenBuffer(const vector<MovableElement*>& elemVecto
  *
  * Retur: Pointer to new image.
  */
-SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
+SDL_Surface* GraphicsEngine::flipImage(SDL_Surface* originalImage, const int& flags)
 {
 	SDL_Surface* flippedImage = NULL;
 
@@ -673,8 +675,14 @@ SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
 	Uint32* targetPixels = (Uint32*)flippedImage->pixels;
 
 	for (int x = 0, rx = flippedImage->w - 1; x < flippedImage->w; ++x, --rx) {
-		for(int y = 0; y < flippedImage->h; ++y) {
-			targetPixels[y * flippedImage->w + rx] = sourcePixels[y * originalImage->w + x];
+		for(int y = 0, ry = flippedImage->h -1; y < flippedImage->h; ++y, --ry) {
+			if (flags) {
+				targetPixels[ry * flippedImage->w + rx] = sourcePixels[y * originalImage->w + x];
+			}
+			else {
+				targetPixels[y * flippedImage->w + rx] = sourcePixels[y * originalImage->w + x];
+			}
+
 		}
 	}
 
@@ -713,4 +721,9 @@ void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int
 	{
 		SDL_FillRect(screen, &rcDest,  (i * 255 / width) << 16 | (255 - i * 255 / width) << 8 | 0 << 0 );
 	}
+}
+
+void GraphicsEngine::drawBackgroundToScreenBuffer()
+{
+	SDL_BlitSurface(backgroundImage, NULL, screen, NULL);
 }

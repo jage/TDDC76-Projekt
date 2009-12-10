@@ -7,12 +7,20 @@ Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
 	:Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo)
 {
 	// set right cannon if not left
-	if(!leftCannon) set_imgRef(RIGHT_CANNON);
+	if(!leftCannon) {
+		set_imgRef(RIGHT_CANNON);
+		Element::set_angle(180);
+	}
 }
 
 void Cannon::adjust_angle(const double& delta)
 {
-	Element::set_angle(get_angle() + delta);
+	if (imgRef_ == LEFT_CANNON) {
+		Element::set_angle(get_angle() + delta);
+	}
+	else {
+		Element::set_angle(get_angle() - delta);
+	}
 }
 
 
