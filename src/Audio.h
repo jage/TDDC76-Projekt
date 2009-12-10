@@ -15,9 +15,9 @@ public:
 	void uninit();
 	void playMusic(const int& musicIndex, const int& loop);
 	void playSound(const int& soundIndex);
-	void setMusicVolume(const int& volume);
 	void stopMusic();
 	void stopAllSound();
+	void setMusicVolume(const int& volume);
 	const int getMusicVolume();
 	void setSoundVolume(const int& volume);
 	const int getSoundVolume();
