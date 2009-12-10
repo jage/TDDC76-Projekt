@@ -4,7 +4,7 @@
 #include "SDLInclude.h"
 
 #define NROFMUSICTRACKS 1
-#define NROFSOUNDS 12
+#define NROFSOUNDS 3
 
 class Audio
 {

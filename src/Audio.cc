@@ -95,89 +95,29 @@ void Audio::playMusic(const int &musicIndex, const int &loop) const
 
 void Audio::loadSoundsIntoMemory()
 {
-	sound_[0] = Mix_LoadWAV("sounds/Danger.wav");
+	sound_[0] = Mix_LoadWAV("sounds/fire.wav");
 	if (!sound_[0])
 	{
 		cerr << Mix_GetError() << endl;
+		return;
 	}
 	Mix_VolumeChunk(sound_[0], 128);
 
-	sound_[1] = Mix_LoadWAV("sounds/Game_Over.wav");
+	sound_[1] = Mix_LoadWAV("sounds/explosion.wav");
 	if (!sound_[1])
 	{
 		cerr << Mix_GetError() << endl;
+		return;
 	}
 	Mix_VolumeChunk(sound_[1], 128);
 
-	sound_[2] = Mix_LoadWAV("sounds/High_Score.wav");
+	sound_[2] = Mix_LoadWAV("sounds/wind.wav");
 	if (!sound_[2])
 	{
 		cerr << Mix_GetError() << endl;
+		return;
 	}
 	Mix_VolumeChunk(sound_[2], 128);
-
-	sound_[3] = Mix_LoadWAV("sounds/Incoming_Line.wav");
-	if (!sound_[3])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[3], 128);
-
-	sound_[4] = Mix_LoadWAV("sounds/Level_Up.wav");
-	if (!sound_[4])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[4], 128);
-
-	sound_[5] = Mix_LoadWAV("sounds/Line_Cleared.wav");
-	if (!sound_[5])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[5], 128);
-
-	sound_[6] = Mix_LoadWAV("sounds/Move_Piece.wav");
-	if (!sound_[6])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[6], 128);
-	
-	sound_[7] = Mix_LoadWAV("sounds/New_Top_High_Score.wav");
-	if (!sound_[7])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[7], 128);
-
-	sound_[8] = Mix_LoadWAV("sounds/Piece_Collision.wav");
-	if (!sound_[8])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[8], 128);
-
-	sound_[9] = Mix_LoadWAV("sounds/Piece_Drop.wav");
-	if (!sound_[9])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[9], 128);
-
-	sound_[10] = Mix_LoadWAV("sounds/Piece_Rotate.wav");
-	if (!sound_[10])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[10], 128);
-
-	sound_[11] = Mix_LoadWAV("sounds/Tetris_Cleared.wav");
-	if (!sound_[11])
-	{
-		cerr << Mix_GetError() << endl;
-	}
-	Mix_VolumeChunk(sound_[11], 128);
 }
 
 void Audio::unloadSoundsFromMemory()
