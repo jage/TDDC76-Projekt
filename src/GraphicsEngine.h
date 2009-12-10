@@ -32,7 +32,7 @@ public:
 	void drawToScreenBuffer(const std::vector<Element*>&);
 	void drawToScreenBuffer(const std::vector<MovableElement*>&);
 	void drawToScreenBuffer(const Element&);
-	void clearScreenBuffer(const unsigned int& color);
+	void clearScreenBuffer(const unsigned int& color = (0xff << 16 | 0xff << 8 | 0xff << 0));
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
 	void drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage);
