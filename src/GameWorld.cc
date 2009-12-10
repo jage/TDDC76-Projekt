@@ -62,6 +62,11 @@ bool GameWorld::update_world()
 	return 1; //dummy
 }
 
+const int GameWorld::get_randomSeed() const
+{
+	return randomSeed_;
+}
+
 const int GameWorld::get_width() const
 {
 	return width_;	
@@ -191,13 +196,8 @@ bool GameWorld::generate_world(const int& seed)
 	ptr_cannonL_->set_y(height_-startHeight-15);
 	ptr_cannonR_->set_y(height_-endHeight-15);
 	
-/*	 // test deform
-	 Collision testColl;
-	 
-	 srand(time(NULL));
-	 
-	 testColl.x= rand() % width_;
-	 testColl.blastRadius =70;
+	/* // test deform
+	 Explosion testExpl(315,350,48);
 	 
 	Destructable* dp;
 	
@@ -207,7 +207,7 @@ bool GameWorld::generate_world(const int& seed)
 		Element* elem = *it;
 		dp = dynamic_cast<Destructable*>(elem);
 		
-		if (dp!=0) dp->deform(testColl);
+		if (dp!=0) dp->deform(testExpl);
 		
 		++it;
 	}*/

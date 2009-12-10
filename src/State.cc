@@ -153,8 +153,10 @@ PANZER_STATES Meny::next_state()
 
 
 
-Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE) {}
+Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE), player_ptr_(player) {
+		fire_power_ = 0;
+	}
 
 Player1State::~Player1State() {}
 
@@ -162,8 +164,14 @@ void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+<<<<<<< HEAD:src/State.cc
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
+=======
+	if (fire_power_ != 0)
+		graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
+>>>>>>> 30543cc5ce321b703f285016ca0cd5aa72aabd04:src/State.cc
 	graphicsengine_ptr_->showScreenBufferOnScreen();
+	
 }
 void Player1State::logic()
 {
@@ -179,17 +187,18 @@ void Player1State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
-				graphicsengine_ptr_->showScreenBufferOnScreen();
-				Network::send("127.0.0.1", "12346", "enter_pressed");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-				Network::send("127.0.0.1", "12346", "up");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
 				gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
-				Network::send("127.0.0.1", "12346", "down");
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
@@ -205,7 +214,8 @@ void Player1State::handle_input(SDL_Event& event){
 					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_leftCannon()->fire());
 					audio_ptr_->playSound(0);
-					Network::send("127.0.0.1", "12346", "enter_released");
+					// if (player_ptr_->network())
+					// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
@@ -222,17 +232,20 @@ PANZER_STATES Player1State::next_state()
 
 //Player2State-----------------------------------------------------------//
 
-Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE) {}
+Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE), player_ptr_(player) {
+		fire_power_ = 0;
+	}
 
-Player2State::~Player2State(){}
+Player2State::~Player2State() {}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
-
+	if (fire_power_ != 0)
+		graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 35, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
@@ -246,26 +259,25 @@ void Player2State::handle_input(SDL_Event& event){
 			case SDLK_RETURN:
 				if (fire_power_ != 100)
 					fire_power_++;
-				graphicsengine_ptr_->drawPowerBarToScreenBuffer(435, 35, 200, 20, fire_power_);
-				graphicsengine_ptr_->showScreenBufferOnScreen();
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_pressed");
 			break;
 			case SDLK_UP:
 				gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "up");
 			break;
 			case SDLK_DOWN:
 				gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+				// if (player_ptr_->network())
+				// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "down");
 			break;
 			default: break;
 		}
 
 	}
 	else if(event.type == SDL_KEYUP)
-	{
-		string s;
-		stringstream out;
-		out << fire_power_;
-		s = out.str();
-		
+	{		
 		switch(event.key.keysym.sym)
 		{
 			case SDLK_RETURN:
@@ -275,6 +287,8 @@ void Player2State::handle_input(SDL_Event& event){
 					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_rightCannon()->fire());
 					audio_ptr_->playSound(0);
+					// if (player_ptr_->network())
+					// 	Network::send(player_ptr_->get_hostname(), player_ptr_->get_port(), "enter_released");
 					fire_power_ = 0;
 				}
 			break;
@@ -350,28 +364,137 @@ PANZER_STATES ExitGame::next_state()
 
 //NetworkState--------------------------------------------------//
 NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine,gameworld, audio) {}
+	 : State(graphicsengine,gameworld, audio), nextState_(NETWORKSTATE), input_(""), port_("12345"), switchinput_(true) {}
 
 void NetworkState::render(){
-	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("You will be a server!",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Hit z to return to meny",0,40,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("IP: " ,0,80,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer(input_,50,80,0,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Port: " ,0,120,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer( port_ ,80,120,255,0,255,LAZY26);
 }
 
-void NetworkState::logic(){
-	SDL_Delay(2000);
+void NetworkState::logic()
+{
+	nextState_ = NETWORKSTATE;
+}
+
+void NetworkState::handle_input(SDL_Event& event){
+
+	SDL_EnableUNICODE(1);
+	if (event.type == SDL_KEYDOWN)
+	{
+		if(event.key.keysym.sym > 27)
+		{
+			if(switchinput_)
+				input_.push_back(char(event.key.keysym.unicode));
+			else
+				port_.push_back(char(event.key.keysym.unicode));
+		}
+		if(event.key.keysym.sym == SDLK_RETURN)
+			{
+				switchinput_ = false;
+				port_.clear();
+			}
+		if(event.key.keysym.sym == SDLK_z)
+				nextState_ = MENY;
+
+	}
+}
+
+PANZER_STATES NetworkState::next_state(){
+
+	input_.clear();
+	return nextState_;
 }
 //OptionsState-------------------------------------------------//
 OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	 : State(graphicsengine, gameworld, audio), nextState_(OPTIONSTATE){}
+	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), quitOptions_(false){}
 
 void OptionState::render(){
-	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to save the current level",0,40,255,0,255);
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawFixedWidthButton("Set player name",20,50,200,(nextState_ == 8),LAZY26,255,255,255);
+	graphicsengine_ptr_->drawFixedWidthButton("Select level",20,100,200,(nextState_ == 9),LAZY26,255,255,255);
+	graphicsengine_ptr_->drawFixedWidthButton("Meny",20,150,200,(nextState_ == 5),LAZY26,255,255,255);
 }
 
-void OptionState::logic(){nextState_ = OPTIONSTATE;}
+void OptionState::logic(){}
+
+void OptionState::changeState(bool up){
+
+	switch(nextState_)
+		{
+			case SETNAMESTATE:
+			{
+				if(up)
+					nextState_ = MENY;
+				else
+					nextState_ = SELECTLEVEL;
+			} break;
+			case SELECTLEVEL:
+			{
+				if(up)
+					nextState_ = SETNAMESTATE;
+				else
+					nextState_ = MENY;
+			} break;
+			case MENY:
+			{
+				if(up)
+					nextState_ = SELECTLEVEL;
+				else
+					nextState_ = SETNAMESTATE;
+			} break;
+		}
+}
+
 
 void OptionState::handle_input(SDL_Event& event){
+	if(event.type == SDL_KEYDOWN)
+		{
+			switch( event.key.keysym.sym )
+				{
+					case SDLK_UP: changeState(true); break;
+					case SDLK_DOWN: changeState(false); break;
+					case SDLK_RETURN:
+					{
+						quitOptions_ = true;
+					}
+					default: break;
+				}
+		}
+}
+
+PANZER_STATES OptionState::next_state(){
+
+		if(quitOptions_)
+		{   quitOptions_ = false;
+			graphicsengine_ptr_->clearScreenBuffer(0);//Töm skärmen för ny grafik
+			return nextState_;
+		}
+		else
+			return OPTIONSTATE;
+}
+
+//OptionsState-----------------------------------------------//
+
+//SetNameState-------------------------------------------------//
+SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1, Player* player2)
+	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
+
+void SetNameState::render(){
+	graphicsengine_ptr_->drawTextToScreenBuffer("Choose your character:",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("1.Daniel",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("2.Johannes",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("3.Johan",0,0,255,255,255);
+}
+
+void SetNameState::logic(){nextState_ = SETNAMESTATE;}
+
+void SetNameState::handle_input(SDL_Event& event){
 	if(event.type == SDL_KEYDOWN)
 		{
 			switch( event.key.keysym.sym )
@@ -384,18 +507,53 @@ void OptionState::handle_input(SDL_Event& event){
 						}; break;
 					case SDLK_RETURN:
 					{
-						nextState_ = MENY;
+						nextState_ = OPTIONSTATE;
 					}
 					default: break;
 				}
 		}
 }
 
-PANZER_STATES OptionState::next_state(){
+PANZER_STATES SetNameState::next_state(){
 	return nextState_;
 }
 
-//OptionsState-----------------------------------------------//
+//SetNameState-----------------------------------------------//
+
+//SetNameState-------------------------------------------------//
+SelectLevelState::SelectLevelState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine, gameworld, audio), nextState_(SELECTLEVEL){}
+
+void SelectLevelState::render(){
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to save the current level",0,40,255,0,255);
+}
+
+void SelectLevelState::logic(){nextState_ = SELECTLEVEL;}
+
+void SelectLevelState::handle_input(SDL_Event& event){
+	if(event.type == SDL_KEYDOWN)
+		{
+			switch( event.key.keysym.sym )
+				{
+					case SDLK_SPACE:
+						{
+							gameworld_ptr_->generate_world(1);
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+						}; break;
+					case SDLK_RETURN:
+					{
+						nextState_ = OPTIONSTATE;
+					}
+					default: break;
+				}
+		}
+}
+
+PANZER_STATES SelectLevelState::next_state(){
+	return nextState_;
+}
 
 //InitState--------------------------------------------------//
 InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)

@@ -38,9 +38,10 @@ public:
 	MovableElementVector* get_MovableElemets();
 	Cannon* get_leftCannon() const;
 	Cannon* get_rightCannon() const;
-	bool generate_world(const int&);
 	bool check_collision();
 	bool check_collision(MovableElement*, Element*);
+	bool generate_world(const int& seed=0);
+
 
 private:
 	int width_;
