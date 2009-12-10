@@ -22,6 +22,7 @@ GameEngine::GameEngine() {
 	stateVector_.push_back(new Player2State(&graphicsengine_,&gameworld_, &soundplayer_, player2_ptr_));
 	stateVector_.push_back(new InitState(&graphicsengine_,&gameworld_, &soundplayer_));
 	stateVector_.push_back(new SetNameState(&graphicsengine_,&gameworld_,&soundplayer_,player1_ptr_,player2_ptr_));
+	stateVector_.push_back(new SelectLevelState(&graphicsengine_,&gameworld_,&soundplayer_));
 
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;

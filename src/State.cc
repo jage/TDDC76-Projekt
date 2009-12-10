@@ -418,7 +418,7 @@ PANZER_STATES OptionState::next_state(){
 
 //OptionsState-----------------------------------------------//
 
-//OptionsState-------------------------------------------------//
+//SetNameState-------------------------------------------------//
 SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1, Player* player2)
 	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
 
@@ -451,7 +451,42 @@ PANZER_STATES SetNameState::next_state(){
 	return nextState_;
 }
 
-//OptionsState-----------------------------------------------//
+//SetNameState-----------------------------------------------//
+
+//SetNameState-------------------------------------------------//
+SelectLevelState::SelectLevelState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine, gameworld, audio), nextState_(SELECTLEVEL){}
+
+void SelectLevelState::render(){
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to save the current level",0,40,255,0,255);
+}
+
+void SelectLevelState::logic(){nextState_ = SELECTLEVEL;}
+
+void SelectLevelState::handle_input(SDL_Event& event){
+	if(event.type == SDL_KEYDOWN)
+		{
+			switch( event.key.keysym.sym )
+				{
+					case SDLK_SPACE:
+						{
+							gameworld_ptr_->generate_world(1);
+							graphicsengine_ptr_->clearScreenBuffer(0);
+							graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+						}; break;
+					case SDLK_RETURN:
+					{
+						nextState_ = MENY;
+					}
+					default: break;
+				}
+		}
+}
+
+PANZER_STATES SelectLevelState::next_state(){
+	return nextState_;
+}
 
 //InitState--------------------------------------------------//
 InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)

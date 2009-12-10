@@ -248,4 +248,21 @@ private:
 
 };
 
+class SelectLevelState : public State
+{
+public:
+	SelectLevelState(GraphicsEngine*, GameWorld*, Audio*);
+	~SelectLevelState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&);
+
+	PANZER_STATES next_state();
+private:
+	PANZER_STATES nextState_;
+};
+
 #endif /* STATE_H_ */
