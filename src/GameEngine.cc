@@ -25,6 +25,8 @@ GameEngine::GameEngine() {
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
 
+	player1_ptr_ = new LocalPlayer();
+	player2_ptr_ = new LocalPlayer();
 
 }
 

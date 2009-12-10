@@ -1,10 +1,3 @@
-/*
- * State.h
- *
- *  Created on: Nov 23, 2009
- *      Author: rosjo
- */
-
 #ifndef STATE_H_
 #define STATE_H_
 
