@@ -1,10 +1,3 @@
-/*
- * GameEngine.h
- *
- *  Created on: Nov 22, 2009
- *      Author: rosjo
- */
-
 #ifndef GAMEENGINE_H_
 #define GAMEENGINE_H_
 
@@ -13,6 +6,7 @@
 #include "GraphicsEngine.h"
 #include "SDLInclude.h"
 #include "State.h"
+#include "Player.h"
 #include "Audio.h"
 
 
@@ -22,9 +16,8 @@ public:
 	virtual ~GameEngine();
 
 	/*
-	 * run() - funktionen startar speloopen.
-	 * Loopen körs tills loppen hamnar i tillståndet
-	 * ExitGame
+	 * run()
+	 * Starts the game loop
 	 */
 	void run();
 
@@ -35,37 +28,37 @@ private:
 	Audio soundplayer_;
 	unsigned int ticks_;
 
-	//Tillst�nd
+	Player* player1_ptr_;
+	Player* player2_ptr_;
+
 	PANZER_STATES currentState_;
 	PANZER_STATES playerTurn_;
 	std::vector<State*> stateVector_;
 
     /*
      * init()
-     * Initerar SDL, returnerar true ifall vi lyckades
+     * Initr SDL,  return true if SDL_init completed
      */
     bool init_SDL();
 
     /*
      * cleanup()
-     * St�dar i minnet n�r spelet avslutas
+     * Cleans the memory after the gam
      */
     void cleanup();
 
     /*
      * regulate_fps()
-     * Reglerar frames/second, s� att vi inte tar all processorkraft
-     * Standard �r 100 fps
+     * Regulate the fps, standard setting is 70 frames/second
      */
     void regulate_fps();
 
     /*
      * return_to_meny()
-     * Avbryter spelet, och vi återvändet till meny.
+     * Abort the game and return to meny
      */
     void return_to_meny();
 
-	// Kopiering och tilldelning till�ts ej (definieras ej)
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
 

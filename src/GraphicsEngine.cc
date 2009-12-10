@@ -379,8 +379,15 @@ void GraphicsEngine::loadFontsIntoMemory()
 	{
 		cerr << TTF_GetError() << endl;
 	}
+	
 	font[1] = TTF_OpenFont("lazy.ttf", 26);
 	if (!font[1])
+	{
+		cerr << TTF_GetError() << endl;
+	}
+	
+	font[2] = TTF_OpenFont("paper_cut.ttf", 32);
+	if (!font[2])
 	{
 		cerr << TTF_GetError() << endl;
 	}
@@ -399,6 +406,8 @@ int GraphicsEngine::getFontNr(const PANZER_FONT& font)
 		return 0;
 	case LAZY26:
 		return 1;
+	case PAPER_CUT32:
+		return 2;
 	default: //Om fonten ej finns, välj den första
 		return 0;
 	}
@@ -630,7 +639,15 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
 {
 	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
 	{
-		drawToScreenBuffer(*(*it));
+		drawToScreenBuffer(**it);
+	}
+}
+
+void GraphicsEngine::drawToScreenBuffer(const vector<MovableElement*>& elemVector)
+{
+	for (vector<MovableElement*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
+	{
+		drawToScreenBuffer(**it);
 	}
 }
 
@@ -678,5 +695,21 @@ SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
 	return flippedImage;
 }
 
+void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage)
+{
+	SDL_Rect rcDest;
+	
+	rcDest.x = xScreenPos;
+	rcDest.y = yScreenPos;
+	rcDest.w = 1;
+	rcDest.h = height;
+
+	rcDest.w = 1;
+
+	for (int i = 0; i < width  * percentage / 100.0; ++i, ++rcDest.x)
+	{
+		SDL_FillRect(screen, &rcDest,  (i * 255 / width) << 16 | (255 - i * 255 / width) << 8 | 0 << 0 );
+	}
+}
 
 

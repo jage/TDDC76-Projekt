@@ -1,30 +1,40 @@
 #
-# Makefile fï¿½r Panzer,  GNU GCC (g++)
+# Makefile för Panzer,  GNU GCC (g++)
 #
-# Filkataloger dï¿½r olika delar av programvaran finns.
-PANZER2K = src
-BUILD    = build
-SDL      = -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
+# Filkataloger där olika delar av programvaran finns.
+PANZER2K  = src
+BUILD     = build
+TESTS     = $(PANZER2K)/tests
+SDL      += -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 
-# Kompilator och flaggor som pï¿½verkar kompilering, inkludering, etc. 
-# Lï¿½gg till '-g' i CCFLAGS om kompilering fï¿½r avlusning ska gï¿½ras.
+ifeq ($(NETWORK),yes)
+BOOST_LD  = -lboost_system-mt -lboost_thread-mt
+CPPFLAGS  += -DWITH_NETWORK
+endif
+
+# Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
+# Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++
-CCFLAGS  +=	-std=c++98 -pedantic -Wall -Wextra -g
+CPPFLAGS += -std=c++98 -pedantic -Wall -Wextra -g
 
-# Objektkodsmoduler som ingï¿½r i Panzer 2K
+ifeq ($(OS),OSX)
+SDL      += -lSDLmain -Wl,-framework,Cocoa
+CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
+endif
 
-OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
-			   	PhysicsEngine.o State.o Player.o LocalPlayer.o Audio.o GameEngine.o GameWorld.o \
-			 	SDL_rotozoom.o GraphicsEngine.o Panzer2k.o
+# Objektkodsmoduler som ingår i Panzer 2K
+OBJECTS_LIST = Element.o Interval.o Ammunition.o Explosion.o Ground.o Cannon.o Concrete.o MovableElement.o \
+			   	PhysicsEngine.o State.o Player.o LocalPlayer.o NetworkPlayer.o GameEngine.o \
+				GameWorld.o SDL_rotozoom.o GraphicsEngine.o Network.o Audio.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
 
-# Huvudmï¿½l - skapas med kommandot 'make' eller 'make panzer2k'
+# Huvudmål - skapas med kommandot 'make' eller 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
-	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(OBJECTS)
-	
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(BOOST_LD) $(OBJECTS)
+
 # Delmal
 $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Panzer2k.cc -o $(BUILD)/Panzer2k.o
@@ -70,27 +80,49 @@ $(BUILD)/Player.o: $(PANZER2K)/Player.h $(PANZER2K)/Player.cc
 
 $(BUILD)/LocalPlayer.o: $(PANZER2K)/LocalPlayer.h $(PANZER2K)/LocalPlayer.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/LocalPlayer.cc -o $(BUILD)/LocalPlayer.o
-	
+
+$(BUILD)/NetworkPlayer.o: $(PANZER2K)/NetworkPlayer.h $(PANZER2K)/NetworkPlayer.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/NetworkPlayer.cc -o $(BUILD)/NetworkPlayer.o
+
+$(BUILD)/Network.o: $(PANZER2K)/Network.h $(PANZER2K)/Network.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Network.cc -o $(BUILD)/Network.o
+
 $(BUILD)/Audio.o: $(PANZER2K)/Audio.h $(PANZER2K)/Audio.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Audio.cc -o $(BUILD)/Audio.o
+	
+$(BUILD)/Explosion.o: $(PANZER2K)/Explosion.h $(PANZER2K)/Explosion.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Explosion.cc -o $(BUILD)/Explosion.o
+	
+$(BUILD)/Ammunition.o: $(PANZER2K)/Ammunition.h $(PANZER2K)/Ammunition.cc
+	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Ammunition.cc -o $(BUILD)/Ammunition.o
+
 
 # make Element
-
 Element: $(BUILD)/Element.o
 
 # make Cannon
-
 Cannon: $(BUILD)/Cannon.o
 
 # make GameWorld
-
 GameWorld: $(BUILD)/GameWorld.o
+
+# make Network
+Network: $(BUILD)/Network.o
+
+tests: Network_client Network_server
+
+Network_client: $(BUILD)/Network.o
+	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_client $(BUILD)/Network.o $(TESTS)/Network_client.cc
+
+Network_server: $(BUILD)/Network.o
+	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_server $(BUILD)/Network.o $(TESTS)/Network_server.cc
+
 
 # 'make clean' tar bort objektkodsfiler och 'core'
 clean:
 	@ \rm -rf $(BUILD)/*.o core
 
-# 'make zap' tar ocksï¿½ bort det kï¿½rbara programmet och reservkopior (filer
+# 'make zap' tar också bort det körbara programmet och reservkopior (filer
 # som slutar med tecknet '~')
 zap: clean
 	@ \rm -rf $(BUILD)/* *~

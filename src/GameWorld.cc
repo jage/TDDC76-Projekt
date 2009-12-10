@@ -39,6 +39,11 @@ ElementVector* GameWorld::get_elements()
 	return &elements_;
 }
 
+MovableElementVector* GameWorld::get_MovableElemets()
+{
+	return &movableElements_;
+}
+
 void GameWorld::add_element(Element* ptr_newElement)
 {
 	elements_.push_back(ptr_newElement);
@@ -96,15 +101,13 @@ Cannon* GameWorld::get_rightCannon() const
 	return ptr_cannonR_;	
 }
 
-bool GameWorld::generate_world(const int& res)
-{
-	if ((width_-2*ptr_cannonL_->get_width()) % res !=0) return false; // width must be an even multiple of the resolution minus two widths of the cannons
-	
+bool GameWorld::generate_world(const int& seed)
+{	
 	//clear world
 	elements_.clear();
 	elements_.push_back(ptr_cannonL_);
 	elements_.push_back(ptr_cannonR_);
-	movableElements_.clear();
+	movableElements_.clear();	
 	
 	//move cannons to correct x-coords
 	ptr_cannonL_->set_x(ptr_cannonL_->get_width()*0.5);
@@ -120,7 +123,7 @@ bool GameWorld::generate_world(const int& res)
 	maxHeight= (int)(height_*(2/3.0));
 	minHeight= (int)(height_*0.1);
 	offset=(int)(minHeight*0.2);
-	noElements= (int)width_/res;
+	noElements= (int)width_;
 	
 	int* calculatedHeights;
 	try
@@ -138,7 +141,10 @@ bool GameWorld::generate_world(const int& res)
 	// now generate heights of rectangles
 	
 	// feed rand with seed
-	srand(time(NULL));
+	if (seed!=0) randomSeed_=seed;
+	randomSeed_=time(NULL);
+	
+	srand(randomSeed_);
 	
 	double omega (0);
 	double phase(0);	// random generated phase
@@ -161,7 +167,6 @@ bool GameWorld::generate_world(const int& res)
 	}
 	
 	// create ground elements
-	Interval currInterval(0,res);
 	startHeight = calculatedHeights[ptr_cannonL_->get_xInterval().get_upper()];
 	endHeight = calculatedHeights[ptr_cannonR_->get_xInterval().get_lower()];
 		
@@ -170,17 +175,15 @@ bool GameWorld::generate_world(const int& res)
 		// check if one cannon is placed on current x-coord
 		try
 		{
-			if(ptr_cannonL_->get_xInterval().intersect(currInterval)) add_element(new Concrete(res,startHeight,i*res,height_-startHeight));
-			else if(ptr_cannonR_->get_xInterval().intersect(currInterval)) add_element(new Concrete(res,endHeight,i*res,height_-endHeight));
-			else add_element(new Ground(res,calculatedHeights[i],i*res,height_-calculatedHeights[i]));
+			if(ptr_cannonL_->get_xInterval().belongs(i)) add_element(new Concrete(1,startHeight,i,height_-startHeight));
+			else if(ptr_cannonR_->get_xInterval().belongs(i)) add_element(new Concrete(1,endHeight,i,height_-endHeight));
+			else add_element(new Ground(1,calculatedHeights[i],i,height_-calculatedHeights[i]));
 		}
 		catch (bad_alloc)
 		{
 			delete [] calculatedHeights;
 			throw GameWorldException("Can't allocate enough memory");	
 		}
-		
-		currInterval=Interval(i*res,i*res +res);
 	}
 	
 	// place out the cannons on correct heights

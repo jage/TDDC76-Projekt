@@ -13,12 +13,13 @@
 
 #include "SDLInclude.h"
 #include "Element.h"
+#include "MovableElement.h"
 #include "Enums.h"
 #include <vector>
 #include <string>
 
 const int DEGREES = 360;
-const int NROFFONTS = 2;
+const int NROFFONTS = 3;
 const int NROFBUTTONIMG = 5;
 
 class GraphicsEngine
@@ -29,10 +30,12 @@ public:
 
 	void drawToScreenBuffer(const std::vector<Element>&);
 	void drawToScreenBuffer(const std::vector<Element*>&);
+	void drawToScreenBuffer(const std::vector<MovableElement*>&);
 	void drawToScreenBuffer(const Element&);
 	void clearScreenBuffer(const unsigned int& color);
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
+	void drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage);
 	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& font = LAZY32);
 	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& fontName = LAZY32);
 	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, const int& xScreenPos, const int& yScreenPos);

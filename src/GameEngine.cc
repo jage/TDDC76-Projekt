@@ -1,11 +1,4 @@
-/*
- * GameEngine.cpp
- *
- *  Created on: Nov 22, 2009
- *      Author: rosjo
- */
-
-#include "iostream"
+#include <iostream>
 #include "GameEngine.h"
 #include "GraphicsEngine.h"
 #include "State.h"
@@ -32,6 +25,8 @@ GameEngine::GameEngine() {
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
 
+	player1_ptr_ = new LocalPlayer();
+	player2_ptr_ = new LocalPlayer();
 
 }
 
@@ -85,13 +80,6 @@ void GameEngine::run()
 				else
 					stateVector_.at(currentState_) ->handle_input(event);
 			}
-
-			Uint8* keystates = SDL_GetKeyState(NULL);
-			if(currentState_ == PLAYER1STATE)
-				dynamic_cast<Player1State*>(stateVector_.at(currentState_))->handle_keystates(keystates);
-			if(currentState_ == PLAYER2STATE)
-				dynamic_cast<Player2State*>(stateVector_.at(currentState_))->handle_keystates(keystates);
-
 
 			currentState_ = stateVector_.at(currentState_)->next_state();
 
