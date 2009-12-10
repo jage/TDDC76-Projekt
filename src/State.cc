@@ -205,10 +205,10 @@ Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 Player2State::~Player2State(){}
 
 void Player2State::render(){
-graphicsengine_ptr_->clearScreenBuffer(0);
-graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
-graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
-graphicsengine_ptr_->showScreenBufferOnScreen();
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
