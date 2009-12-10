@@ -19,10 +19,8 @@ void Element::set_x(const double& x){
 }
 const Interval Element::get_xInterval() const
 {
-	return Interval(x_-(int)(width_/2),x_+(int)(width_/2));	
+	return Interval(x_-(width_/2),x_+(width_/2));	
 }
-
-
 
 const int Element::get_y() const {
 	return (int)(y_ + 0.5);
@@ -37,14 +35,12 @@ void Element::set_y(const double& y) {
 	y_ = y;
 }
 
-
 const double Element::get_angle() const {
 	return angle_;
 }
 void Element::set_angle(const double& angle) {
 	angle_ = angle;
 }
-
 
 const int Element::get_width() const {
 	return width_;
@@ -53,7 +49,11 @@ const int Element::get_height() const {
 	return height_;
 }
 
-
 const PANZER_IMAGE Element::get_imgRef() const {
 	return imgRef_;
+}
+
+void Element::set_imgReg(const PANZER_IMAGE& imgRef)
+{
+	imgRef_=imgRef;	
 }
