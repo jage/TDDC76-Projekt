@@ -22,20 +22,24 @@ typedef std::vector<MovableElement*> MovableElementVector;
 class GameWorld
 {
 public:
-	GameWorld(const double& gravity=9.82,const double& wind =0);
+	GameWorld(const int& width=640,const int& height=480,const double& gravity=9.82,const double& wind =0);
 	~GameWorld();
 
 	void add_element(Element*);
 	bool update_world();
-	const double& get_wind() const;
+	const int get_width() const;
+	const int get_height() const;
+	const double get_wind() const;
 	void set_wind(const double&);
-	const double& get_gravity() const;
+	const double get_gravity() const;
 	void set_gravity(const double&);
 	ElementVector* get_elements();
 	Cannon* get_leftCannon() const;
 	Cannon* get_rightCannon() const;
-	bool generate_world(const int&,const int&,const int&);
+	bool generate_world(const int&);
 private:
+	int width_;
+	int height_;
 	double gravity_;
 	double wind_;
 	PhysicsEngine* ptr_physEngine_;

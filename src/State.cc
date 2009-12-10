@@ -332,7 +332,7 @@ void OptionState::handle_input(SDL_Event& event){
 				{
 					case SDLK_SPACE:
 						{
-							gameworld_ptr_->generate_world(640,480,1);
+							gameworld_ptr_->generate_world(1);
 							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 						}; break;
@@ -360,7 +360,7 @@ void InitState::render(){
 }
 
 void InitState::logic(){
-	gameworld_ptr_->generate_world(640,480,1);
+	gameworld_ptr_->generate_world(1);
 	cout << "Level generated, we wait so we see the splash screen..." << endl;
 	//SDL_Delay(700);
 }
