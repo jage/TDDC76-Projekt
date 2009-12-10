@@ -11,7 +11,6 @@
 #include "State.h"
 #include "Enums.h"
 #include "SDLInclude.h"
-//#include "Audio.h"
 #include <stdexcept>
 #include <vector>
 
@@ -65,7 +64,7 @@ void GameEngine::run()
 
 	//sound_.playMusic(0,1);
 	SDL_Event event;
-	soundplayer_.playMusic(0,0);
+	//soundplayer_.playMusic(0,0);
 
 	while(currentState_ != EXITGAME)
 		{

@@ -1,6 +1,6 @@
 #include"Audio.h"
 #include <iostream>
-#include "SDL/SDL_mixer.h"
+#include "SDLInclude.h"
 
 using namespace std;
 
