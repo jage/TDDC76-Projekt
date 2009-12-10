@@ -37,7 +37,7 @@ enum PANZER_FONT
 {
 	LAZY32,
 	LAZY26,
-	PAPER_CUT32
+	PAPER_CUT72
 };
 
 #endif
