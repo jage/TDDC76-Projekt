@@ -9,6 +9,7 @@
 #include <iostream>
 #include "SDLInclude.h"
 #include <string>
+#include "Network.h"
 
 using namespace std;
 
@@ -154,7 +155,7 @@ PANZER_STATES Meny::next_state()
 Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
 	 : State(graphicsengine,gameworld), nextState_(PLAYER1STATE) {}
 
-Player1State::~Player1State(){}
+Player1State::~Player1State() {}
 
 void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
@@ -171,7 +172,7 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_RETURN: nextState_ = FIRE; break;
+						case SDLK_RETURN: Network::send("127.0.0.1", "12346", "enter"); nextState_ = FIRE; break;
 						default: break;
 					}
 
@@ -183,10 +184,13 @@ void Player1State::handle_keystates(Uint8* keystates)
 		       if(keystates[SDLK_UP])
 				   {
 					   gameworld_ptr_->get_leftCannon()->adjust_angle(1);
+						Network::send("127.0.0.1", "12346", "up");
 				   }
 		       else if(keystates[SDLK_DOWN])
 		       	  {
 					   gameworld_ptr_->get_leftCannon()->adjust_angle(-1);
+						Network::send("127.0.0.1", "12346", "down");
+					
 		       	  }
 }
 

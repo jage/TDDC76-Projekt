@@ -67,8 +67,8 @@ void Connection::send() {
    		boost::asio::placeholders::bytes_transferred)));
 }
 
-Server::Server(boost::asio::io_service& io_service)
-	: acceptor_(io_service, tcp::endpoint(tcp::v4(), 12345)),
+Server::Server(boost::asio::io_service& io_service, const string port)
+	: acceptor_(io_service, tcp::endpoint(tcp::v4(), atoi(port.c_str()))),
 	  strand_(io_service)
 {
 	start_accept();
@@ -106,18 +106,16 @@ void Server::handle_accept(Connection::pointer new_connection,
 Network::Network() {
 	boost::asio::io_service io_service_;
 	Connection::pointer connection_;
+	tcp::iostream stream_;
 }
 
 Network::~Network() {}
 
+// Doesn't actually connect, just sets hostname and port
 bool Network::connect(const string hostname, const string port)
 {
-	try {
-	}
-	catch (exception& e)
-	{
-		cerr << e.what() << "\n";
-	}
+	hostname_ = hostname;
+	port_ = port;
 
 	return true;
 }
@@ -128,7 +126,7 @@ void Network::listen(const string port)
 	{
 		cout << "Listening on " << port << "\n";
 
-		Server server(io_service_);		
+		Server server(io_service_, port);		
 		
 		// boost::thread t1(boost::bind(&boost::asio::io_service::run, &io_service_));
 		// boost::thread t2(boost::bind(&send, &server));
@@ -146,17 +144,21 @@ void Network::listen(const string port)
 
 bool Network::disconnect()
 {
+	stream_.close();
 	return true;
 }
 
 bool Network::is_active()
 {
-	return true;
+	return stream_.good();
 }
 
-void Network::send(Server* server)
+void Network::send(const string hostname, const string port, const string msg)
 {
-	cout << "SEND! MOTHAFUCKA!\n";
+    tcp::iostream s(hostname, port);
+	s << msg;
+	s.flush();
+	s.close();
 }
 
 void Network::callback(boost::asio::streambuf &response_)
@@ -178,11 +180,6 @@ void Network::callback(boost::asio::streambuf &response_)
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_UP;
 		SDL_PushEvent(&event);
-		event.type = SDL_KEYUP;
-		event.key.which = 0;
-		event.key.state = SDL_RELEASED;
-		event.key.keysym.sym = SDLK_UP;
-		SDL_PushEvent(&event);
 	} else if (msg == "down") {
 		SDL_Event event;
 		event.type = SDL_KEYDOWN;
@@ -190,22 +187,17 @@ void Network::callback(boost::asio::streambuf &response_)
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_DOWN;
 		SDL_PushEvent(&event);
-		event.type = SDL_KEYUP;
-		event.key.which = 0;
-		event.key.state = SDL_RELEASED;
-		event.key.keysym.sym = SDLK_DOWN;
-		SDL_PushEvent(&event);
 	} else if (msg == "enter") {
 		SDL_Event event;
 		event.type = SDL_KEYDOWN;
 		event.key.which = 0;
 		event.key.state = SDL_PRESSED;
-		event.key.keysym.sym = SDLK_RETUR;
+		event.key.keysym.sym = SDLK_RETURN;
 		SDL_PushEvent(&event);
 		event.type = SDL_KEYUP;
 		event.key.which = 0;
 		event.key.state = SDL_RELEASED;
-		event.key.keysym.sym = SDLK_RETUR;
+		event.key.keysym.sym = SDLK_RETURN;
 		SDL_PushEvent(&event);
 	}
 }

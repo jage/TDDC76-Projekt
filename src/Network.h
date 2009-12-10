@@ -32,7 +32,7 @@ class Connection
 
 class Server {
 	public:
-		Server(boost::asio::io_service& io_service);
+		Server(boost::asio::io_service& io_service, const string port);
 		Connection::pointer connection();
 		void send();
 	private:
@@ -52,7 +52,7 @@ class Network {
 		void listen(const string);
 		bool disconnect();
 		bool is_active();
-		static void send(Server*);
+		static void send(const string, const string, const string);
 		static void callback(boost::asio::streambuf&);
 	private:
 		// void start_accept();
@@ -60,6 +60,9 @@ class Network {
 		boost::asio::io_service io_service_;
 		boost::thread connection_thread_;
 		Connection::pointer connection_;
+		string hostname_;
+		string port_;
+		boost::asio::ip::tcp::iostream stream_;
 };
 
 #endif
