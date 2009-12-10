@@ -39,3 +39,7 @@ const int Explosion::newY(const int& x,const int& y) const
 	return circle_y;
 }
 
+const int Explosion::get_radius() const
+{
+	return radius_;
+}

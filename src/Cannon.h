@@ -3,8 +3,9 @@
 
 #include "Element.h"
 #include "Ammunition.h"
+#include "Interfaces.h"
 
-class Cannon : public Element
+class Cannon : public Element, public Destructable
 {
 public:
 	Cannon(Ammunition* ammo=new StandardAmmo(),const bool& leftCannon=true);
@@ -18,6 +19,7 @@ public:
 	void disarm();
 	const bool fired() const; // is the cannon fired?
 	virtual ~Cannon();
+	void deform(const Explosion&);
 private:
 	int power_;
 	bool fired_;
