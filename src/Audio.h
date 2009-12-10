@@ -39,8 +39,5 @@ private:
 	void unloadSoundsFromMemory();
 
 };
-<<<<<<< HEAD:src/Audio.h
 #endif
-=======
-#endif
->>>>>>> ac6b91dd947d6ad5d2318030bf6f757ce2f670f1:src/Audio.h
+
