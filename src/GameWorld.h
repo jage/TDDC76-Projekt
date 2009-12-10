@@ -34,6 +34,7 @@ public:
 	const double get_gravity() const;
 	void set_gravity(const double&);
 	ElementVector* get_elements();
+	MovableElementVector* get_MovableElemets();
 	Cannon* get_leftCannon() const;
 	Cannon* get_rightCannon() const;
 	bool generate_world(const int&);
