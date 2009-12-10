@@ -25,7 +25,7 @@ public:
 	const int get_height() const;
 	const int get_width() const;
 	const PANZER_IMAGE get_imgRef() const;
-	void set_imgReg(const PANZER_IMAGE&);
+	void set_imgRef(const PANZER_IMAGE&);
 	virtual ~Element() {};
 protected:
 	 int width_;	// width of element
