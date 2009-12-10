@@ -9,11 +9,10 @@
 #include <iostream>
 #include "SDLInclude.h"
 #include <string>
+#include "Network.h"
 #include "Audio.h"
 
 using namespace std;
-
-
 
 //State---------------------------------------------------------//
 State::State(GraphicsEngine* graphicengine, GameWorld* gameworld, Audio* audio)
@@ -157,7 +156,7 @@ PANZER_STATES Meny::next_state()
 Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
 	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE) {}
 
-Player1State::~Player1State(){}
+Player1State::~Player1State() {}
 
 void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
@@ -177,31 +176,26 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_RETURN:
-
-							nextState_ = FIRE;
+					   	case SDLK_RETURN: 
+					   		nextState_ = FIRE;
 							gameworld_ptr_->get_leftCannon()->fire();
-							audio_ptr_->playSound(0);
-							break;
-
+					   		audio_ptr_->playSound(0);
+					   		Network::send("127.0.0.1", "12345", "enter");
+					   		break;
+					   	case SDLK_UP:
+					   		gameworld_ptr_->get_leftCannon()->adjust_angle(1);
+					   		Network::send("127.0.0.1", "12345", "up");
+					   		break;
+					   	case SDLK_DOWN:
+					   		gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
+					   		Network::send("127.0.0.1", "12345", "down");
+					   		break;
+						
 						default: break;
 					}
 
 			}
 }
-
-void Player1State::handle_keystates(Uint8* keystates)
-{
-		       if(keystates[SDLK_UP])
-				   {
-					   gameworld_ptr_->get_leftCannon()->adjust_angle(1);
-				   }
-		       else if(keystates[SDLK_DOWN])
-		       	  {
-					   gameworld_ptr_->get_leftCannon()->adjust_angle(-1);
-		       	  }
-}
-
 
 PANZER_STATES Player1State::next_state()
 {
@@ -231,25 +225,20 @@ if(event.type == SDL_KEYDOWN)
 	{
 		switch( event.key.keysym.sym )
 			{
-				case SDLK_RETURN: {nextState_ = FIRE; gameworld_ptr_->get_rightCannon()->fire(); }; break;
+				case SDLK_RETURN: 
+					nextState_ = FIRE;
+					gameworld_ptr_->get_rightCannon()->fire();
+					break;
+				case SDLK_UP:
+					gameworld_ptr_->get_rightCannon()->adjust_angle(1);
+					break;
+				case SDLK_DOWN:
+					gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+					break;
 				default: break;
 			}
 	}
 }
-
-void Player2State::handle_keystates(Uint8* keystates)
-{
-		       if(keystates[SDLK_UP])
-				   {
-					   gameworld_ptr_->get_rightCannon()->adjust_angle(1);
-				   }
-		       else if(keystates[SDLK_DOWN])
-		       	  {
-					   gameworld_ptr_->get_rightCannon()->adjust_angle(-1);
-		       	  }
-}
-
-
 
 PANZER_STATES Player2State::next_state()
 {
@@ -312,6 +301,7 @@ NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 
 void NetworkState::render(){
 	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("You will be a server!",0,0,255,255,255);
 }
 
 void NetworkState::logic(){
@@ -356,7 +346,9 @@ PANZER_STATES OptionState::next_state(){
 
 //InitState--------------------------------------------------//
 InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	: State(graphicsengine,gameworld, audio){}
+	: State(graphicsengine,gameworld, audio) {
+		SDL_EnableKeyRepeat(100, 10);
+	}
 
 void InitState::render(){
 	cout << "Initiate the game!" << endl;
