@@ -173,10 +173,20 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_RETURN:
-							nextState_ = FIRE;
-							audio_ptr_->playSound(0);
-							break;
+					   	case SDLK_RETURN: 
+					   		nextState_ = FIRE;
+					   		audio_ptr_->playSound(0);
+					   		Network::send("127.0.0.1", "12345", "enter");
+					   		break;
+					   	case SDLK_UP:
+					   		gameworld_ptr_->get_leftCannon()->adjust_angle(1);
+					   		Network::send("127.0.0.1", "12345", "up");
+					   		break;
+					   	case SDLK_DOWN:
+					   		gameworld_ptr_->get_leftCannon()->adjust_angle(-1); 
+					   		Network::send("127.0.0.1", "12345", "down");
+					   		break;
+						
 						default: break;
 					}
 
@@ -327,7 +337,9 @@ PANZER_STATES OptionState::next_state(){
 
 //InitState--------------------------------------------------//
 InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
-	: State(graphicsengine,gameworld, audio){}
+	: State(graphicsengine,gameworld, audio) {
+		SDL_EnableKeyRepeat(100, 10);
+	}
 
 void InitState::render(){
 	cout << "Initiate the game!" << endl;
