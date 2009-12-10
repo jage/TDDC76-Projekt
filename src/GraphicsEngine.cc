@@ -11,8 +11,8 @@
 using namespace std;
 
 /*
- * width: Bredd av skärmbufferten
- * height: Höjd av skärmbufferten
+ * width: Width of screen buffer
+ * height: Height of screen buffer
  */
 GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), source_image(NULL), width_(width), height_(height)
 {
@@ -25,9 +25,9 @@ GraphicsEngine::~GraphicsEngine()
 }
 
 /*
- * Ritar ut alla element i vektorn till bufferten i den ordning ligger i vektorn
+ * Blits all Elements in a vector in given order.
  *
- * element_vector: Referens till vektor med Element
+ * element_vector: Referenc to vector of Element
  */
 void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 {
@@ -43,11 +43,11 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
 }
 
 /*
- * Ritar ut ett enstaka element till bufferten
- * Finns förroterade bilder används dessa
- * annars roteras bilder när de behövs
+ * Blits singel Element to screen buffer.
+ * Uses pre-rotated picture if it exists
+ * or rotates if needed
  *
- * draw_element: Referens till Element att rita.
+ * draw_element: Reference to Element.
  */
 void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 {
@@ -119,7 +119,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 }
 
 /*
- * Visar bufferten på skärmen
+ * Show screnn buffer on screen
  */
 void GraphicsEngine::showScreenBufferOnScreen()
 {
@@ -132,7 +132,10 @@ void GraphicsEngine::showScreenBufferOnScreen()
  * där de 8 minst signifikanta bitarna represeterar
  * blått, nästa 8 grönt och nästa 8 rött.
  *
- * color: 24-bitars färg
+ * "Clears" screen buffer by filling it completely
+ * with chosen color.
+ * 
+ * color: 24-bit color
  */
 void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 {
@@ -140,17 +143,7 @@ void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 }
 
 /*
- * "Tömmer" bufferten genom att fylla den med
- * vit färg.
- */
-void GraphicsEngine::clearScreenBuffer()
-{
-	clearScreenBuffer(0xff << 16 | 0xff << 8 | 0xff << 0);
-}
-
-/*
- * Returnerar rektangeln där respektive bild finns i
- * sprite_sheet
+ * Returns rectangle to chosen picture in sprite_sheet
  */
 SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) const
 {
@@ -168,15 +161,16 @@ SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) co
 }
 
 /*
- * Laddar in bild från disk och konverterar
- * den till rätt format för snabb blittning.
- * Klarar BMP, PNM (PPM/PGM/PBM), XPM, LBM,
+ * Loads picture from disc to mamory and
+ * converts it to appropriate depth
+ * for fast blitting
+ * Handles BMP, PNM (PPM/PGM/PBM), XPM, LBM,
  * PCX, GIF, JPEG, PNG, TGA, och TIFF.
  *
- * filename: Sökväg och filname inkl filändelse
- * transparent: True om bilden har transparenta delar
+ * filename: Path + filename + extension
+ * transparent: True if picture is transparent
  *
- * Retur: Pekare till laddad SDL_Surface
+ * Retur: Pointer to newly created SDL_Surface
  */
 SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const bool& transparent)
 {
@@ -203,8 +197,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
 }
 
 /*
- * Förroterar alla bilder till cannon från
- * 0 upp till DEGREES.
+ * Pre-rotates pictures of Cannon. Ranges from 0 to DEGREES.
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
@@ -230,7 +223,7 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 }
 
 /*
- * Frigör minnet från bilderna till cannon
+ * Free cannon pictures.
  */
 void GraphicsEngine::unloadCannonSpritesFromMemory()
 {
@@ -242,14 +235,12 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 }
 
 /*
- * Skriver ut önskad text till bufferten med svart kant
- * runt om. Färg väljs från 0-255 i respektive rött,
- * grönt och blått.
+ * Blits text to screen buffer with black outline.
  *
- * text: Textsträng
- * xScreenPos: Övre vänstra hörnet, x-led
- * yScreenPos: Övre vänstra hörnet, y-led
- * red, green, blue: Färg 0 - 255
+ * text: Text string.
+ * xScreenPos: Top left coren, x.
+ * yScreenPos: Top left corner, y.
+ * red, green, blue: Color 0 - 255
  * fontName: Font
  */
 void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const PANZER_FONT& fontName)
@@ -293,14 +284,12 @@ void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const in
 }
 
 /*
- * Skriver ut önskad text till bufferten utan svart kant
- * runt om. färg väljs från 0-255 i respektive rött,
- * grönt och blått.
+ * Blits text to screen buffer.
  *
- * text: Textsträng
- * xScreenPos: Övre vänstra hörnet, x-led
- * yScreenPos: Övre vänstra hörnet, y-led
- * red, green, blue: Färg 0 - 255
+ * text: Text string.
+ * xScreenPos: Top left corner, x.
+ * yScreenPos: Top left corner, y.
+ * red, green, blue: Color 0 - 255
  * fontName: font.
  */
 void GraphicsEngine::drawTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const PANZER_FONT& fontName)
@@ -321,7 +310,7 @@ void GraphicsEngine::drawTextToScreenBuffer(const string& text, const int& xScre
 }
 
 /*
- * Initierar bufferten och textrenderaren samt alla bilder och fonter.
+ * Initiates screen buffer, text renderer and loads all pictures and fonts.
  */
 void GraphicsEngine::init()
 {
@@ -346,7 +335,7 @@ void GraphicsEngine::init()
 }
 
 /*
- * Frigör allt allokerat minne och stänger ned textrenderaren
+ * Free all pictures, fonts and close text renderer.
  */
 void GraphicsEngine::uninit()
 {
@@ -359,7 +348,7 @@ void GraphicsEngine::uninit()
 }
 
 /*
- * Frigör minnet för alla fonter.
+ * Free fonts
  */
 void GraphicsEngine::unloadFontsFromMemory()
 {
@@ -370,7 +359,7 @@ void GraphicsEngine::unloadFontsFromMemory()
 }
 
 /*
- * Läser in alla fonter i minnet.
+ * Load all fonts to memory
  */
 void GraphicsEngine::loadFontsIntoMemory()
 {
@@ -394,9 +383,9 @@ void GraphicsEngine::loadFontsIntoMemory()
 }
 
 /*
- * Tar fram ordingstalet för en viss font
+ * Get position of font in array
  *
- * font: Fontnamn
+ * font: Font name.
  */
 int GraphicsEngine::getFontNr(const PANZER_FONT& font)
 {
@@ -414,11 +403,11 @@ int GraphicsEngine::getFontNr(const PANZER_FONT& font)
 }
 
 /*
- * Ritar SDL_Surface till buffert
+ * Blit SDL_Surface to screen buffer
  * 
- * image: Pekare till SDL_Surface att rita
- * xScreenPos: Översta vänstra hörnet i bilden, x-led
- * yScreenPos: Översta vänstra hörnet i bilden, y-led
+ * image: SDL_Surface* to blit.
+ * xScreenPos: Top left corner, x.
+ * yScreenPos: Top left corner, y.
  */
 void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, const int& xScreenPos, const int& yScreenPos)
 {
@@ -429,7 +418,7 @@ void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, const int&
 }
 
 /*
- * Läser in alla knappar i minnet
+ * Load all button pictures to memory.
  */
 void GraphicsEngine::loadButtonSpritesIntoMemory()
 {
@@ -441,7 +430,7 @@ void GraphicsEngine::loadButtonSpritesIntoMemory()
 }
 
 /*
- * Frigör minnet från alla knappbilder
+ * Free all button images.
  */
 void GraphicsEngine::unloadButtonSpritesFromMemory()
 {
@@ -452,14 +441,15 @@ void GraphicsEngine::unloadButtonSpritesFromMemory()
 }
 
 /*
- * Ritar en knapp med automatisk bredd. Justering kan väljas mellan vänsterjusterad, högerjusterad och centrerad
+ * Draw button to screen buffer. Width is adjusted to text width. Alignment
+ * left, center and right.
  *
- * text: Knapptext
- * xScreenPos: Vänstra kanten om vänsterjusterad, högra kanten om högerjusterad och mitten om centrerad.
- * yScreenPos: Mitten av knappen i höjdled
- * active: True om knappen aktiv
+ * text: Button text
+ * xScreenPos: Left edge if left aligned, right edge if right aligned and center if centered.
+ * yScreenPos: Middle of button.
+ * active: True if active button.
  * textfont: Font
- * align: Justering
+ * align: Alignment
  */
 void GraphicsEngine::drawButton(const string& text, const int& xScreenPos, const int& yScreenPos, const bool& active, const PANZER_FONT& textfont, const PANZER_ALIGNMENT& align)
 {
@@ -467,14 +457,14 @@ void GraphicsEngine::drawButton(const string& text, const int& xScreenPos, const
 	int textHeight = 0;
 	int blitXPos = 0;
 	int blitYPos = 0;
-	double startWidth = buttons[0]->w;		//Bredden av första biten
-	double middleWidth = buttons[1]->w;		//Mittenbiten
-	double endWidth = buttons[2]->w;		//Slutbiten
-	double activeWidth = buttons[3]->w;		//aktivbiten
-	double buttonHeight = buttons[0]->h;	//höjden
-	int i = 0;								//iterationsvariabel
-	SDL_Rect rcDest;						//position av knappen
-	SDL_Surface* sText = NULL;				//tillfällig yta för texten
+	double startWidth = buttons[0]->w;		//Width of first part
+	double middleWidth = buttons[1]->w;		//Middle part
+	double endWidth = buttons[2]->w;		//End part
+	double activeWidth = buttons[3]->w;		//Active part
+	double buttonHeight = buttons[0]->h;	//Height
+	int i = 0;								//Iteration variable
+	SDL_Rect rcDest;						//Button potision
+	SDL_Surface* sText = NULL;				//Temporary surface for rendered text
 
 	TTF_SizeText(font[getFontNr(textfont)], text.c_str(), &textWidth, &textHeight);
 	
@@ -522,15 +512,15 @@ void GraphicsEngine::drawButton(const string& text, const int& xScreenPos, const
 }
 
 /*
- * Ritar knapp med text med fast knappbredd
+ * Blits fix width button.
  *
- * text: Textsträng i knappen
- * xScreenPos: Vänstra kanten av knappen
- * yScreenPos: Y-koordinat för mitten av knappen
- * width: Bredd av hela knappen
- * active: True om knappen äv aktiv
+ * text: Text string in button.
+ * xScreenPos: Left edge.
+ * yScreenPos: Middle of button
+ * width: Width of whole button.
+ * active: True if active button.
  * textfont: Font
- * red, green, blue: Färg på texten, 0 - 255
+ * red, green, blue: Color of text, 0 - 255
  */
 void GraphicsEngine::drawFixedWidthButton(	const string& text,
 											const int& xScreenPos,
@@ -548,7 +538,7 @@ void GraphicsEngine::drawFixedWidthButton(	const string& text,
 	SDL_Color color = {red, green, blue};
 	SDL_Surface* sText = generateTextSurface(text, textfont, color);
 
-	// Beräkna blitposition
+	// Calculate blit position
 	int xBlitPos = xScreenPos + nrOfMiddles / 2 * buttons[1]->w - sText->w / 2;
 	int yBlitPos = yScreenPos + buttons[0]->h / 2 - sText->h / 2;
 	SDL_Rect rcDest;
@@ -559,13 +549,13 @@ void GraphicsEngine::drawFixedWidthButton(	const string& text,
 }
 
 /*
- * Renderar en text på nyskapad SDL_Surface
+ * Blit text to newly created SDL_Surface
  *
- * text: Textsträng att rendera
- * fontname: Font att använda. Väljs ur PANZER_FONT.
- * color: Färg på texten
+ * text: Text string
+ * fontname: Font.
+ * color: Color of text.
  *
- * Retur: Pekare till skapad SDL_Surface
+ * Retur: Pointer to newly created SDL_Surface.
  */
 SDL_Surface* GraphicsEngine::generateTextSurface(const string& text, const PANZER_FONT& fontname, const SDL_Color& color)
 {
@@ -575,12 +565,12 @@ SDL_Surface* GraphicsEngine::generateTextSurface(const string& text, const PANZE
 }
 
 /*
- * Ritar ut en knapp utan text.
+ * Blits button without text.
  *
- * xScreenPos: Övre vänstra hörnet i x-led.
- * yScreenPos: Övre vänstra hörnet i y-led.
- * nrOfMiddles: Antalet mittensektioner.
- * active: True om knappen ska vara aktiv.
+ * xScreenPos: Top left corner, x.
+ * yScreenPos: Top left corner, y.
+ * nrOfMiddles: Number of middle sections.
+ * active: True if active button.
  */
 void GraphicsEngine::drawEmptyButton(int xScreenPos, int yScreenPos, const int& nrOfMiddles, const bool& active)
 {
@@ -612,13 +602,13 @@ void GraphicsEngine::drawEmptyButton(int xScreenPos, int yScreenPos, const int& 
 }
 
 /*
- * Ritar rektangel med vald färg
+ * Blits rectangle with chosen color.
  * 
- * xScreenPos: Övre vänstra hörnet i x-led.
- * yScreenPos: Övre vänstra hörnet i y-led.
- * width: Bredd i antal pixlar.
- * height: Höjd i antal pixlar.
- * red, green, blue: Färg 0 - 255.
+ * xScreenPos: Top left corner, x.
+ * yScreenPos: Top left corner, y.
+ * width: Width in pixels.
+ * height: Height in pixels.
+ * red, green, blue: Color 0 - 255.
  */
 void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos, const int &width, const int &height, const int& red, const int& green, const int& blue)
 {
@@ -631,9 +621,9 @@ void GraphicsEngine::drawRectangle(const int &xScreenPos, const int &yScreenPos,
 }
 
 /*
- * Ritar alla Element i en vektor med Element*.
+ * Blits all Elements in vector of Element*.
  * 
- * elemVector: referens till vektor med Element*
+ * elemVector: Reference to vector of Element*.
  */
 void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
 {
@@ -652,11 +642,11 @@ void GraphicsEngine::drawToScreenBuffer(const vector<MovableElement*>& elemVecto
 }
 
 /*
- * Flippar en SDL_Surface horizontellt på en nyskapad SDL_Suface.
+ * Flips an SDL_Surface horizontally on a newly created SDL_Surface
  *
- * originalImage: Bild att vända.
+ * originalImage: Picture to flip
  *
- * Retur: Pekare till nya bilden
+ * Retur: Pointer to new image.
  */
 SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
 {
@@ -695,6 +685,15 @@ SDL_Surface* GraphicsEngine::flipImageHorizontally(SDL_Surface* originalImage)
 	return flippedImage;
 }
 
+/*
+ * Draws a colored bar on screen buffer.
+ *
+ * xScreenPos: Top left corner.
+ * yScreenPos: Top left corner.
+ * width: Width in pixels.
+ * height: Height in pixels.
+ * percentage: Percentage of bar to fill.
+ */
 void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage)
 {
 	SDL_Rect rcDest;
@@ -711,5 +710,3 @@ void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int
 		SDL_FillRect(screen, &rcDest,  (i * 255 / width) << 16 | (255 - i * 255 / width) << 8 | 0 << 0 );
 	}
 }
-
-
