@@ -1,5 +1,6 @@
-﻿#ifndef AUDIO_H_
+#ifndef AUDIO_H_
 #define AUDIO_H_
+
 #include "SDLInclude.h"
 
 #define NROFMUSICTRACKS 1
@@ -36,7 +37,8 @@ private:
 	void unloadMusicFromMemory();
 	void loadSoundsIntoMemory();
 	void unloadSoundsFromMemory();
-
 };
+
 #endif
+
 
