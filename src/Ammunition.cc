@@ -4,7 +4,7 @@
 
 // Abstract ammunition class
 Ammunition::Ammunition()
-: MovableElement(100, 100, CANNONBALL)
+: MovableElement(10, 10, CANNONBALL)
 {
 }
 
@@ -13,7 +13,7 @@ Ammunition::Ammunition()
 // Standard
 const int StandardAmmo::get_blastRadius() const
 {
-	return 10; // for modification	
+	return 50; // for modification	
 }
 
 const Explosion StandardAmmo::get_explosion() const
