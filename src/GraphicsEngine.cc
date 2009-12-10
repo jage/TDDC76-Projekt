@@ -629,6 +629,10 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
 {
 	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
 	{
+		if (!(*it)) {
+			cerr << "Trying to blit NULL pointer" << endl;
+			return;
+		}
 		drawToScreenBuffer(**it);
 	}
 }
