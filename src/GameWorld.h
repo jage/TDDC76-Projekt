@@ -39,6 +39,9 @@ public:
 	Cannon* get_leftCannon() const;
 	Cannon* get_rightCannon() const;
 	bool generate_world(const int&);
+	bool check_collision();
+	bool check_collision(MovableElement*, Element*);
+
 private:
 	int width_;
 	int height_;

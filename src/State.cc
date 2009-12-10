@@ -314,7 +314,16 @@ void Fire::logic(){
 
 PANZER_STATES Fire::next_state()
 {
-	return FIRE;
+	if(gameworld_ptr_->check_collision())
+	{
+		std::cout << 1;
+		return FIREEND;
+	}
+	else
+	{
+		std::cout << 0;
+		return FIRE;
+	}
 }
 //---------------------------------------------------------------//
 

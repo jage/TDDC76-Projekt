@@ -41,8 +41,8 @@ Ammunition* Cannon::fire()
 {
 	Ammunition* newAmmo = ptr_ammunition_->clone();
 
-	newAmmo->set_x(get_x());
-	newAmmo->set_y(get_y());
+	newAmmo->set_x(get_x() + 65*cos(3.14/180 * get_angle()));
+	newAmmo->set_y(get_y() - 65*sin(3.14/180 * get_angle()) - 20);
 
 	std::cout <<"x: " << newAmmo->get_x() <<std::endl;
 	std::cout <<"y: " << newAmmo->get_y() <<std::endl;
