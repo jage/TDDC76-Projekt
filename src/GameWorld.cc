@@ -224,6 +224,7 @@ bool GameWorld::check_collision(){
 	while( movableElements_it != movableElements_.end())
 	{
 		if((*movableElements_it)->get_y() > 480 || (*movableElements_it)->get_x() < 0 || (*movableElements_it)->get_x() > width_) {
+			delete *movableElements_it;
 			movableElements_.erase(movableElements_it);
 			return true;
 		}
@@ -253,6 +254,7 @@ bool GameWorld::check_collision(){
 							++it;
 						}
 					}
+					delete *movableElements_it;
 					movableElements_.erase(movableElements_it);
 					return true;
 				}
