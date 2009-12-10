@@ -13,6 +13,7 @@
 
 #include "SDLInclude.h"
 #include "Element.h"
+#include "MovableElement.h"
 #include "Enums.h"
 #include <vector>
 #include <string>
@@ -29,6 +30,7 @@ public:
 
 	void drawToScreenBuffer(const std::vector<Element>&);
 	void drawToScreenBuffer(const std::vector<Element*>&);
+	void drawToScreenBuffer(const std::vector<MovableElement*>&);
 	void drawToScreenBuffer(const Element&);
 	void clearScreenBuffer(const unsigned int& color);
 	void clearScreenBuffer();

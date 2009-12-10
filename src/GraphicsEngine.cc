@@ -630,7 +630,15 @@ void GraphicsEngine::drawToScreenBuffer(const vector<Element*>& elemVector)
 {
 	for (vector<Element*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
 	{
-		drawToScreenBuffer(*(*it));
+		drawToScreenBuffer(**it);
+	}
+}
+
+void GraphicsEngine::drawToScreenBuffer(const vector<MovableElement*>& elemVector)
+{
+	for (vector<MovableElement*>::const_iterator it = elemVector.begin(); it != elemVector.end(); ++it)
+	{
+		drawToScreenBuffer(**it);
 	}
 }
 
