@@ -1,10 +1,3 @@
-/*
- * State.h
- *
- *  Created on: Nov 23, 2009
- *      Author: rosjo
- */
-
 #ifndef STATE_H_
 #define STATE_H_
 
@@ -12,6 +5,7 @@
 #include "GameWorld.h"
 #include "SDLInclude.h"
 #include <iostream>
+#include "Network.h"
 #include "Audio.h"
 
 
@@ -69,8 +63,6 @@ public:
 
 	void handle_input(SDL_Event&);
 
-	void handle_keystates(Uint8*);
-
 	PANZER_STATES next_state();
 
 private:
@@ -101,8 +93,6 @@ public:
 
 	void handle_input(SDL_Event&);
 
-	void handle_keystates(Uint8*);
-
 	PANZER_STATES next_state();
 
 private:
@@ -123,8 +113,6 @@ public:
 	void logic();
 
 	void handle_input(SDL_Event&);
-
-	void handle_keystates(Uint8*);
 
 	PANZER_STATES next_state();
 

@@ -6,6 +6,7 @@
 #include "GraphicsEngine.h"
 #include "SDLInclude.h"
 #include "State.h"
+#include "Player.h"
 #include "Audio.h"
 
 
@@ -26,6 +27,9 @@ private:
 	GraphicsEngine graphicsengine_;
 	Audio soundplayer_;
 	unsigned int ticks_;
+
+	Player* player1_ptr_;
+	Player* player2_ptr_;
 
 	PANZER_STATES currentState_;
 	PANZER_STATES playerTurn_;
