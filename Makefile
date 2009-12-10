@@ -5,19 +5,28 @@
 PANZER2K  = src
 BUILD     = build
 TESTS     = $(PANZER2K)/tests
-SDL      += -lSDL -lSDLmain -lSDL_image -lSDL_ttf -lSDL_mixer -Wl,-framework,Cocoa
-BOOST_LD  = -L/opt/local/lib -lboost_system-mt -lboost_thread-mt
+SDL      += -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
+
+ifeq ($(NETWORK),yes)
+BOOST_LD  = -lboost_system-mt -lboost_thread-mt
+CPPFLAGS  += -DWITH_NETWORK
+endif
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
 CCC       = g++ -g
 CPPFLAGS += -std=c++98
-CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
-# Objektkodsmoduler som ingår i Panzer 2K
 
+ifeq ($(OS),OSX)
+SDL      += -lSDLmain -Wl,-framework,Cocoa
+CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
+endif
+
+
+# Objektkodsmoduler som ingår i Panzer 2K
 OBJECTS_LIST = Element.o Interval.o Ground.o Cannon.o Concrete.o MovableElement.o \
 			   	PhysicsEngine.o State.o Player.o LocalPlayer.o NetworkPlayer.o GameEngine.o \
-				Network.o GameWorld.o SDL_rotozoom.o GraphicsEngine.o Audio.o Panzer2k.o
+				GameWorld.o SDL_rotozoom.o GraphicsEngine.o Network.o Audio.o Panzer2k.o
 
 OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 

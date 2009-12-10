@@ -2,15 +2,17 @@
 #define NETWORK_H_
 
 #include <string>
+#ifdef WITH_NETWORK
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
+#endif
 
 using namespace std;
 
-
+#ifdef WITH_NETWORK
 class Connection
 : public boost::enable_shared_from_this<Connection>
 {
@@ -41,7 +43,7 @@ class Server {
 		boost::asio::strand strand_;
 		Connection::pointer new_connection;
 };
-
+#endif
 
 class Network {
 	public:
@@ -52,6 +54,7 @@ class Network {
 		bool disconnect();
 		bool is_active();
 		static void send(const string, const string, const string);
+#ifdef WITH_NETWORK
 		static void callback(boost::asio::streambuf&);
 	private:
 		// void start_accept();
@@ -59,9 +62,10 @@ class Network {
 		boost::asio::io_service io_service_;
 		boost::thread connection_thread_;
 		Connection::pointer connection_;
+		boost::asio::ip::tcp::iostream stream_;
 		string hostname_;
 		string port_;
-		boost::asio::ip::tcp::iostream stream_;
+#endif
 };
 
 #endif

@@ -2,6 +2,7 @@
 #include <time.h>
 #include <iostream>
 #include <string>
+#ifdef WITH_NETWORK
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
@@ -10,8 +11,11 @@
 #include "SDLInclude.h"
 
 using boost::asio::ip::tcp;
+#endif
+
 using namespace std;
 
+#ifdef WITH_NETWORK
 Connection::pointer Connection::create(boost::asio::io_service& io_service)
 {
 	return pointer(new Connection(io_service));
@@ -83,6 +87,7 @@ void Server::handle_accept(Connection::pointer new_connection,
 		start_accept();
 	}
 }
+#endif
 
 /*
 * Antingen lyssnar eller ansluter man
@@ -90,9 +95,11 @@ void Server::handle_accept(Connection::pointer new_connection,
 
 /* Konstruktor för Network */
 Network::Network() {
+#ifdef WITH_NETWORK
 	boost::asio::io_service io_service_;
 	Connection::pointer connection_;
 	tcp::iostream stream_;
+#endif
 }
 
 Network::~Network() {}
@@ -101,15 +108,17 @@ Network::~Network() {}
 //   utan sätter bara hostname och port
 bool Network::connect(const string hostname, const string port)
 {
+#ifdef WITH_NETWORK
 	hostname_ = hostname;
 	port_ = port;
-
+#endif
 	return true;
 }
 
 // Lyssnar på 0.0.0.0:<port>
 void Network::listen(const string port)
 {
+#ifdef WITH_NETWORK
 	try
 	{
 		cout << "Listening on " << port << "\n";
@@ -120,6 +129,7 @@ void Network::listen(const string port)
 	{
 		std::cerr << e.what() << std::endl;
 	}
+#endif
 }
 
 
@@ -132,18 +142,21 @@ bool Network::disconnect()
 // Används inte i den här implementationen med tcp::iostream
 bool Network::is_active()
 {
-	return true
+	return true;
 }
 
 // Ansluter till <hostname> och <port>, skickar <msg> och kopplar sedan från
 void Network::send(const string hostname, const string port, const string msg)
 {
+#ifdef WITH_NETWORK
     tcp::iostream s(hostname, port);
 	s << msg;
 	s.flush();
 	s.close();
+#endif
 }
 
+#ifdef WITH_NETWORK
 // Funktion som körs för varje meddelande servern tar emot
 void Network::callback(boost::asio::streambuf &response_)
 {
@@ -186,3 +199,4 @@ void Network::callback(boost::asio::streambuf &response_)
 		SDL_PushEvent(&event);
 	}
 }
+#endif
