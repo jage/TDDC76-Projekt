@@ -27,6 +27,7 @@ public:
 
 	void add_element(Element*);
 	bool update_world();
+	const int get_randomSeed() const;
 	const int get_width() const;
 	const int get_height() const;
 	const double get_wind() const;
@@ -43,6 +44,7 @@ private:
 	int height_;
 	double gravity_;
 	double wind_;
+	int randomSeed_;
 	PhysicsEngine* ptr_physEngine_;
 	ElementVector elements_;
 	MovableElementVector movableElements_;
