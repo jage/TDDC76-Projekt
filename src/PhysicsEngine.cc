@@ -23,7 +23,7 @@ void PhysicsEngine::update_y(MovableElement* element){
 }
 
 void PhysicsEngine::update_dx(MovableElement* element, const double wind){
-	element->set_dx(element->get_dx() +  wind * element->get_windFactor() * abs(element->get_dx() - wind) * dt_);
+	element->set_dx(element->get_dx() +  0.1 * wind * element->get_windFactor() * abs(element->get_dx() - wind) * dt_);
 }
 
 void PhysicsEngine::update_dy(MovableElement* element, const double gravity){
