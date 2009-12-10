@@ -13,9 +13,9 @@ struct Velocity
 // Collision
 struct Collision
 {
-	int x_;
-	int y_;
-	int blastRadius_;
+	int x;
+	int y;
+	int blastRadius;
 };
 
 #endif /*STRUCTS_H_*/
