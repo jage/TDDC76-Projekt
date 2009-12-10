@@ -176,8 +176,9 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-					   	case SDLK_RETURN: 
-					   		nextState_ = FIRE;
+						case SDLK_RETURN:
+							nextState_ = FIRE;
+							gameworld_ptr_->get_leftCannon()->set_power(60);
 							gameworld_ptr_->get_leftCannon()->fire();
 					   		audio_ptr_->playSound(0);
 					   		Network::send("127.0.0.1", "12345", "enter");
@@ -225,15 +226,17 @@ if(event.type == SDL_KEYDOWN)
 	{
 		switch( event.key.keysym.sym )
 			{
-				case SDLK_RETURN: 
-					nextState_ = FIRE;
-					gameworld_ptr_->get_rightCannon()->fire();
-					break;
+
 				case SDLK_UP:
 					gameworld_ptr_->get_rightCannon()->adjust_angle(1);
 					break;
 				case SDLK_DOWN:
 					gameworld_ptr_->get_rightCannon()->adjust_angle(-1); 
+					break;
+				case SDLK_RETURN:
+					nextState_ = FIRE;
+					gameworld_ptr_->get_leftCannon()->set_power(60);
+					gameworld_ptr_->get_leftCannon()->fire();
 					break;
 				default: break;
 			}
