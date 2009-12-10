@@ -38,8 +38,7 @@ void Audio::init()
 
 void Audio::uninit()
 {
-	stopMusic();
-	stopAllSound();
+	stopAllAudio();
 	Mix_AllocateChannels(0);
 	unloadSoundsFromMemory();
 	unloadMusicFromMemory();
@@ -47,10 +46,17 @@ void Audio::uninit()
 	SDL_Audio_Enabled_ = false;
 }
 
-void Audio::stopAllSound()
+void Audio::stopSound() const
 {
 	Mix_HaltChannel(-1);
 }
+
+void Audio::stopAllAudio() const
+{
+	stopSound();
+	stopMusic();
+}
+
 
 void Audio::loadMusicIntoMemory()
 {
@@ -73,7 +79,7 @@ void Audio::unloadMusicFromMemory()
 	}
 }
 
-void Audio::playMusic(const int &musicIndex, const int &loop)
+void Audio::playMusic(const int &musicIndex, const int &loop) const
 {
 	if (SDL_Audio_Enabled_ == false) return;
 	if (Mix_PlayingMusic() == 1) Mix_HaltMusic();
@@ -176,7 +182,7 @@ void Audio::loadSoundsIntoMemory()
 
 void Audio::unloadSoundsFromMemory()
 {
-	stopAllSound();
+	stopSound();
 
 	for (int soundIndex = 0; soundIndex < NROFSOUNDS; soundIndex++)
 	{
@@ -185,7 +191,7 @@ void Audio::unloadSoundsFromMemory()
 	}
 }
 
-void Audio::playSound(const int& soundIndex)
+void Audio::playSound(const int& soundIndex) const
 {
 	if (SDL_Audio_Enabled_ == false)  return;
 	
@@ -217,7 +223,7 @@ void Audio::setMusicVolume(const int& volume)
 	musicVolume_ = volume;
 }
 
-const int Audio::getMusicVolume()
+const int Audio::getMusicVolume() const
 {
 	return musicVolume_;
 }
@@ -227,12 +233,12 @@ void Audio::setSoundVolume(const int &volume)
 	soundVolume_ = volume;
 }
 
-const int Audio::getSoundVolume()
+const int Audio::getSoundVolume() const
 {
 	return soundVolume_;
 }
 
-void Audio::stopMusic()
+void Audio::stopMusic() const
 {
 	Mix_HaltMusic();
 }
