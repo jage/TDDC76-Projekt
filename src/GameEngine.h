@@ -13,6 +13,7 @@
 #include "GraphicsEngine.h"
 #include "SDLInclude.h"
 #include "State.h"
+#include "Audio.h"
 
 
 //Dummyclasses
@@ -35,7 +36,8 @@ private:
 
 	GameWorld gameworld_;
 	GraphicsEngine graphicsengine_;
-	Sound sound_;
+	Audio soundplayer_;
+
 	Player player1;
 	Player player2;
 	unsigned int ticks_;

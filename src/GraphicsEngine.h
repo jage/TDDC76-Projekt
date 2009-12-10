@@ -33,8 +33,8 @@ public:
 	void clearScreenBuffer(const unsigned int& color);
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
-	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
-	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const int& fontIndex = 0);
+	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& font = LAZY32);
+	void drawOutlinedTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& fontName = LAZY32);
 	void drawSDLSurfaceToScreenBuffer(SDL_Surface* image, const int& xScreenPos, const int& yScreenPos);
 	void drawButton(const std::string& text, const int& xScreenPos, const int& yScreenPos, const bool& active, const PANZER_FONT& textfont, const PANZER_ALIGNMENT& align);
 	void drawRectangle(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& red, const int& green, const int& blue);

@@ -9,12 +9,15 @@
 #include <iostream>
 #include "SDLInclude.h"
 #include <string>
+#include "Audio.h"
 
 using namespace std;
 
+
+
 //State---------------------------------------------------------//
-State::State(GraphicsEngine* graphicengine, GameWorld* gameworld)
-	: graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld){}
+State::State(GraphicsEngine* graphicengine, GameWorld* gameworld, Audio* audio)
+: graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld), audio_ptr_(audio) {}
 
 State::~State() {}
 //--------------------------------------------------------------//
@@ -54,8 +57,8 @@ SDL_Surface* load_image( std::string filename )
 
 //Meny::Meny(){}
 
-Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld),
+Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine, gameworld, audio),
 	   nextState_(PLAYER1STATE),
 	   quitMeny_(false){
 }
@@ -151,8 +154,8 @@ PANZER_STATES Meny::next_state()
 
 
 
-Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), nextState_(PLAYER1STATE) {}
+Player1State::Player1State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER1STATE) {}
 
 Player1State::~Player1State(){}
 
@@ -171,7 +174,13 @@ void Player1State::handle_input(SDL_Event& event){
 
 				switch( event.key.keysym.sym )
 					{
-						case SDLK_RETURN: {nextState_ = FIRE; gameworld_ptr_->get_leftCannon()->fire(); }; break;
+						case SDLK_RETURN:
+
+							nextState_ = FIRE;
+							gameworld_ptr_->get_leftCannon()->fire();
+							audio_ptr_->playSound(0);
+							break;
+
 						default: break;
 					}
 
@@ -199,8 +208,8 @@ PANZER_STATES Player1State::next_state()
 
 //Player2State-----------------------------------------------------------//
 
-Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), nextState_(PLAYER2STATE) {}
+Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE) {}
 
 Player2State::~Player2State(){}
 
@@ -249,8 +258,8 @@ PANZER_STATES Player2State::next_state()
 
 
 
-Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+Fire::Fire(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio) {}
 
 Fire::~Fire(){}
 
@@ -278,8 +287,8 @@ PANZER_STATES Fire::next_state()
 
 
 
-ExitGame::ExitGame(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+ExitGame::ExitGame(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio) {}
 
 ExitGame::~ExitGame(){}
 
@@ -295,8 +304,8 @@ PANZER_STATES ExitGame::next_state()
 
 
 //NetworkState--------------------------------------------------//
-NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld) {}
+NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine,gameworld, audio) {}
 
 void NetworkState::render(){
 	graphicsengine_ptr_->drawSDLSurfaceToScreenBuffer(load_image("underconstruction.png"),0,0);
@@ -306,8 +315,8 @@ void NetworkState::logic(){
 	SDL_Delay(2000);
 }
 //OptionsState-------------------------------------------------//
-OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	 : State(graphicsengine,gameworld), nextState_(OPTIONSTATE){}
+OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	 : State(graphicsengine, gameworld, audio), nextState_(OPTIONSTATE){}
 
 void OptionState::render(){
 	graphicsengine_ptr_->drawTextToScreenBuffer("Press space to generate a  new level!",0,0,255,255,255);
@@ -343,8 +352,8 @@ PANZER_STATES OptionState::next_state(){
 //OptionsState-----------------------------------------------//
 
 //InitState--------------------------------------------------//
-InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld)
-	: State(graphicsengine,gameworld){}
+InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
+	: State(graphicsengine,gameworld, audio){}
 
 void InitState::render(){
 	cout << "Initiate the game!" << endl;
