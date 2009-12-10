@@ -15,6 +15,7 @@ public:
 	void change_ammunition(Ammunition*); // change ammunition
 	Ammunition* get_ammunition() const; // get pointer to current ammunition
 	void fire();	// fire the cannon
+	void disarm();
 	const bool fired() const; // is the cannon fired?
 	virtual ~Cannon();
 private:

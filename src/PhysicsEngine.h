@@ -15,6 +15,7 @@ class PhysicsEngine {
 		void update_y(MovableElement*);						//indata: (element, gravitation)
 		void update_dx(MovableElement*, const double);
 		void update_dy(MovableElement*, const double);
+		int return_sign(int);
 };
 #endif /*PHYSICSENGINE_H_*/
 

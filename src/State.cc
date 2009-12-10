@@ -164,7 +164,10 @@ void Player1State::render(){
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
-void Player1State::logic(){nextState_ = PLAYER1STATE;}
+void Player1State::logic()
+{
+	nextState_ = PLAYER1STATE;
+}
 
 void Player1State::handle_input(SDL_Event& event){
 
@@ -175,6 +178,7 @@ void Player1State::handle_input(SDL_Event& event){
 					{
 					   	case SDLK_RETURN: 
 					   		nextState_ = FIRE;
+							gameworld_ptr_->get_leftCannon()->fire();
 					   		audio_ptr_->playSound(0);
 					   		Network::send("127.0.0.1", "12345", "enter");
 					   		break;
@@ -207,10 +211,10 @@ Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 Player2State::~Player2State(){}
 
 void Player2State::render(){
-graphicsengine_ptr_->clearScreenBuffer(0);
-graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
-graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
-graphicsengine_ptr_->showScreenBufferOnScreen();
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
@@ -223,6 +227,7 @@ if(event.type == SDL_KEYDOWN)
 			{
 				case SDLK_RETURN: 
 					nextState_ = FIRE;
+					gameworld_ptr_->get_rightCannon()->fire();
 					break;
 				case SDLK_UP:
 					gameworld_ptr_->get_rightCannon()->adjust_angle(1);
@@ -257,7 +262,11 @@ void Fire::render(){
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
-void Fire::logic(){ SDL_Delay(1000);}
+void Fire::logic(){
+	gameworld_ptr_->update_world();
+	gameworld_ptr_->get_leftCannon()->disarm();
+	gameworld_ptr_->get_rightCannon()->disarm();
+}
 
 PANZER_STATES Fire::next_state()
 {

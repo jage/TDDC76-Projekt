@@ -1,7 +1,15 @@
 #include "Interval.h"
+#include "math.h"
 
 Interval::Interval(const int& lower,const int& upper)
 :lower_(lower),upper_(upper) {}
+
+Interval::Interval(const double& lower,const double& upper)
+:lower_(0),upper_(0)
+{
+		lower_=(int)lower;
+		upper_=(int)upper;
+}
 
 const bool Interval::belongs(const int& value) const
 {

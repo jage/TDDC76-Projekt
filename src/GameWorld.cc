@@ -39,6 +39,11 @@ ElementVector* GameWorld::get_elements()
 	return &elements_;
 }
 
+MovableElementVector* GameWorld::get_MovableElemets()
+{
+	return &movableElements_;
+}
+
 void GameWorld::add_element(Element* ptr_newElement)
 {
 	elements_.push_back(ptr_newElement);
@@ -104,7 +109,7 @@ bool GameWorld::generate_world(const int& res)
 	elements_.clear();
 	elements_.push_back(ptr_cannonL_);
 	elements_.push_back(ptr_cannonR_);
-	movableElements_.clear();
+	movableElements_.clear();	
 	
 	//move cannons to correct x-coords
 	ptr_cannonL_->set_x(ptr_cannonL_->get_width()*0.5);

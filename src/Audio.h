@@ -1,6 +1,5 @@
-﻿#ifndef AUDIO_H_
+#ifndef AUDIO_H_
 #define AUDIO_H_
-
 
 #include "SDLInclude.h"
 
@@ -16,14 +15,15 @@ public:
 
 	void init();
 	void uninit();
-	void playMusic(const int& musicIndex, const int& loop);
-	void playSound(const int& soundIndex);
-	void stopMusic();
-	void stopAllSound();
+	void playMusic(const int& musicIndex, const int& loop) const;
+	void playSound(const int& soundIndex) const;
+	void stopMusic() const;
+	void stopSound() const;
+	void stopAllAudio() const;
 	void setMusicVolume(const int& volume);
-	const int getMusicVolume();
+	const int getMusicVolume() const;
 	void setSoundVolume(const int& volume);
-	const int getSoundVolume();
+	const int getSoundVolume() const;
 
 private:
 	bool SDL_Audio_Enabled_;
@@ -32,10 +32,13 @@ private:
 	int soundVolume_;
 	Mix_Chunk* sound_[NROFSOUNDS];
 	Mix_Music* musicTrack_[NROFMUSICTRACKS];
+
 	void loadMusicIntoMemory();
 	void unloadMusicFromMemory();
 	void loadSoundsIntoMemory();
 	void unloadSoundsFromMemory();
-
 };
+
 #endif
+
+

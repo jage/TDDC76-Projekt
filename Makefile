@@ -14,8 +14,8 @@ endif
 
 # Kompilator och flaggor som påverkar kompilering, inkludering, etc. 
 # Lägg till '-g' i CCFLAGS om kompilering för avlusning ska göras.
-CCC       = g++ -g
-CPPFLAGS += -std=c++98
+CCC       = g++
+CPPFLAGS += -std=c++98 -pedantic -Wall -Wextra -g
 
 ifeq ($(OS),OSX)
 SDL      += -lSDLmain -Wl,-framework,Cocoa
