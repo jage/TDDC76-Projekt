@@ -353,8 +353,8 @@ NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 
 void NetworkState::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("You will be a server!",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Hit z to return to meny",0,40,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Enter toggles IP/Port input",0,0,255,255,255,LAZY26);
+	graphicsengine_ptr_->drawTextToScreenBuffer("z exits",0,40,255,255,255,LAZY26);
 	graphicsengine_ptr_->drawTextToScreenBuffer("IP: " ,0,80,255,255,255,LAZY26);
 	graphicsengine_ptr_->drawTextToScreenBuffer(input_,50,80,0,255,255,LAZY26);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Port: " ,0,120,255,255,255,LAZY26);
@@ -380,8 +380,11 @@ void NetworkState::handle_input(SDL_Event& event){
 		}
 		if(event.key.keysym.sym == SDLK_RETURN)
 			{
-				switchinput_ = false;
-				port_.clear();
+				switchinput_ = !switchinput_;
+				if(switchinput_)
+					input_.clear();
+				else
+					port_.clear();
 			}
 		if(event.key.keysym.sym == SDLK_z)
 				nextState_ = MENY;
@@ -390,8 +393,6 @@ void NetworkState::handle_input(SDL_Event& event){
 }
 
 PANZER_STATES NetworkState::next_state(){
-
-	input_.clear();
 	return nextState_;
 }
 //OptionsState-------------------------------------------------//
