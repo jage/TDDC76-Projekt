@@ -11,6 +11,7 @@ public:
 	Ammunition();
 	virtual const int get_blastRadius() const =0;
 	virtual const Explosion get_explosion() const=0;
+	virtual Ammunition* clone() const=0;
 	virtual ~Ammunition(){};
 };
 
@@ -25,6 +26,7 @@ class StandardAmmo: public Ammunition
 {
 	public:
 		const int get_blastRadius() const;
+		StandardAmmo* clone() const;
 		const Explosion get_explosion() const;
 };
 

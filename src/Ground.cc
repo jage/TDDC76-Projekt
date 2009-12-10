@@ -15,7 +15,7 @@ void Ground::deform(const Explosion& expl)
 	// in region of hit
 	if (expl.intersect(get_x(),get_y()))
 	{
-	
+			cout <<"Deform me!" << endl;
 	}
 }
 

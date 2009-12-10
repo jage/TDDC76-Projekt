@@ -192,7 +192,6 @@ void Player1State::handle_input(SDL_Event& event){
 			break;
 			default: break;
 		}
-
 	}
 	else if(event.type == SDL_KEYUP)
 	{		
@@ -202,6 +201,7 @@ void Player1State::handle_input(SDL_Event& event){
 				if (fire_power_ != 0)
 				{
 					nextState_ = FIRE;
+					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_leftCannon()->fire();
 					audio_ptr_->playSound(0);
 					Network::send("127.0.0.1", "12346", "enter_released");
@@ -211,7 +211,6 @@ void Player1State::handle_input(SDL_Event& event){
 			default: break;
 		}
 	}
-
 }
 
 PANZER_STATES Player1State::next_state()
@@ -270,6 +269,7 @@ void Player2State::handle_input(SDL_Event& event){
 				if (fire_power_ != 0)
 				{
 					nextState_ = FIRE;
+					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
 					gameworld_ptr_->get_rightCannon()->fire();
 					audio_ptr_->playSound(0);
 					fire_power_ = 0;
