@@ -7,6 +7,7 @@
 #include <iostream>
 #include "Network.h"
 #include "Audio.h"
+#include "Player.h"
 
 
 
@@ -84,7 +85,7 @@ class Player1State : public State
 {
 
 public:
-	Player1State(GraphicsEngine*, GameWorld*, Audio*);
+	Player1State(GraphicsEngine*, GameWorld*, Audio*, Player*);
 	~Player1State();
 
 	void render();
@@ -97,7 +98,8 @@ public:
 
 private:
 	PANZER_STATES nextState_;
-
+	Player* player_ptr_;
+	int fire_power_;
 };
 
 class Player2State : public State
@@ -105,7 +107,7 @@ class Player2State : public State
 
 public:
 	//Meny();
-	Player2State(GraphicsEngine*, GameWorld*, Audio*);
+	Player2State(GraphicsEngine*, GameWorld*, Audio*, Player*);
 	~Player2State();
 
 	void render();
@@ -119,6 +121,8 @@ public:
 
 private:
 	PANZER_STATES nextState_;
+	Player* player_ptr_;
+	int fire_power_;
 };
 
 class Fire : public State
@@ -170,11 +174,15 @@ public:
 
 	void logic();
 
-	void handle_input(SDL_Event&){};
+	void handle_input(SDL_Event&);
 
-	PANZER_STATES next_state(){return MENY;};
+	PANZER_STATES next_state();
 
 private:
+	PANZER_STATES nextState_;
+	string	input_;
+	string  port_;
+	bool switchinput_;
 
 };
 
@@ -195,6 +203,13 @@ public:
 
 private:
 	PANZER_STATES nextState_;
+	bool quitOptions_;
+
+	/*
+	 * changeState()
+	 * Sets active state in the meny. Takes a bool as input true means up one step in meny
+	 */
+		void changeState(bool);
 };
 
 
@@ -212,6 +227,46 @@ public:
 
 	PANZER_STATES next_state();
 
+};
+
+class SetNameState : public State
+{
+public:
+	SetNameState(GraphicsEngine*, GameWorld*, Audio*, Player*,Player*);
+	~SetNameState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&);
+
+	PANZER_STATES next_state();
+
+private:
+	PANZER_STATES nextState_;
+	Player* player1_ptr_;
+	Player* player2_ptr_;
+
+
+
+};
+
+class SelectLevelState : public State
+{
+public:
+	SelectLevelState(GraphicsEngine*, GameWorld*, Audio*);
+	~SelectLevelState(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&);
+
+	PANZER_STATES next_state();
+private:
+	PANZER_STATES nextState_;
 };
 
 #endif /* STATE_H_ */

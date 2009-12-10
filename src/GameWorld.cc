@@ -61,6 +61,11 @@ bool GameWorld::update_world()
 	return 1; //dummy
 }
 
+const int GameWorld::get_randomSeed() const
+{
+	return randomSeed_;
+}
+
 const int GameWorld::get_width() const
 {
 	return width_;	
