@@ -162,6 +162,7 @@ void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 1 turn",0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 void Player1State::logic()
@@ -202,7 +203,7 @@ void Player1State::handle_input(SDL_Event& event){
 				{
 					nextState_ = FIRE;
 					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
-					gameworld_ptr_->get_leftCannon()->fire();
+					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_leftCannon()->fire());
 					audio_ptr_->playSound(0);
 					Network::send("127.0.0.1", "12346", "enter_released");
 					fire_power_ = 0;
@@ -230,6 +231,8 @@ void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",0,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
+
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
@@ -270,7 +273,7 @@ void Player2State::handle_input(SDL_Event& event){
 				{
 					nextState_ = FIRE;
 					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
-					gameworld_ptr_->get_rightCannon()->fire();
+					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_rightCannon()->fire());
 					audio_ptr_->playSound(0);
 					fire_power_ = 0;
 				}
@@ -299,6 +302,7 @@ void Fire::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",0,0,255,0,0);
+	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
@@ -310,7 +314,7 @@ void Fire::logic(){
 
 PANZER_STATES Fire::next_state()
 {
-	return FIREEND;
+	return FIRE;
 }
 //---------------------------------------------------------------//
 
