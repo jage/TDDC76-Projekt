@@ -1,9 +1,7 @@
 #ifndef PLAYER_H_
 #define PLAYER_H_
 
-#include "SDLInclude.h"
 #include <string>
-#include <iostream>
 
 /*
  * Player - abstrakt basklass f�r alla tr�dnodsklasser.
@@ -13,7 +11,7 @@ class Player
 {
 public:
 	Player(const std::string& = "", const int  = 100, const int = 0, const std::string& hostname = "", const std::string& port = "");
-	virtual ~Player(){};
+	~Player(){}
 	 
 	 /*
 	  * get_name()
