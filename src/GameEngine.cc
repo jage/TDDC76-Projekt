@@ -10,10 +10,9 @@
 
 using namespace std;
 
-GameEngine::GameEngine() {
-	player1_ptr_ = new Player("Player 1");
-	player2_ptr_ = new Player("Palyer 2");
-
+GameEngine::GameEngine() 
+: player1_ptr_(new Player("Player1")), player2_ptr_(new Player("Player 2")), gameworld_(player1_ptr_, player2_ptr_, 640, 480)
+{
 	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_, &soundplayer_, player1_ptr_));
 	stateVector_.push_back(new NetworkState(&graphicsengine_, &gameworld_, &soundplayer_));
 	stateVector_.push_back(new OptionState(&graphicsengine_, &gameworld_, &soundplayer_));

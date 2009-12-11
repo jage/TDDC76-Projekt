@@ -295,7 +295,13 @@ PANZER_STATES Fire::next_state()
 {
 	if(gameworld_ptr_->check_collision())
 	{
-		return FIREEND;
+		if (gameworld_ptr_->getPlayer1Health() < 0) {
+			return MENY;
+		}
+		else if (gameworld_ptr_->getPlayer2Health() < 0) {
+			return MENY;
+		}
+			return FIREEND;
 	}
 	else
 	{
@@ -575,4 +581,3 @@ void InitState::logic(){
 PANZER_STATES InitState::next_state(){
 	return MENY;
 }
-
