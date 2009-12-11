@@ -587,4 +587,3 @@ void InitState::logic(){
 PANZER_STATES InitState::next_state(){
 	return MENY;
 }
-
