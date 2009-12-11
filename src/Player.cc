@@ -33,7 +33,7 @@ const int& Player::get_points() const
 void Player::set_points(const int points)
 {
 	points_ = points;
-}q
+}
 
 bool Player::network()
 {	
