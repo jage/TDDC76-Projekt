@@ -22,7 +22,7 @@ public:
 	void set_dy(double);
 	void set_velocity(double&,double&);
 
-	const double& get_windFactor() const;
+	virtual const double get_windFactor() const;
 	void set_windFactor(double);
 
 private:

@@ -1,10 +1,10 @@
 #include "Cannon.h"
 #include "Enums.h"
 #include "math.h"
-#include "iostream"
+#include <iostream>
 
-Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
-	:Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo)
+Cannon::Cannon(Player* player, Ammunition* ptrAmmo,const bool& leftCannon)
+	: Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo), player_(player)
 {
 	// set right cannon if not left
 	if(!leftCannon) {
@@ -52,17 +52,8 @@ Ammunition* Cannon::fire()
 	newAmmo->set_x(get_x() + 65*cos(3.14/180 * get_angle()));
 	newAmmo->set_y(get_y() - 65*sin(3.14/180 * get_angle()) - 20);
 
-	//std::cout <<"x: " << newAmmo->get_x() <<std::endl;
-	//std::cout <<"y: " << newAmmo->get_y() <<std::endl;
-
-
 	newAmmo->set_dx(10*power_*cos(3.14/180 * get_angle()));
 	newAmmo->set_dy(-10*power_*sin(3.14/180 * get_angle()));
-
-	//std::cout <<"vinkel: " << get_angle() <<std::endl;
-
-	//std::cout <<"dx: " << newAmmo->get_dx() <<std::endl;
-	//std::cout <<"dy: " << newAmmo->get_dy() <<std::endl <<std::endl;
 
 	fired_=true;
 	return newAmmo;
@@ -76,4 +67,13 @@ void Cannon::disarm()
 Cannon::~Cannon()
 {
 	delete ptr_ammunition_;
+}
+
+void Cannon::deform(const Explosion& exp)
+{
+	double exp_distance = exp.distance(get_x(), get_y());
+	if (exp_distance < exp.get_radius())
+	{
+		player_->set_health(player_->get_health() - exp_distance / exp.get_radius() * 100);
+	}
 }

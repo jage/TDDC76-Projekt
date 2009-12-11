@@ -3,11 +3,13 @@
 
 #include "Element.h"
 #include "Ammunition.h"
+#include "Interfaces.h"
+#include "Player.h"
 
-class Cannon : public Element
+class Cannon : public Element, public Destructable
 {
 public:
-	Cannon(Ammunition* ammo=new StandardAmmo(),const bool& leftCannon=true);
+	Cannon(Player* player, Ammunition* ammo=new StandardAmmo(),const bool& leftCannon = true);
 	void set_angle(const double&);	// sets fire angle
 	void adjust_angle(const double&); // increase/decrease fire angle
 	void set_power(const int&);
@@ -18,10 +20,12 @@ public:
 	void disarm();
 	const bool fired() const; // is the cannon fired?
 	virtual ~Cannon();
+	void deform(const Explosion&);
 private:
 	int power_;
 	bool fired_;
 	Ammunition* ptr_ammunition_; // pointer to current ammunition object 
+	Player* player_ ;
 };
 
 #endif /*CANNON_H_*/

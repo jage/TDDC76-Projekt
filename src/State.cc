@@ -37,10 +37,6 @@ Meny::~Meny(){
 void Meny::render(){
 		graphicsengine_ptr_->clearScreenBuffer(0);
 		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
-		/*graphicsengine_ptr_->drawFixedWidthButton("Play",20,100,200,(nextState_ == 0), LAZY26,255,255,255);
-		graphicsengine_ptr_->drawFixedWidthButton("Network",20,150,200,(nextState_ == 1),LAZY26,255,255,255);
-		graphicsengine_ptr_->drawFixedWidthButton("Options",20,200,200,(nextState_ == 2),LAZY26,255,255,255);
-		graphicsengine_ptr_->drawFixedWidthButton("Quit",20,250,200,(nextState_ == 3),LAZY26,255,255,255);*/
 		graphicsengine_ptr_->drawTextToScreenBuffer("Play",26,100,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
@@ -134,8 +130,9 @@ void Player1State::render(){
 	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
+	graphicsengine_ptr_->drawPowerBarToScreenBuffer(5,35,200,20,player_ptr_->get_health());
 	if (fire_power_ != 0)
-		graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 35, 200, 20, fire_power_);
+		graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 58, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 	
 }
@@ -208,11 +205,12 @@ Player2State::~Player2State() {}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawTextToScreenBuffer("Player 2 turn",400,0,125,254,0);
+	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
+	graphicsengine_ptr_->drawPowerBarToScreenBuffer(405,35,200,20,player_ptr_->get_health());
 	if (fire_power_ != 0)
-		graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 35, 200, 20, fire_power_);
+		graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 58, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
@@ -297,12 +295,16 @@ PANZER_STATES Fire::next_state()
 {
 	if(gameworld_ptr_->check_collision())
 	{
-		//std::cout << 1;
-		return FIREEND;
+		if (gameworld_ptr_->getPlayer1Health() < 0) {
+			return MENY;
+		}
+		else if (gameworld_ptr_->getPlayer2Health() < 0) {
+			return MENY;
+		}
+			return FIREEND;
 	}
 	else
 	{
-		//std::cout << 0;
 		return FIRE;
 	}
 }
@@ -609,4 +611,3 @@ void InitState::logic(){
 PANZER_STATES InitState::next_state(){
 	return MENY;
 }
-

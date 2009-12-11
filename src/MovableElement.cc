@@ -38,7 +38,7 @@ const double& MovableElement::get_dy() const{
 	return velocity_.dy_;
 }
 
-const double& MovableElement::get_windFactor() const{
+const double MovableElement::get_windFactor() const{
 	return windFactor_;
 }
 

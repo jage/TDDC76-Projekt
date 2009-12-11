@@ -13,6 +13,7 @@
 #include "Interval.h"
 #include <vector>
 #include <ctime>
+#include "Player.h"
 
 #define PI 3.14159265
 
@@ -22,7 +23,7 @@ typedef std::vector<MovableElement*> MovableElementVector;
 class GameWorld
 {
 public:
-	GameWorld(const int& width=640,const int& height=480,const double& gravity=9.82,const double& wind =0);
+	GameWorld(Player* player1, Player* player2, const int& width=640,const int& height=480,const double& gravity=9.82,const double& wind =0);
 	~GameWorld();
 
 	void add_element(Element*);
@@ -41,6 +42,10 @@ public:
 	bool check_collision();
 	bool check_collision(MovableElement*, Element*);
 	bool generate_world(const int& seed=0);
+	const int getPlayer1Health() const;
+	void setPlayer1Health(const int&);
+	const int getPlayer2Health() const;
+	void setPlayer2Health(const int&);
 private:
 	int width_;
 	int height_;
@@ -52,6 +57,8 @@ private:
 	MovableElementVector movableElements_;
 	Cannon* ptr_cannonL_;
 	Cannon* ptr_cannonR_;
+	Player* player1_;
+	Player* player2_;
 };
 
 class GameWorldException

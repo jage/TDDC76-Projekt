@@ -10,10 +10,9 @@
 
 using namespace std;
 
-GameEngine::GameEngine() {
-	player1_ptr_ = new Player();
-	player2_ptr_ = new Player();
-
+GameEngine::GameEngine() 
+: player1_ptr_(new Player("Player1")), player2_ptr_(new Player("Player 2")), gameworld_(player1_ptr_, player2_ptr_, 640, 480)
+{
 	stateVector_.push_back(new Player1State(&graphicsengine_, &gameworld_, &soundplayer_, player1_ptr_));
 	stateVector_.push_back(new NetworkState(&graphicsengine_, &gameworld_, &soundplayer_));
 	stateVector_.push_back(new OptionState(&graphicsengine_, &gameworld_, &soundplayer_));
@@ -27,7 +26,6 @@ GameEngine::GameEngine() {
 
 	currentState_ = INITSTATE;
 	playerTurn_ = PLAYER1STATE;
-
 
 }
 
@@ -88,11 +86,13 @@ void GameEngine::run()
 				{
 					playerTurn_ = PLAYER2STATE;
 					currentState_ = PLAYER2STATE;
+					gameworld_.set_wind(.1*((rand()%200) - 100));
 				}
 				else if(currentState_ == FIREEND)
 				{
 					playerTurn_ = PLAYER1STATE;
 					currentState_ = PLAYER1STATE;
+					gameworld_.set_wind(.1*((rand()%200) - 100));
 				}
 
 			regulate_fps();

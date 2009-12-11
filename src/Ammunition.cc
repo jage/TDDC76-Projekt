@@ -4,9 +4,7 @@
 
 // Abstract ammunition class
 Ammunition::Ammunition()
-: MovableElement(10, 10, CANNONBALL)
-{
-}
+: MovableElement(10, 10, CANNONBALL){}
 
 // Derived ammunition types
 
@@ -26,5 +24,10 @@ const Explosion StandardAmmo::get_explosion() const
 StandardAmmo* StandardAmmo::clone() const
 {
 	return new StandardAmmo();	
+}
+
+const double StandardAmmo::get_windFactor() const
+{
+	return 0.7; // for modification
 }
 
