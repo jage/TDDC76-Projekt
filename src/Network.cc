@@ -18,27 +18,16 @@ using namespace std;
 #ifdef WITH_NETWORK
 /* Connection */
 
-/*
- * Creates a new connection, returns the pointer
- */
 Connection::pointer Connection::create(boost::asio::io_service& io_service)
 {
 	return pointer(new Connection(io_service));
 }
 
-/*
- * Returns the socket for the connection
- */
 tcp::socket& Connection::socket()
 {
 	return socket_;
 }
 
-/*
- * Handles new connections
- * Reads the data, puts it in response_ and lets Connection::handle_read take care of it
- * Sends a connect_message to the client
- */
 void Connection::start()
 {
 	string connect_message = "Welcome to the Panzer2k remote console\n";
@@ -54,21 +43,12 @@ void Connection::start()
 	
 }
 	
-/*
- * Connection construction, sets io_service
- */
 Connection::Connection(boost::asio::io_service& io_service)
 	: socket_(io_service),
 	  strand_(io_service) {}
 
-/*
- * Nothing to to really, no new messages to push out
- */
 void Connection::handle_write(const boost::system::error_code&, size_t) {}
 
-/*
- * Passes the response on to the static callback function
- */
 void Connection::handle_read(const boost::system::error_code&)
 {	
 	Network::callback(response_);
@@ -76,9 +56,6 @@ void Connection::handle_read(const boost::system::error_code&)
 
 /* Server */
 
-/*
- * Server Constructor
- */
 Server::Server(boost::asio::io_service& io_service, const string port)
 	: acceptor_(io_service, tcp::endpoint(tcp::v4(), atoi(port.c_str()))),
 	  strand_(io_service)
@@ -86,9 +63,6 @@ Server::Server(boost::asio::io_service& io_service, const string port)
 	start_accept();
 }
 
-/*
- * Start accepting a connection
- */
 void Server::start_accept()
 {
 	Connection::pointer new_connection = 
@@ -99,9 +73,6 @@ void Server::start_accept()
 		boost::asio::placeholders::error)));
 }
 
-/*
- * Handle a new connection, then run start_accept again for the next connection
- */
 void Server::handle_accept(Connection::pointer new_connection,
 	const boost::system::error_code& error)
 {
@@ -113,13 +84,7 @@ void Server::handle_accept(Connection::pointer new_connection,
 }
 #endif
 
-/*
- * Network, abstraction for server and client.
- * Server uses the Connection class for each new connection
- * The client is just a simple iostream, connects, sends the message, disconnects
- */
 
-/* Constructior for Network */
 Network::Network() {
 #ifdef WITH_NETWORK
 	boost::asio::io_service io_service_;
@@ -130,9 +95,6 @@ Network::Network() {
 
 Network::~Network() {}
 
-/* 
- * Listen on på 0.0.0.0:<port>
- */
 void Network::listen(const string port)
 {
 #ifdef WITH_NETWORK
@@ -149,9 +111,6 @@ void Network::listen(const string port)
 #endif
 }
 
-/*
- * Connects to <hostname>:<port>, sends <msg> and disconnects
- */
 void Network::send(const string hostname, const string port, const string msg)
 {
 #ifdef WITH_NETWORK
@@ -163,10 +122,6 @@ void Network::send(const string hostname, const string port, const string msg)
 }
 
 #ifdef WITH_NETWORK
-/*
- * Callback for each message recieved by Server
- * Translate strings to SDL_Events, simple and stupid.
- */
 void Network::callback(boost::asio::streambuf &response_)
 {
 	std::istream response_stream(&response_);
@@ -174,7 +129,7 @@ void Network::callback(boost::asio::streambuf &response_)
 	std::getline(response_stream, msg);
 	std::cout << msg << "\n";
 	
-	// Översätter strängmeddelande till SDL_Event, emulerar tangentbord
+	// Translates strings to SDL_Event, "emulates a keyboard"
 	
 	if (msg == "quit") { // Quit the opponents client. :-)
 		SDL_Event event;
