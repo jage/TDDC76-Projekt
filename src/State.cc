@@ -1,10 +1,3 @@
-/*
- * State.cpp
- *
- *  Created on: Nov 23, 2009
- *      Author: rosjo
- */
-
 #include "State.h"
 #include <iostream>
 #include "SDLInclude.h"

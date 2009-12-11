@@ -4,11 +4,10 @@
 #include "GraphicsEngine.h"
 #include "GameWorld.h"
 #include "SDLInclude.h"
-#include <iostream>
 #include "Network.h"
 #include "Audio.h"
 #include "Player.h"
-
+#include <iostream>
 
 
 class State {
@@ -21,26 +20,25 @@ public:
 
 	/*
 	 * render()
-	 * Rita tillst�ndsspecifik grafik p� sk�rmen
-	 * OBS Uppdaterar inte spelskärmen, GameEngine gör detta
+	 * Draws graphics on the screen buffert
 	 */
 	virtual void render() = 0;
 
 	/*
 	 * logic()
-	 * Definerar tillståndes logik
+	 * Run logic for a state
 	 */
 	virtual void logic() = 0;
 
 	/*
 	 * handle_input()
-	 * Bestämmer hur tillståndet svara på användarens interaktion
+	 * How the state will respond on the users input. Takes a SDL_Event as input
 	 */
 	virtual void handle_input(SDL_Event&) = 0;
 
 	/*
 	 * next_state()
-	 * Returnerar nästa tillstånd som ska köras efter det nurvarande
+	 * Returns the nextstate after the current. Return type is a PANZER_STATE
 	 */
 	virtual PANZER_STATES next_state() = 0;
 
@@ -54,7 +52,6 @@ protected:
 class Meny : public State
 {
 public:
-	//Meny();
 	Meny(GraphicsEngine*, GameWorld*, Audio*);
 	~Meny();
 
@@ -70,7 +67,11 @@ private:
  PANZER_STATES nextState_;
  bool quitMeny_;
 
- void changeState(bool);
+	/*
+ 	 * changeState()
+ 	 * Sets active state in the meny. Takes a bool as input true means up one step in meny
+ 	 */
+  void changeState(bool);
 
 private:
 
@@ -204,7 +205,7 @@ private:
 	 * changeState()
 	 * Sets active state in the meny. Takes a bool as input true means up one step in meny
 	 */
-		void changeState(bool);
+	void changeState(bool);
 };
 
 

@@ -38,13 +38,13 @@ private:
 
     /*
      * init()
-     * Initr SDL,  return true if SDL_init completed
+     * Init SDL, return true if SDL_init completed
      */
     bool init_SDL();
 
     /*
      * cleanup()
-     * Cleans the memory after the gam
+     * Cleans the memory after the game
      */
     void cleanup();
 
@@ -62,8 +62,6 @@ private:
 
     GameEngine(const GameEngine&);
     GameEngine& operator=(const GameEngine&);
-
-
 
 };
 
