@@ -723,6 +723,50 @@ void GraphicsEngine::drawPowerBarToScreenBuffer(const int& xScreenPos, const int
 	}
 }
 
+/*
+ * Draws a colored bar on screen buffer.
+ *
+ * xScreenPos: Top left corner.
+ * yScreenPos: Top left corner.
+ * width: Width in pixels.
+ * height: Height in pixels.
+ * wind_factor: Width and direction, minus is left, plus is right.
+ */
+void GraphicsEngine::drawWindBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& wind_factor)
+{
+	SDL_Rect rcDest;
+	SDL_Rect rcDestBack;
+	
+	if (wind_factor < 0)
+	{
+		rcDest.x = xScreenPos - (width * abs(wind_factor) / 10.0);
+	}
+	else
+	{
+		rcDest.x = xScreenPos;
+	}
+	
+	rcDest.y = yScreenPos;
+	rcDest.w = 1;
+	rcDest.h = height;
+	
+	rcDestBack.x = xScreenPos - width;
+	rcDestBack.y = yScreenPos;
+	rcDestBack.w = 1;
+	rcDestBack.h = height;
+	
+	for (int i = -width; i < width; ++i, ++rcDestBack.x)
+	{
+		SDL_FillRect(screen, &rcDestBack, 255 << 16 | 255 << 8 | 0 << 0);
+	}	
+	
+	for (int i = 0; i < width * abs(wind_factor) / 10.0; ++i, ++rcDest.x)
+	{
+		SDL_FillRect(screen, &rcDest,  (i * 255 / width) << 16 | (255 - i * 255 / width) << 8 | 0 << 0 );
+	}
+}
+
+
 void GraphicsEngine::drawBackgroundToScreenBuffer(const int& backgroundNr)
 {
 	SDL_BlitSurface(backgrounds[backgroundNr % NROFBACKGROUNDS], NULL, screen, NULL);
