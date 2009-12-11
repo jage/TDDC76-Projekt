@@ -737,14 +737,9 @@ void GraphicsEngine::drawWindBarToScreenBuffer(const int& xScreenPos, const int&
 	SDL_Rect rcDest;
 	SDL_Rect rcDestBack;
 	
+	rcDest.x = xScreenPos;
 	if (wind_factor < 0)
-	{
 		rcDest.x = xScreenPos - (width * abs(wind_factor) / 10.0);
-	}
-	else
-	{
-		rcDest.x = xScreenPos;
-	}
 	
 	rcDest.y = yScreenPos;
 	rcDest.w = 1;
