@@ -301,6 +301,7 @@ PANZER_STATES Fire::next_state()
 {
 	if(gameworld_ptr_->check_collision())
 	{
+		audio_ptr_->playSound(1);
 		if (gameworld_ptr_->getPlayer1Health() < 0) {
 			return POSTMATCH;
 		}
