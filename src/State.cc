@@ -607,7 +607,7 @@ PostMatch::PostMatch(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio
 
 void PostMatch::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawBackgroundToScreenBuffer(2);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(3);
 	if(player1_ptr_->get_health() < 0)
 		graphicsengine_ptr_->drawTextToScreenBuffer(player2_ptr_->get_name() +"  is the winner",0,0,255,255,255,LAZY32);
 	else

@@ -8,7 +8,7 @@
  */
 void start_network() {
 	Network server;
-	server.listen("12346");
+	server.listen("12345");
 }
 #endif
 

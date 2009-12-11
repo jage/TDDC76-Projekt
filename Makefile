@@ -1,28 +1,32 @@
 #
-# Makefile f�r Panzer,  GNU GCC (g++)
+# Makefile for Panzer,  GNU GCC (g++)
 #
-# Filkataloger d�r olika delar av programvaran finns.
+# 
+
+# File directories
 PANZER2K  = src
 BUILD     = build
 TESTS     = $(PANZER2K)/tests
+
 SDL      += -lSDL -lSDL_image -lSDL_ttf -lSDL_mixer
 
+# Compile with network support
 ifeq ($(NETWORK),yes)
 BOOST_LD  = -lboost_system-mt -lboost_thread-mt
 CPPFLAGS  += -DWITH_NETWORK
 endif
 
-# Kompilator och flaggor som p�verkar kompilering, inkludering, etc. 
-# L�gg till '-g' i CCFLAGS om kompilering f�r avlusning ska g�ras.
+# Compiler and linker flags
 CCC       = g++
 CPPFLAGS += -std=c++98 -pedantic -Wall -Wextra -g
 
+# OS X flags
 ifeq ($(OS),OSX)
 SDL      += -lSDLmain -Wl,-framework,Cocoa
 CCFLAGS  += -arch x86_64 -I/opt/local/include -L/opt/local/lib
 endif
 
-# Objektkodsmoduler som ing�r i Panzer 2K
+# Objects for Panzer 2K
 OBJECTS_LIST = Element.o Interval.o Ammunition.o Explosion.o Ground.o Cannon.o Concrete.o MovableElement.o \
 			   	PhysicsEngine.o State.o Player.o  GameEngine.o \
 				GameWorld.o SDL_rotozoom.o GraphicsEngine.o Network.o Audio.o Panzer2k.o
@@ -31,11 +35,11 @@ OBJECTS      = $(OBJECTS_LIST:%=$(BUILD)/%)
 
 all: panzer2k
 
-# Huvudm�l - skapas med kommandot 'make' eller 'make panzer2k'
+# Main target - use 'make' or 'make panzer2k'
 panzer2k: $(OBJECTS) Makefile
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Panzer2k $(SDL) $(BOOST_LD) $(OBJECTS)
 
-# Delmal
+# Subtargets
 $(BUILD)/Panzer2k.o: $(PANZER2K)/Panzer2k.cc
 	$(CCC) $(CCFLAGS) $(CPPFLAGS) -c $(PANZER2K)/Panzer2k.cc -o $(BUILD)/Panzer2k.o
 
@@ -112,11 +116,10 @@ Network_server: $(BUILD)/Network.o
 	$(CCC) $(BOOST_LD) $(CCFLAGS) $(CPPFLAGS) -o $(BUILD)/Network_server $(BUILD)/Network.o $(TESTS)/Network_server.cc
 
 
-# 'make clean' tar bort objektkodsfiler och 'core'
+# 'make clean' removes object files and 'core'
 clean:
 	@ \rm -rf $(BUILD)/*.o core
 
-# 'make zap' tar ocks� bort det k�rbara programmet och reservkopior (filer
-# som slutar med tecknet '~')
+# 'make zap' removes everything in the build directory
 zap: clean
 	@ \rm -rf $(BUILD)/* *~
