@@ -14,7 +14,7 @@ using namespace std;
  * width: Width of screen buffer
  * height: Height of screen buffer
  */
-GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), source_image(NULL), width_(width), height_(height)
+GraphicsEngine::GraphicsEngine(const int& width, const int& height) : screen(NULL), width_(width), height_(height)
 {
 	init();
 }
@@ -79,7 +79,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 		SDL_BlitSurface(cannonball, NULL, screen, &rcDest);
 		break;
 	default:
-		if (draw_element.get_angle() != 0.0)
+		/*if (draw_element.get_angle() != 0.0)
 		{
 			SDL_Surface* source = NULL;
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
@@ -113,7 +113,7 @@ void GraphicsEngine::drawToScreenBuffer(const Element& draw_element)
 		{
 			SDL_Rect clip = getClippingRectangle(draw_element.get_imgRef());
 			SDL_BlitSurface(source_image, &clip, screen, &rcDest);
-		}
+		}*/
 		break;
 	}
 }
@@ -140,24 +140,6 @@ void GraphicsEngine::showScreenBufferOnScreen()
 void GraphicsEngine::clearScreenBuffer(const unsigned int& color)
 {
 	SDL_FillRect(screen, &screen->clip_rect, color);
-}
-
-/*
- * Returns rectangle to chosen picture in sprite_sheet
- */
-SDL_Rect GraphicsEngine::getClippingRectangle(const PANZER_IMAGE& picture_nr) const
-{
-	SDL_Rect rect;
-	switch (picture_nr)
-	{
-	case SUN:
-		rect.x = 742;
-		rect.y = 0;
-		rect.w = 154;
-		rect.h = 153;
-		break;
-	}
-	return rect;
 }
 
 /*
@@ -327,7 +309,6 @@ void GraphicsEngine::init()
 		cerr << "Gick ej att starta SDL_ttf" << endl;
 		return;
 	}
-	source_image = loadImageFromDisc("Gfx/sprite_sheet.bmp");
 	cannonball = loadImageFromDisc("Gfx/cannonball.png", true);
 	loadButtonSpritesIntoMemory();
 	loadCannonSpritesIntoMemory();
@@ -340,7 +321,6 @@ void GraphicsEngine::init()
  */
 void GraphicsEngine::uninit()
 {
-	SDL_FreeSurface(source_image);
 	SDL_FreeSurface(cannonball);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
@@ -739,7 +719,7 @@ void GraphicsEngine::drawWindBarToScreenBuffer(const int& xScreenPos, const int&
 	
 	rcDest.x = xScreenPos;
 	if (wind_factor < 0)
-		rcDest.x = xScreenPos - (width * abs(wind_factor) / 10.0);
+		rcDest.x = xScreenPos - (int)((width * abs(wind_factor) / 10.0));
 	
 	rcDest.y = yScreenPos;
 	rcDest.w = 1;
