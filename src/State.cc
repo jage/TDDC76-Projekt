@@ -35,8 +35,8 @@ Meny::~Meny(){
 
 
 void Meny::render(){
-		graphicsengine_ptr_->clearScreenBuffer(0);
-		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
+		graphicsengine_ptr_->clearScreenBuffer(1);
+		graphicsengine_ptr_->drawBackgroundToScreenBuffer(1);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Play",26,100,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
@@ -127,6 +127,7 @@ Player1State::~Player1State() {}
 
 void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
@@ -206,6 +207,7 @@ Player2State::~Player2State() {}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
@@ -281,6 +283,7 @@ Fire::~Fire(){}
 
 void Fire::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",0,0,255,0,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
@@ -388,6 +391,7 @@ OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, A
 
 void OptionState::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawBackgroundToScreenBuffer();
 	graphicsengine_ptr_->drawTextToScreenBuffer("Set Player Name",26,100,255,255,255,PAPER_CUT72);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Select Level",26,170,255,255,255,PAPER_CUT72);
@@ -631,7 +635,7 @@ void PostMatch::render(){
 void PostMatch::logic(){ SDL_Delay(2000);}
 
 PANZER_STATES PostMatch::next_state(){
-	return MENY;
+	return INITSTATE;
 }
 
 
