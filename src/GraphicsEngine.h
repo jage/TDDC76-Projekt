@@ -21,6 +21,7 @@
 const int DEGREES = 360;
 const int NROFFONTS = 3;
 const int NROFBUTTONIMG = 5;
+const int NROFBACKGROUNDS = 3;
 
 class GraphicsEngine
 {
@@ -35,7 +36,7 @@ public:
 	void clearScreenBuffer(const unsigned int& color = (0xff << 16 | 0xff << 8 | 0xff << 0));
 	void clearScreenBuffer();
 	void showScreenBufferOnScreen();
-	void drawBackgroundToScreenBuffer();
+	void drawBackgroundToScreenBuffer(const int& = 0);
 	void drawPowerBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage);
 	void drawWindBarToScreenBuffer(const int& xScreenPos, const int& yScreenPos, const int& width, const int& height, const int& percentage);
 	void drawTextToScreenBuffer(const std::string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& blue, const int& green, const PANZER_FONT& font = LAZY32);
@@ -57,7 +58,7 @@ private:
 	SDL_Surface* screen;
 	SDL_Surface* source_image;
 	SDL_Surface* cannonball;
-	SDL_Surface* backgroundImage;
+	SDL_Surface* backgrounds[NROFBACKGROUNDS];
 	SDL_Surface* cannon[2*DEGREES];
 	SDL_Surface* buttons[NROFBUTTONIMG];
 	TTF_Font* font[NROFFONTS];
@@ -72,6 +73,8 @@ private:
 	void unloadCannonSpritesFromMemory();
 	void loadButtonSpritesIntoMemory();
 	void unloadButtonSpritesFromMemory();
+	void loadBackgroundsIntoMemory();
+	void unloadBackgroundsFromMemory();
 	int getFontNr(const PANZER_FONT& font);
 	void drawEmptyButton(int xScreenPos, int yScreenPos, const int& nrOfMiddles, const bool& active);
 	SDL_Surface* generateTextSurface(const std::string& text, const PANZER_FONT& font, const SDL_Color& color);

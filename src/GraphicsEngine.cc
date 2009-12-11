@@ -201,7 +201,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
  */
 void GraphicsEngine::loadCannonSpritesIntoMemory()
 {
-	SDL_Surface* unrotatedCannon =loadImageFromDisc("cannon.png", true);
+	SDL_Surface* unrotatedCannon =loadImageFromDisc("Gfx/cannon.png", true);
 	SDL_Surface* flippedCannon = flipImage(unrotatedCannon, 0);
 
 	if (!unrotatedCannon) {
@@ -327,12 +327,12 @@ void GraphicsEngine::init()
 		cerr << "Gick ej att starta SDL_ttf" << endl;
 		return;
 	}
-	source_image = loadImageFromDisc("sprite_sheet.bmp");
-	cannonball = loadImageFromDisc("cannonball.png", true);
-	backgroundImage = loadImageFromDisc("panzer.bmp");
+	source_image = loadImageFromDisc("Gfx/sprite_sheet.bmp");
+	cannonball = loadImageFromDisc("Gfx/cannonball.png", true);
 	loadButtonSpritesIntoMemory();
 	loadCannonSpritesIntoMemory();
 	loadFontsIntoMemory();
+	loadBackgroundsIntoMemory();
 }
 
 /*
@@ -342,10 +342,10 @@ void GraphicsEngine::uninit()
 {
 	SDL_FreeSurface(source_image);
 	SDL_FreeSurface(cannonball);
-	SDL_FreeSurface(backgroundImage);
 	unloadCannonSpritesFromMemory();
 	unloadFontsFromMemory();
 	unloadButtonSpritesFromMemory();
+	unloadBackgroundsFromMemory();
 	TTF_Quit();
 }
 
@@ -424,11 +424,11 @@ void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, const int&
  */
 void GraphicsEngine::loadButtonSpritesIntoMemory()
 {
-	buttons[0] = loadImageFromDisc("left.png", true);
-	buttons[1] = loadImageFromDisc("middle.png", true);
-	buttons[2] = loadImageFromDisc("end.png", true);
-	buttons[3] = loadImageFromDisc("greyarrow.png", true);
-	buttons[4] = loadImageFromDisc("activearrow.png", true);
+	buttons[0] = loadImageFromDisc("Gfx/left.png", true);
+	buttons[1] = loadImageFromDisc("Gfx/middle.png", true);
+	buttons[2] = loadImageFromDisc("Gfx/end.png", true);
+	buttons[3] = loadImageFromDisc("Gfx/greyarrow.png", true);
+	buttons[4] = loadImageFromDisc("Gfx/activearrow.png", true);
 }
 
 /*
@@ -737,14 +737,9 @@ void GraphicsEngine::drawWindBarToScreenBuffer(const int& xScreenPos, const int&
 	SDL_Rect rcDest;
 	SDL_Rect rcDestBack;
 	
+	rcDest.x = xScreenPos;
 	if (wind_factor < 0)
-	{
 		rcDest.x = xScreenPos - (width * abs(wind_factor) / 10.0);
-	}
-	else
-	{
-		rcDest.x = xScreenPos;
-	}
 	
 	rcDest.y = yScreenPos;
 	rcDest.w = 1;
@@ -767,7 +762,27 @@ void GraphicsEngine::drawWindBarToScreenBuffer(const int& xScreenPos, const int&
 }
 
 
-void GraphicsEngine::drawBackgroundToScreenBuffer()
+void GraphicsEngine::drawBackgroundToScreenBuffer(const int& backgroundNr)
 {
-	SDL_BlitSurface(backgroundImage, NULL, screen, NULL);
+	SDL_BlitSurface(backgrounds[backgroundNr % NROFBACKGROUNDS], NULL, screen, NULL);
+}
+
+void GraphicsEngine::loadBackgroundsIntoMemory()
+{
+	backgrounds[0] = loadImageFromDisc("Gfx/sky.bmp");
+	if (backgrounds[0] == NULL) return;
+
+	backgrounds[1] = loadImageFromDisc("Gfx/panzer.bmp");
+	if (backgrounds[1] == NULL) return;
+
+	backgrounds[2] = loadImageFromDisc("Gfx/babe.bmp");
+	if (backgrounds[2] == NULL) return;
+}
+
+void GraphicsEngine::unloadBackgroundsFromMemory()
+{
+	for (int i = 0; i < NROFBACKGROUNDS; ++i) {
+		SDL_FreeSurface(backgrounds[i]);
+		backgrounds[i] = NULL;
+	}
 }
