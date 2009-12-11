@@ -1,9 +1,9 @@
 #include "PhysicsEngine.h"
 #include <math.h>
 #include <stdlib.h>
+#define DT 0.014
 
 
-double dt_ = 0.01;
 /*
  * update_pos beräknar den nya positionen för ett givet MovableElement-objekt samt en given gravitation.
  */
@@ -15,18 +15,18 @@ void PhysicsEngine::update_pos(MovableElement* element, const double& gravity, c
 }
 
 void PhysicsEngine::update_x(MovableElement* element){
-	element->set_x(element->get_x_pos() + element->get_dx() * dt_);
+	element->set_x(element->get_x_pos() + element->get_dx() * DT);
 }
 void PhysicsEngine::update_y(MovableElement* element){
-	element->set_y(element->get_y_pos() + element->get_dy() * dt_);
+	element->set_y(element->get_y_pos() + element->get_dy() * DT);
 }
 
 void PhysicsEngine::update_dx(MovableElement* element, const double wind){
-	element->set_dx(element->get_dx() +  0.1 * wind * element->get_windFactor() * abs(element->get_dx() - wind) * dt_);
+	element->set_dx(element->get_dx() +  0.1 * wind * element->get_windFactor() * abs(element->get_dx() - wind) * DT);
 }
 
 void PhysicsEngine::update_dy(MovableElement* element, const double gravity){
-	element->set_dy(element->get_dy() + gravity * 42 * dt_);
+	element->set_dy(element->get_dy() + gravity * 42 * DT);
 }
 
 int PhysicsEngine::return_sign(int i){

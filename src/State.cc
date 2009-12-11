@@ -35,8 +35,8 @@ Meny::~Meny(){
 
 
 void Meny::render(){
-		graphicsengine_ptr_->clearScreenBuffer(0);
-		graphicsengine_ptr_->drawBackgroundToScreenBuffer();
+		graphicsengine_ptr_->clearScreenBuffer(1);
+		graphicsengine_ptr_->drawBackgroundToScreenBuffer(1);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Play",26,100,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
@@ -127,6 +127,7 @@ Player1State::~Player1State() {}
 
 void Player1State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),0,0,125,124,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
@@ -142,6 +143,9 @@ void Player1State::logic()
 	nextState_ = PLAYER1STATE;
 }
 
+/*
+ * Handle SDL_Event, if player is connected to a remote network player, send messages
+ */
 void Player1State::handle_input(SDL_Event& event){
 
 	if(event.type == SDL_KEYDOWN)
@@ -206,6 +210,7 @@ Player2State::~Player2State() {}
 
 void Player2State::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawTextToScreenBuffer(player_ptr_->get_name(),400,0,125,254,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
@@ -218,6 +223,9 @@ void Player2State::render(){
 
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
 
+/*
+ * Handle SDL_Event, if player is connected to a remote network player, send messages
+ */
 void Player2State::handle_input(SDL_Event& event){
 	if(event.type == SDL_KEYDOWN)
 	{
@@ -281,6 +289,7 @@ Fire::~Fire(){}
 
 void Fire::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",0,0,255,0,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
@@ -298,11 +307,12 @@ PANZER_STATES Fire::next_state()
 {
 	if(gameworld_ptr_->check_collision())
 	{
+		audio_ptr_->playSound(1);
 		if (gameworld_ptr_->getPlayer1Health() < 0) {
-			return MENY;
+			return POSTMATCH;
 		}
 		else if (gameworld_ptr_->getPlayer2Health() < 0) {
-			return MENY;
+			return POSTMATCH;
 		}
 			return FIREEND;
 	}
@@ -388,10 +398,8 @@ OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, A
 
 void OptionState::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(0);
 	graphicsengine_ptr_->drawBackgroundToScreenBuffer();
-	/*graphicsengine_ptr_->drawFixedWidthButton("Set player name",20,50,200,(nextState_ == 8),LAZY26,255,255,255);
-	graphicsengine_ptr_->drawFixedWidthButton("Select level",20,100,200,(nextState_ == 9),LAZY26,255,255,255);
-	graphicsengine_ptr_->drawFixedWidthButton("Meny",20,150,200,(nextState_ == 5),LAZY26,255,255,255);*/
 	graphicsengine_ptr_->drawTextToScreenBuffer("Set Player Name",26,100,255,255,255,PAPER_CUT72);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Select Level",26,170,255,255,255,PAPER_CUT72);
 	graphicsengine_ptr_->drawTextToScreenBuffer("Meny",26,240,255,255,255,PAPER_CUT72);
@@ -472,7 +480,7 @@ PANZER_STATES OptionState::next_state(){
 
 //SetNameState-------------------------------------------------//
 SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1, Player* player2)
-	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
+	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2), playertemp_(0){}
 
 void SetNameState::render(){
 	
@@ -607,10 +615,33 @@ void InitState::render(){
 
 void InitState::logic(){
 	gameworld_ptr_->generate_world(1);
+	gameworld_ptr_->set_wind(.1*((rand()%200) - 100));
 	cout << "Level generated, we wait so we see the splash screen..." << endl;
-	//SDL_Delay(700);
+
 }
 
 PANZER_STATES InitState::next_state(){
 	return MENY;
 }
+//InitState-------------------------------------------------//
+
+//PostMatch-------------------------------------------------//
+PostMatch::PostMatch(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1_ptr_, Player* player2_ptr_):
+	State(graphicsengine,gameworld,audio), player1_ptr_(player1_ptr_), player2_ptr_(player2_ptr_) {}
+
+void PostMatch::render(){
+	graphicsengine_ptr_->clearScreenBuffer(0);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer(2);
+	if(player1_ptr_->get_health() < 0)
+		graphicsengine_ptr_->drawTextToScreenBuffer(player2_ptr_->get_name() +"  is the winner",0,0,255,255,255,LAZY32);
+	else
+		graphicsengine_ptr_->drawTextToScreenBuffer(player1_ptr_->get_name() +"  is the winner",0,0,255,255,255, LAZY32);
+
+}
+void PostMatch::logic(){ SDL_Delay(2000);}
+
+PANZER_STATES PostMatch::next_state(){
+	return INITSTATE;
+}
+
+

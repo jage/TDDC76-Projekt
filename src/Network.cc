@@ -16,47 +16,69 @@ using boost::asio::ip::tcp;
 using namespace std;
 
 #ifdef WITH_NETWORK
+/* Connection */
+
+/*
+ * Creates a new connection, returns the pointer
+ */
 Connection::pointer Connection::create(boost::asio::io_service& io_service)
 {
 	return pointer(new Connection(io_service));
 }
 
+/*
+ * Returns the socket for the connection
+ */
 tcp::socket& Connection::socket()
 {
 	return socket_;
 }
 
+/*
+ * Handles new connections
+ * Reads the data, puts it in response_ and lets Connection::handle_read take care of it
+ * Sends a connect_message to the client
+ */
 void Connection::start()
 {
-	message_ = "Welcome!\n";
+	string connect_message = "Welcome to the Panzer2k remote console\n";
 	
 	boost::asio::async_read_until(socket_, response_, "\n",
 		boost::bind(&Connection::handle_read, shared_from_this(),
 		boost::asio::placeholders::error));
 	
-	boost::asio::async_write(socket_, boost::asio::buffer(message_),
+	boost::asio::async_write(socket_, boost::asio::buffer(connect_message),
 		boost::bind(&Connection::handle_write, shared_from_this(),
 		boost::asio::placeholders::error,
 		boost::asio::placeholders::bytes_transferred));
 	
 }
 	
+/*
+ * Connection construction, sets io_service
+ */
 Connection::Connection(boost::asio::io_service& io_service)
 	: socket_(io_service),
-	  strand_(io_service)
-{
-}
+	  strand_(io_service) {}
 
-void Connection::handle_write(const boost::system::error_code& /*error*/,
-	size_t /*bytes_transferred*/)
-{
-}
+/*
+ * Nothing to to really, no new messages to push out
+ */
+void Connection::handle_write(const boost::system::error_code&, size_t) {}
 
+/*
+ * Passes the response on to the static callback function
+ */
 void Connection::handle_read(const boost::system::error_code&)
 {	
 	Network::callback(response_);
 }
 
+/* Server */
+
+/*
+ * Server Constructor
+ */
 Server::Server(boost::asio::io_service& io_service, const string port)
 	: acceptor_(io_service, tcp::endpoint(tcp::v4(), atoi(port.c_str()))),
 	  strand_(io_service)
@@ -64,13 +86,12 @@ Server::Server(boost::asio::io_service& io_service, const string port)
 	start_accept();
 }
 
-Connection::pointer Server::connection() {
-	return new_connection;
-}
-
+/*
+ * Start accepting a connection
+ */
 void Server::start_accept()
 {
-	Connection::pointer new_connection =
+	Connection::pointer new_connection = 
 		Connection::create(acceptor_.io_service());
 
 	acceptor_.async_accept(new_connection->socket(),
@@ -78,6 +99,9 @@ void Server::start_accept()
 		boost::asio::placeholders::error)));
 }
 
+/*
+ * Handle a new connection, then run start_accept again for the next connection
+ */
 void Server::handle_accept(Connection::pointer new_connection,
 	const boost::system::error_code& error)
 {
@@ -90,10 +114,12 @@ void Server::handle_accept(Connection::pointer new_connection,
 #endif
 
 /*
-* Antingen lyssnar eller ansluter man
-*/
+ * Network, abstraction for server and client.
+ * Server uses the Connection class for each new connection
+ * The client is just a simple iostream, connects, sends the message, disconnects
+ */
 
-/* Konstruktor för Network */
+/* Constructior for Network */
 Network::Network() {
 #ifdef WITH_NETWORK
 	boost::asio::io_service io_service_;
@@ -104,18 +130,9 @@ Network::Network() {
 
 Network::~Network() {}
 
-// Ansluter inte i den här implementationen med iostream, 
-//   utan sätter bara hostname och port
-bool Network::connect(const string hostname, const string port)
-{
-#ifdef WITH_NETWORK
-	hostname_ = hostname;
-	port_ = port;
-#endif
-	return true;
-}
-
-// Lyssnar på 0.0.0.0:<port>
+/* 
+ * Listen on på 0.0.0.0:<port>
+ */
 void Network::listen(const string port)
 {
 #ifdef WITH_NETWORK
@@ -132,20 +149,9 @@ void Network::listen(const string port)
 #endif
 }
 
-
-// Används inte i den här implementationen med tcp::iostream
-bool Network::disconnect()
-{
-	return true;
-}
-
-// Används inte i den här implementationen med tcp::iostream
-bool Network::is_active()
-{
-	return true;
-}
-
-// Ansluter till <hostname> och <port>, skickar <msg> och kopplar sedan från
+/*
+ * Connects to <hostname>:<port>, sends <msg> and disconnects
+ */
 void Network::send(const string hostname, const string port, const string msg)
 {
 #ifdef WITH_NETWORK
@@ -157,7 +163,10 @@ void Network::send(const string hostname, const string port, const string msg)
 }
 
 #ifdef WITH_NETWORK
-// Funktion som körs för varje meddelande servern tar emot
+/*
+ * Callback for each message recieved by Server
+ * Translate strings to SDL_Events, simple and stupid.
+ */
 void Network::callback(boost::asio::streambuf &response_)
 {
 	std::istream response_stream(&response_);
@@ -165,34 +174,34 @@ void Network::callback(boost::asio::streambuf &response_)
 	std::getline(response_stream, msg);
 	std::cout << msg << "\n";
 	
-	// Översätter strängmeddelande till SDL_Event, emuleror tangentbord
+	// Översätter strängmeddelande till SDL_Event, emulerar tangentbord
 	
-	if (msg == "quit") { // Om man håller på och förlorar, skicka en quit till motståndaren! :-)
+	if (msg == "quit") { // Quit the opponents client. :-)
 		SDL_Event event;
 		event.type = SDL_QUIT;
 		SDL_PushEvent(&event);
-	} else if (msg == "up") {
+	} else if (msg == "up") { // Up arrow
 		SDL_Event event;
 		event.type = SDL_KEYDOWN;
 		event.key.which = 0;
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_UP;
 		SDL_PushEvent(&event);
-	} else if (msg == "down") {
+	} else if (msg == "down") { // Down arrow
 		SDL_Event event;
 		event.type = SDL_KEYDOWN;
 		event.key.which = 0;
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_DOWN;
 		SDL_PushEvent(&event);
-	} else if (msg == "enter_pressed") {
+	} else if (msg == "enter_pressed") { // Retur, pressed
 		SDL_Event event;
 		event.type = SDL_KEYDOWN;
 		event.key.which = 0;
 		event.key.state = SDL_PRESSED;
 		event.key.keysym.sym = SDLK_RETURN;
 		SDL_PushEvent(&event);
-	} else if (msg == "enter_released") {
+	} else if (msg == "enter_released") { // Retur, released
 		SDL_Event event;
 		event.type = SDL_KEYUP;
 		event.key.which = 0;

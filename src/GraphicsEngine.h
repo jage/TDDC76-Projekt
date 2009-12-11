@@ -56,7 +56,6 @@ public:
 
 private:
 	SDL_Surface* screen;
-	SDL_Surface* source_image;
 	SDL_Surface* cannonball;
 	SDL_Surface* backgrounds[NROFBACKGROUNDS];
 	SDL_Surface* cannon[2*DEGREES];
@@ -79,7 +78,6 @@ private:
 	void drawEmptyButton(int xScreenPos, int yScreenPos, const int& nrOfMiddles, const bool& active);
 	SDL_Surface* generateTextSurface(const std::string& text, const PANZER_FONT& font, const SDL_Color& color);
 	SDL_Surface* loadImageFromDisc(const std::string&, const bool& transparent = false);
-	SDL_Rect getClippingRectangle(const PANZER_IMAGE&) const;
 	SDL_Surface* flipImage(SDL_Surface*, const int& flags);
 };
 
