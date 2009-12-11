@@ -24,6 +24,7 @@ void Cannon::adjust_angle(const double& delta)
 }
 
 
+
 void Cannon::set_power(const int& value)
 {
 	power_=value;

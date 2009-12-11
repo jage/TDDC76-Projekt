@@ -26,22 +26,22 @@ public:
 	GameWorld(Player* player1, Player* player2, const int& width=640,const int& height=480,const double& gravity=9.82,const double& wind =0);
 	~GameWorld();
 
-	void add_element(Element*);
-	bool update_world();
-	const int get_randomSeed() const;
-	const int get_width() const;
-	const int get_height() const;
+	void add_element(Element*);	// Adds element to the world
+	bool update_world();	// update all elements
+	const int get_randomSeed() const;	// get the seed which populated the world
+	const int get_width() const;	// get the width of world (480 px)
+	const int get_height() const;	// get the height of world (640 px)
 	const double get_wind() const;
-	void set_wind(const double&);
+	void set_wind(const double&);	
 	const double get_gravity() const;
 	void set_gravity(const double&);
-	ElementVector* get_elements();
-	MovableElementVector* get_MovableElemets();
-	Cannon* get_leftCannon() const;
-	Cannon* get_rightCannon() const;
-	bool check_collision();
-	bool check_collision(MovableElement*, Element*);
-	bool generate_world(const int& seed=0);
+	ElementVector* get_elements();	// return pointer to element list
+	MovableElementVector* get_MovableElemets();	// return pointer to movable-element list
+	Cannon* get_leftCannon() const;	// pointer to left cannon
+	Cannon* get_rightCannon() const;		// pointer to right cannon
+	bool check_collision();	// check if a collision has occured
+	bool check_collision(MovableElement*, Element*);	// check if two elements collide
+	bool generate_world(const int& seed=0);	// generate the world from a seed
 	const int getPlayer1Health() const;
 	void setPlayer1Health(const int&);
 	const int getPlayer2Health() const;
