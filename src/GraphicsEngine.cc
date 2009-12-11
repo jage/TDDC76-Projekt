@@ -1,3 +1,13 @@
+/*
+ *	GraphicsEngine.cc
+ *
+ *	Creator: Johan Wågberg
+ *	Date: 091123
+ *
+ *	Draws Elements, buttons and text to screen.
+ *	Needs SDL_image and SDL_ttf fo function.
+ */
+
 #include "SDLInclude.h"
 #include "GraphicsEngine.h"
 #include "Element.h"

@@ -1,3 +1,12 @@
+/*
+ *	Audio.cc
+ *
+ *	Creator: Johan Wågberg
+ *	Date: 091205
+ *
+ *	Plays sound and music. Needs SDL_mixer too function.
+ */
+
 #include "Audio.h"
 #include <iostream>
 #include "SDLInclude.h"
