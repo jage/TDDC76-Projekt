@@ -42,6 +42,10 @@ public:
 	bool check_collision();
 	bool check_collision(MovableElement*, Element*);
 	bool generate_world(const int& seed=0);
+	const int getPlayer1Health() const;
+	void setPlayer1Health(const int&);
+	const int getPlayer2Health() const;
+	void setPlayer2Health(const int&);
 private:
 	int width_;
 	int height_;

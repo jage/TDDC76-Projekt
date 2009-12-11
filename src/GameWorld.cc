@@ -299,3 +299,23 @@ bool GameWorld::check_collision(MovableElement* movableElement, Element* element
 
 	return true;
 }
+
+const int GameWorld::getPlayer1Health() const
+{
+	return player1_->get_health();
+}
+
+void GameWorld::setPlayer1Health(const int& health)
+{
+	player1_->set_health(health);
+}
+
+const int GameWorld::getPlayer2Health() const
+{
+	return player2_->get_health();
+}
+
+void GameWorld::setPlayer2Health(const int& health)
+{
+	player2_->set_health(health);
+}
