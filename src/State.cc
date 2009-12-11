@@ -45,8 +45,8 @@ void Meny::render(){
 		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Quit",26,310,255,255,255,PAPER_CUT72);
-		graphicsengine_ptr_->drawTextToScreenBuffer("[",0,((nextState_ * 70) + 100), 0,0,255,PAPER_CUT72);
-		graphicsengine_ptr_->drawTextToScreenBuffer("]",300,((nextState_ * 70) + 100), 0,0,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("[",0,((nextState_ * 70) + 100), 100,0,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("]",300,((nextState_ * 70) + 100), 100,0,255,PAPER_CUT72);
 
 }
 
