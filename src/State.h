@@ -271,13 +271,13 @@ public:
 	PostMatch(GraphicsEngine*, GameWorld*, Audio*);
 	~PostMatch(){};
 
-	void render();
+	void render(){};
 
-	void logic();
+	void logic(){};
 
-	void handle_input(SDL_Event&);
+	void handle_input(SDL_Event&){};
 
-	PANZER_STATES next_state();
+	PANZER_STATES next_state(){};
 private:
 	PANZER_STATES nextState_;
 };
