@@ -7,15 +7,11 @@
 
 using namespace std;
 
-//State---------------------------------------------------------//
 State::State(GraphicsEngine* graphicengine, GameWorld* gameworld, Audio* audio)
 : graphicsengine_ptr_(graphicengine), gameworld_ptr_(gameworld), audio_ptr_(audio) {}
 
 State::~State() {}
-//--------------------------------------------------------------//
-//Meny-----------------------------------------------------------//
 
-//Meny::Meny(){}
 
 Meny::Meny(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
 	 : State(graphicsengine, gameworld, audio),
@@ -105,9 +101,7 @@ PANZER_STATES Meny::next_state()
 	else
 		return MENY;
 }
-//---------------------------------------------------------------//
 
-//Player1State-----------------------------------------------------------//
 
 
 
@@ -190,9 +184,7 @@ PANZER_STATES Player1State::next_state()
 {
 			return nextState_;
 }
-//---------------------------------------------------------------//
 
-//Player2State-----------------------------------------------------------//
 
 Player2State::Player2State(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player)
 	 : State(graphicsengine,gameworld, audio), nextState_(PLAYER2STATE), player_ptr_(player) {
@@ -271,7 +263,6 @@ PANZER_STATES Player2State::next_state()
 }
 
 
-//Fire-----------------------------------------------------------//
 
 
 
@@ -314,10 +305,8 @@ PANZER_STATES Fire::next_state()
 		return FIRE;
 	}
 }
-//---------------------------------------------------------------//
 
 
-//ExitGame----------------------------------------------------------//
 
 
 
@@ -334,10 +323,8 @@ PANZER_STATES ExitGame::next_state()
 {
 	return EXITGAME;
 }
-//---------------------------------------------------------------//
 
 
-//NetworkState--------------------------------------------------//
 NetworkState::NetworkState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
 	 : State(graphicsengine,gameworld, audio), nextState_(NETWORKSTATE), input_(""), port_("12345"), switchinput_(true) {}
 
@@ -385,7 +372,8 @@ void NetworkState::handle_input(SDL_Event& event){
 PANZER_STATES NetworkState::next_state(){
 	return nextState_;
 }
-//OptionsState-------------------------------------------------//
+
+
 OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
 	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), quitOptions_(false){}
 
@@ -469,9 +457,7 @@ PANZER_STATES OptionState::next_state(){
 			return OPTIONSTATE;
 }
 
-//OptionsState-----------------------------------------------//
 
-//SetNameState-------------------------------------------------//
 SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1, Player* player2)
 	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2), playertemp_(0){}
 
@@ -559,9 +545,7 @@ PANZER_STATES SetNameState::next_state(){
 	return nextState_;
 }
 
-//SetNameState-----------------------------------------------//
 
-//SetNameState-------------------------------------------------//
 SelectLevelState::SelectLevelState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
 	 : State(graphicsengine, gameworld, audio), nextState_(SELECTLEVEL){}
 
@@ -596,7 +580,6 @@ PANZER_STATES SelectLevelState::next_state(){
 	return nextState_;
 }
 
-//InitState--------------------------------------------------//
 InitState::InitState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio)
 	: State(graphicsengine,gameworld, audio) {
 		SDL_EnableKeyRepeat(100, 10);
@@ -618,9 +601,7 @@ void InitState::logic(){
 PANZER_STATES InitState::next_state(){
 	return MENY;
 }
-//InitState-------------------------------------------------//
 
-//PostMatch-------------------------------------------------//
 PostMatch::PostMatch(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1_ptr_, Player* player2_ptr_):
 	State(graphicsengine,gameworld,audio), player1_ptr_(player1_ptr_), player2_ptr_(player2_ptr_) {}
 
