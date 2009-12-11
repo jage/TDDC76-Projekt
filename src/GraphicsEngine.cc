@@ -25,24 +25,6 @@ GraphicsEngine::~GraphicsEngine()
 }
 
 /*
- * Blits all Elements in a vector in given order.
- *
- * element_vector: Referenc to vector of Element
- */
-void GraphicsEngine::drawToScreenBuffer(const vector<Element>& element_vector)
-{
-	if (!element_vector.empty())
-	{
-		for(vector<Element>::const_iterator it = element_vector.begin();
-			it != element_vector.end();
-			++it)
-		{
-			drawToScreenBuffer(*it);
-		}
-	}
-}
-
-/*
  * Blits singel Element to screen buffer.
  * Uses pre-rotated picture if it exists
  * or rotates if needed
@@ -127,11 +109,6 @@ void GraphicsEngine::showScreenBufferOnScreen()
 }
 
 /*
- * "Tömmer" bufferten genom att fylla den med
- * angiven färg. Färgen ges i form av en unsigned int
- * där de 8 minst signifikanta bitarna represeterar
- * blått, nästa 8 grönt och nästa 8 rött.
- *
  * "Clears" screen buffer by filling it completely
  * with chosen color.
  * 
@@ -166,7 +143,7 @@ SDL_Surface* GraphicsEngine::loadImageFromDisc(const string& filename, const boo
 		cerr << IMG_GetError() << endl;
 	}
 	
-	if (transparent) { // Alphakanalen satt
+	if (transparent) { // Alpha set in picture
 		optimizedImage = SDL_DisplayFormatAlpha(loadedImage);
 	}
 	else {
@@ -187,7 +164,7 @@ void GraphicsEngine::loadCannonSpritesIntoMemory()
 	SDL_Surface* flippedCannon = flipImage(unrotatedCannon, 0);
 
 	if (!unrotatedCannon) {
-		cerr << "cannon.png ej funnen" << endl;
+		cerr << "cannon.png not found" << endl;
 		return;
 	}
 					
@@ -214,55 +191,6 @@ void GraphicsEngine::unloadCannonSpritesFromMemory()
 		SDL_FreeSurface(cannon[i]);
 		cannon[i] = NULL;
 	}
-}
-
-/*
- * Blits text to screen buffer with black outline.
- *
- * text: Text string.
- * xScreenPos: Top left coren, x.
- * yScreenPos: Top left corner, y.
- * red, green, blue: Color 0 - 255
- * fontName: Font
- */
-void GraphicsEngine::drawOutlinedTextToScreenBuffer(const string& text, const int& xScreenPos, const int& yScreenPos, const int& red, const int& green, const int& blue, const PANZER_FONT& fontName)
-{
-	int x, y;
-	int textWidth = 0;
-	int textHeight = 0;
-	SDL_Surface* sText = NULL;
-	SDL_Rect rcDest;
-
-	TTF_SizeText(font[getFontNr(fontName)], text.c_str(), &textWidth, &textHeight);
-
-	// Centrerat
-	//xScreenPos = (screen->w - textWidth) / 2;
-
-	// Högerjusterat
-	//xScreenPos = (screen->w - textWidth) - xScreenPos;
-
-	SDL_Color textColor = {0, 0, 0, 0};
-	sText = TTF_RenderText_Solid(font[getFontNr(fontName)], text.c_str(), textColor);
-
-
-	for (y = -3; y < 4; ++y)
-	{
-		for (x = -3; x < 4; ++x)
-		{
-			rcDest.x = xScreenPos + x;
-			rcDest.y = yScreenPos + y;
-			SDL_BlitSurface(sText, NULL, screen, &rcDest);
-		}
-	}
-
-	SDL_FreeSurface(sText);
-
-	SDL_Color textColor2 = {red, green, blue ,0};
-	sText = TTF_RenderText_Solid(font[getFontNr(fontName)], text.c_str(), textColor2);
-	rcDest.x = xScreenPos;
-	rcDest.y = yScreenPos;
-	SDL_BlitSurface(sText, NULL, screen, &rcDest);
-	SDL_FreeSurface(sText);
 }
 
 /*
@@ -300,13 +228,13 @@ void GraphicsEngine::init()
 	
 	if (screen == NULL)
 	{
-		cerr << "Gick ej att initiera SDL screen" << endl;
+		cerr << "Unable to initiate SDL screen" << endl;
 		return;
 	}
 	
 	if (TTF_Init() == -1)
 	{
-		cerr << "Gick ej att starta SDL_ttf" << endl;
+		cerr << "Unable to intitiate TTF" << endl;
 		return;
 	}
 	cannonball = loadImageFromDisc("Gfx/cannonball.png", true);
@@ -382,21 +310,6 @@ int GraphicsEngine::getFontNr(const PANZER_FONT& font)
 	default: //Om fonten ej finns, välj den första
 		return 0;
 	}
-}
-
-/*
- * Blit SDL_Surface to screen buffer
- * 
- * image: SDL_Surface* to blit.
- * xScreenPos: Top left corner, x.
- * yScreenPos: Top left corner, y.
- */
-void GraphicsEngine::drawSDLSurfaceToScreenBuffer(SDL_Surface *image, const int& xScreenPos, const int& yScreenPos)
-{
-	SDL_Rect rcDest;
-	rcDest.x = xScreenPos;
-	rcDest.y = yScreenPos;
-	SDL_BlitSurface(image, NULL, screen, &rcDest);
 }
 
 /*
@@ -741,12 +654,20 @@ void GraphicsEngine::drawWindBarToScreenBuffer(const int& xScreenPos, const int&
 	}
 }
 
-
+/*
+ * Draws chosen background to screen buffer. See OOD for details of which number
+ * rempresents which picture
+ *
+ * backgroundNr: Integer that represent a backgtound
+ */
 void GraphicsEngine::drawBackgroundToScreenBuffer(const int& backgroundNr)
 {
-	SDL_BlitSurface(backgrounds[backgroundNr % NROFBACKGROUNDS], NULL, screen, NULL);
+	SDL_BlitSurface(backgrounds[((backgroundNr < 0) ? (NROFBACKGROUNDS - backgroundNr) : backgroundNr) % NROFBACKGROUNDS], NULL, screen, NULL);
 }
 
+/*
+ * Reads all background images from disc.
+ */
 void GraphicsEngine::loadBackgroundsIntoMemory()
 {
 	backgrounds[0] = loadImageFromDisc("Gfx/sky.bmp");
@@ -762,6 +683,9 @@ void GraphicsEngine::loadBackgroundsIntoMemory()
 	if (backgrounds[3] == NULL) return;
 }
 
+/*
+ * Frees memory of all backgrounds.
+ */
 void GraphicsEngine::unloadBackgroundsFromMemory()
 {
 	for (int i = 0; i < NROFBACKGROUNDS; ++i) {
