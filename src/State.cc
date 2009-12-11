@@ -131,6 +131,7 @@ void Player1State::render(){
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
 	graphicsengine_ptr_->drawPowerBarToScreenBuffer(5,35,200,20,player_ptr_->get_health());
+	graphicsengine_ptr_->drawWindBarToScreenBuffer(320,0,100,5,gameworld_ptr_->get_wind());
 	if (fire_power_ != 0)
 		graphicsengine_ptr_->drawPowerBarToScreenBuffer(5, 58, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
@@ -209,6 +210,7 @@ void Player2State::render(){
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
 	graphicsengine_ptr_->drawPowerBarToScreenBuffer(405,35,200,20,player_ptr_->get_health());
+	graphicsengine_ptr_->drawWindBarToScreenBuffer(320,0,100,5,gameworld_ptr_->get_wind());
 	if (fire_power_ != 0)
 		graphicsengine_ptr_->drawPowerBarToScreenBuffer(405, 58, 200, 20, fire_power_);
 	graphicsengine_ptr_->showScreenBufferOnScreen();
@@ -282,6 +284,7 @@ void Fire::render(){
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_elements()));
 	graphicsengine_ptr_->drawTextToScreenBuffer("FIRE",0,0,255,0,0);
 	graphicsengine_ptr_->drawToScreenBuffer(*(gameworld_ptr_->get_MovableElemets()));
+	graphicsengine_ptr_->drawWindBarToScreenBuffer(320,0,100,5,gameworld_ptr_->get_wind());
 	graphicsengine_ptr_->showScreenBufferOnScreen();
 }
 
