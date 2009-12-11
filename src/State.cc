@@ -446,7 +446,7 @@ PANZER_STATES OptionState::next_state(){
 
 //SetNameState-------------------------------------------------//
 SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio, Player* player1, Player* player2)
-	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2){}
+	 : State(graphicsengine, gameworld, audio), nextState_(SETNAMESTATE), player1_ptr_(player1), player2_ptr_(player2), playertemp_(0){}
 
 void SetNameState::render(){
 	
@@ -471,7 +471,6 @@ void SetNameState::handle_input(SDL_Event& event){
 				{
 					case SDLK_1:
 						{
-							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Daniel - the Bloodseeker",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
 							player1_ptr_->set_name("Daniel - the Bloodseeker");
@@ -479,35 +478,30 @@ void SetNameState::handle_input(SDL_Event& event){
 						
 						case SDLK_2:
 						{
-							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Johannes - the Earthshaker",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
 							player1_ptr_->set_name("Johannes - Earthshaker");
 						}; break;
 						case SDLK_3:
 						{
-							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Doombringer",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
 							player1_ptr_->set_name("Johan - the Doombringer");
 						}; break;
 						case SDLK_4:
 						{
-							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Jonas - the Slayer",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
 							player1_ptr_->set_name("Jonas - the Slayer");
 						}; break;
 						case SDLK_5:
 						{
-							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Viktor - the Soul Keeper",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
 							player1_ptr_->set_name("Viktor - the Soul Keeper");
 						}; break;
 						case SDLK_6:
 						{
-							graphicsengine_ptr_->clearScreenBuffer(0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Lifestealer",150,200,255,0,0);
 							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
 							player1_ptr_->set_name("Johan - the Lifestealer");

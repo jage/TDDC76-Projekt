@@ -242,6 +242,7 @@ private:
 	PANZER_STATES nextState_;
 	Player* player1_ptr_;
 	Player* player2_ptr_;
+	Player* playertemp_;
 
 
 
