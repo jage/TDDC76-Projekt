@@ -3,8 +3,8 @@
 #include "math.h"
 #include <iostream>
 
-Cannon::Cannon(Ammunition* ptrAmmo,const bool& leftCannon)
-	:Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo)
+Cannon::Cannon(Player* player, Ammunition* ptrAmmo,const bool& leftCannon)
+	: Element(50,58, LEFT_CANNON),power_(0),ptr_ammunition_(ptrAmmo), player_(player)
 {
 	// set right cannon if not left
 	if(!leftCannon) {
@@ -74,6 +74,6 @@ void Cannon::deform(const Explosion& exp)
 	double exp_distance = exp.distance(get_x(), get_y());
 	if (exp_distance < exp.get_radius())
 	{
-		std::cout << "Träff" << std::endl;
+		player_->set_health(player_->get_health() - exp_distance / exp.get_radius() * 100);
 	}
 }

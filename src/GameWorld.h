@@ -13,6 +13,7 @@
 #include "Interval.h"
 #include <vector>
 #include <ctime>
+#include "Player.h"
 
 #define PI 3.14159265
 
@@ -22,7 +23,7 @@ typedef std::vector<MovableElement*> MovableElementVector;
 class GameWorld
 {
 public:
-	GameWorld(const int& width=640,const int& height=480,const double& gravity=9.82,const double& wind =0);
+	GameWorld(Player* player1, Player* player2, const int& width=640,const int& height=480,const double& gravity=9.82,const double& wind =0);
 	~GameWorld();
 
 	void add_element(Element*);	// Adds element to the world
@@ -34,13 +35,17 @@ public:
 	void set_wind(const double&);	
 	const double get_gravity() const;
 	void set_gravity(const double&);
-	ElementVector* get_elements();		// return pointer to element list
-	MovableElementVector* get_MovableElemets();		// return pointer to movable-element list
+	ElementVector* get_elements();	// return pointer to element list
+	MovableElementVector* get_MovableElemets();	// return pointer to movable-element list
 	Cannon* get_leftCannon() const;	// pointer to left cannon
-	Cannon* get_rightCannon() const;	// pointer to right cannon
-	bool check_collision();		// check if a collision has occured
+	Cannon* get_rightCannon() const;		// pointer to right cannon
+	bool check_collision();	// check if a collision has occured
 	bool check_collision(MovableElement*, Element*);	// check if two elements collide
 	bool generate_world(const int& seed=0);	// generate the world from a seed
+	const int getPlayer1Health() const;
+	void setPlayer1Health(const int&);
+	const int getPlayer2Health() const;
+	void setPlayer2Health(const int&);
 private:
 	int width_;
 	int height_;
@@ -52,6 +57,8 @@ private:
 	MovableElementVector movableElements_;
 	Cannon* ptr_cannonL_;
 	Cannon* ptr_cannonR_;
+	Player* player1_;
+	Player* player2_;
 };
 
 class GameWorldException
