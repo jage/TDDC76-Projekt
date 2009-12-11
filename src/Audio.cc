@@ -1,3 +1,12 @@
+/*
+ *	Audio.cc
+ *
+ *	Creator: Johan Wågberg
+ *	Date: 091205
+ *
+ *	Plays sound and music. Needs SDL_mixer too function.
+ */
+
 #include "Audio.h"
 #include <iostream>
 #include "SDLInclude.h"
@@ -13,6 +22,10 @@ Audio::Audio()
 Audio::~Audio()
 {}
 
+/*
+ * Initiates SDL_AUDIO if needed and the audio mixer. Allocates channels
+ * and loads all music and sound effects into memory
+ */
 void Audio::init()
 {
 	if (SDL_WasInit(SDL_INIT_AUDIO) == 0)
@@ -35,7 +48,9 @@ void Audio::init()
 	loadSoundsIntoMemory();
 }
 
-
+/*
+ * Frees all allocated memory and closes the audio mixer.
+ */
 void Audio::uninit()
 {
 	if (SDL_Audio_Enabled_) {
@@ -48,18 +63,26 @@ void Audio::uninit()
 	}
 }
 
+/*
+ * Stops all sound effects currently playing.
+ */
 void Audio::stopSound() const
 {
 	Mix_HaltChannel(-1);
 }
 
+/*
+ * Stops the music currently playing.
+ */
 void Audio::stopAllAudio() const
 {
 	stopSound();
 	stopMusic();
 }
 
-
+/*
+ * Loads all music into memory
+ */
 void Audio::loadMusicIntoMemory()
 {
 	musicTrack_[0] = Mix_LoadMUS("Opening_Music.ogg");
@@ -70,6 +93,9 @@ void Audio::loadMusicIntoMemory()
 	Mix_VolumeMusic(musicVolume_);
 }
 
+/*
+ * Frees the memory of all music.
+ */
 void Audio::unloadMusicFromMemory()
 {
 	stopMusic();
@@ -83,20 +109,28 @@ void Audio::unloadMusicFromMemory()
 	}
 }
 
+/*
+ * Plays selected music track.
+ */
 void Audio::playMusic(const int &musicIndex, const int &loop) const
 {
 	if (SDL_Audio_Enabled_ == false) return;
 	if (Mix_PlayingMusic() == 1) Mix_HaltMusic();
 	if (musicVolume_ == 0) return;
+	if (musicIndex < 0 || musicIndex >= NROFMUSICTRACKS) return;
 
 	if (Mix_PlayMusic(musicTrack_[musicIndex], loop) == -1)
 	{
 		cerr << Mix_GetError() << endl;
+		return;
 	}
 
 	Mix_VolumeMusic(musicVolume_);
 }
 
+/*
+ * Loads all sound effects into memory
+ */
 void Audio::loadSoundsIntoMemory()
 {
 	sound_[0] = Mix_LoadWAV("sounds/fire.wav");
@@ -124,6 +158,9 @@ void Audio::loadSoundsIntoMemory()
 	Mix_VolumeChunk(sound_[2], 128);
 }
 
+/*
+ * Unloads all sound effects from mamory.
+ */
 void Audio::unloadSoundsFromMemory()
 {
 	stopSound();
@@ -137,9 +174,13 @@ void Audio::unloadSoundsFromMemory()
 	}
 }
 
+/*
+ * Plays selected sound effect.
+ */
 void Audio::playSound(const int& soundIndex) const
 {
 	if (SDL_Audio_Enabled_ == false)  return;
+	if (soundIndex < 0 || soundIndex >= NROFSOUNDS) return;
 	
 	Mix_Volume( 0, soundVolume_);
 	Mix_Volume( 1, soundVolume_);
@@ -164,26 +205,41 @@ void Audio::playSound(const int& soundIndex) const
 	}
 }
 
+/*
+ * Sets the music volume.
+ */
 void Audio::setMusicVolume(const int& volume)
 {
 	musicVolume_ = volume;
 }
 
+/*
+ * Returns the music volume.
+ */
 const int Audio::getMusicVolume() const
 {
 	return musicVolume_;
 }
 
+/*
+ * Sets the sound effects colume.
+ */
 void Audio::setSoundVolume(const int &volume)
 {
 	soundVolume_ = volume;
 }
 
+/* 
+ * Returns the sound effects volume.
+ */
 const int Audio::getSoundVolume() const
 {
 	return soundVolume_;
 }
 
+/*
+ * Stops the music.
+ */
 void Audio::stopMusic() const
 {
 	Mix_HaltMusic();

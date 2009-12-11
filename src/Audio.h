@@ -1,3 +1,12 @@
+/*
+ *	Audio.h
+ *
+ *	Creator: Johan Wågberg
+ *	Date: 091205
+ *
+ *	Plays sounds and music.
+ */
+
 #ifndef AUDIO_H_
 #define AUDIO_H_
 
