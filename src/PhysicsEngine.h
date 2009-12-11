@@ -8,33 +8,24 @@
 class PhysicsEngine {
 	
 	public:
-		void update_pos(MovableElement*, const double&, const double&); 		//indata: (element, gravitation, wind)
+		// void update_pos update the given Movableelement, given gravity and wind
+		void update_pos(MovableElement*, const double&, const double&);
 
 	private:
-		/*
-		* void update_x uppdaterar x-positionen hos ett Movable-element
-		*/
+		// void update_x, update the x-position on a Movable-element
 		void update_x(MovableElement*);
 
-
-		/*
-		* void update_y uppdaterar y-positionen hos ett Movable-element
-		*/
+		// void update_y, update the x-position on a Movable-element
 		void update_y(MovableElement*);
 
-		/*
-		* void update_dx uppdaterar dx-variabeln hos ett Movable-element
-		*/
+		// void update_dx, update the x-position on a Movable-element
 		void update_dx(MovableElement*, const double);
 
-		/*
-		* void update_dy uppdaterar dy-variabeln hos ett Movable-element
-		*/
+		// void update_dy, update the x-position on a Movable-element
 		void update_dy(MovableElement*, const double);
 
-		/*
-		* int return_sign returnerar tecknet på en int-variabel
-		*/
+
+		// return the sign on a given integer
 		int return_sign(int);
 };
 #endif /*PHYSICSENGINE_H_*/
