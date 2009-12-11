@@ -3,7 +3,9 @@
 #ifdef WITH_NETWORK
 #include <boost/thread.hpp>
 
-
+/*
+ * Start network, listens in the background in a thread
+ */
 void start_network() {
 	Network server;
 	server.listen("12346");
