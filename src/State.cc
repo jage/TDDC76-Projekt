@@ -45,8 +45,8 @@ void Meny::render(){
 		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Quit",26,310,255,255,255,PAPER_CUT72);
-		graphicsengine_ptr_->drawTextToScreenBuffer("[",0,((nextState_ * 70) + 100), 100,0,255,PAPER_CUT72);
-		graphicsengine_ptr_->drawTextToScreenBuffer("]",300,((nextState_ * 70) + 100), 100,0,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("[",0,((nextState_ * 70) + 100), 0,0,255,PAPER_CUT72);
+		graphicsengine_ptr_->drawTextToScreenBuffer("]",300,((nextState_ * 70) + 100), 0,0,255,PAPER_CUT72);
 
 }
 
@@ -383,9 +383,26 @@ OptionState::OptionState(GraphicsEngine* graphicsengine, GameWorld* gameworld, A
 
 void OptionState::render(){
 	graphicsengine_ptr_->clearScreenBuffer(0);
-	graphicsengine_ptr_->drawFixedWidthButton("Set player name",20,50,200,(nextState_ == 8),LAZY26,255,255,255);
+	graphicsengine_ptr_->drawBackgroundToScreenBuffer();
+	/*graphicsengine_ptr_->drawFixedWidthButton("Set player name",20,50,200,(nextState_ == 8),LAZY26,255,255,255);
 	graphicsengine_ptr_->drawFixedWidthButton("Select level",20,100,200,(nextState_ == 9),LAZY26,255,255,255);
-	graphicsengine_ptr_->drawFixedWidthButton("Meny",20,150,200,(nextState_ == 5),LAZY26,255,255,255);
+	graphicsengine_ptr_->drawFixedWidthButton("Meny",20,150,200,(nextState_ == 5),LAZY26,255,255,255);*/
+	graphicsengine_ptr_->drawTextToScreenBuffer("Set Player Name",26,100,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Select Level",26,170,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("Meny",26,240,255,255,255,PAPER_CUT72);
+ 		if (nextState_ == 8){
+ 			graphicsengine_ptr_->drawTextToScreenBuffer("[",0,100, 100,0,255,PAPER_CUT72);
+			graphicsengine_ptr_->drawTextToScreenBuffer("]",600,100, 100,0,255,PAPER_CUT72);
+ 		}
+ 		if (nextState_ == 9){
+ 			graphicsengine_ptr_->drawTextToScreenBuffer("[",0,170, 100,0,255,PAPER_CUT72);
+			graphicsengine_ptr_->drawTextToScreenBuffer("]",600,170, 100,0,255,PAPER_CUT72);
+ 		}
+ 		if (nextState_ == 5){
+ 			graphicsengine_ptr_->drawTextToScreenBuffer("[",0,240, 100,0,255,PAPER_CUT72);
+			graphicsengine_ptr_->drawTextToScreenBuffer("]",600,240, 100,0,255,PAPER_CUT72);
+ 	}
+ 	
 }
 
 void OptionState::logic(){}
@@ -454,14 +471,15 @@ SetNameState::SetNameState(GraphicsEngine* graphicsengine, GameWorld* gameworld,
 
 void SetNameState::render(){
 	
-	
+	/*graphicsengine_ptr_->drawBackgroundToScreenBuffer();*/
 	graphicsengine_ptr_->drawTextToScreenBuffer("Press the number of your character:",0,0,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("1-D.A",0,50,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("2-J.R",0,90,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("3-J.W",0,130,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("4-J.R",0,170,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("5-V.D",0,210,255,255,255);
-	graphicsengine_ptr_->drawTextToScreenBuffer("6-J.E",0,250,255,255,255);
+	/*graphicsengine_ptr_->drawTextToScreenBuffer("1- D.A",26,100,255,255,255,PAPER_CUT72);*/
+	graphicsengine_ptr_->drawTextToScreenBuffer("1-D.A",0,40,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("2-J.R",0,110,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("3-J.W",0,180,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("4-J.R",0,250,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("5-V.D",0,320,255,255,255,PAPER_CUT72);
+	graphicsengine_ptr_->drawTextToScreenBuffer("6-J.E",0,390,255,255,255,PAPER_CUT72);
 	
 
 }
@@ -476,44 +494,50 @@ void SetNameState::handle_input(SDL_Event& event){
 					case SDLK_1:
 						{
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Daniel - the Bloodseeker",150,200,255,0,0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Daniel - the Bloodseeker",200,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Choose your destiny?",220,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter",220,350,255,0,0);
 							player1_ptr_->set_name("Daniel - the Bloodseeker");
 						}; break;
 						
 						case SDLK_2:
 						{
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Johannes - the Earthshaker",150,200,255,0,0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Johannes - the Earthshaker",200,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Choose your destiny?",220,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter",220,350,255,0,0);
 							player1_ptr_->set_name("Johannes - Earthshaker");
 						}; break;
 						case SDLK_3:
 						{
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Doombringer",150,200,255,0,0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Doombringer",200,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Choose your destiny?",220,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter",220,350,255,0,0);
 							player1_ptr_->set_name("Johan - the Doombringer");
 						}; break;
 						case SDLK_4:
 						{
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Jonas - the Slayer",150,200,255,0,0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Jonas - the Slayer",200,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Choose your destiny?",220,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter",220,350,255,0,0);
 							player1_ptr_->set_name("Jonas - the Slayer");
 						}; break;
 						case SDLK_5:
 						{
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Viktor - the Soul Keeper",150,200,255,0,0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Viktor - the Soul Keeper",200,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Choose your destiny?",220,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter",220,350,255,0,0);
 							player1_ptr_->set_name("Viktor - the Soul Keeper");
 						}; break;
 						case SDLK_6:
 						{
 							graphicsengine_ptr_->clearScreenBuffer(0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Lifestealer",150,200,255,0,0);
-							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter to choose your destiny!",50,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Johan - the Lifestealer",200,200,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Choose your destiny?",220,300,255,0,0);
+							graphicsengine_ptr_->drawTextToScreenBuffer("Press enter",220,350,255,0,0);
 							player1_ptr_->set_name("Johan - the Lifestealer");
 						}; break;
 					case SDLK_RETURN:
