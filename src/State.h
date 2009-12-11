@@ -268,18 +268,20 @@ private:
 class PostMatch : public State
 {
 public:
-	PostMatch(GraphicsEngine*, GameWorld*, Audio*);
+	PostMatch(GraphicsEngine*, GameWorld*, Audio*, Player*, Player*);
 	~PostMatch(){};
 
-	void render(){};
+	void render();
 
-	void logic(){};
+	void logic();
 
 	void handle_input(SDL_Event&){};
 
-	PANZER_STATES next_state(){};
+	PANZER_STATES next_state();
 private:
 	PANZER_STATES nextState_;
+	Player* player1_ptr_;
+	Player* player2_ptr_;
 };
 
 
