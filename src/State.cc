@@ -581,3 +581,10 @@ void InitState::logic(){
 PANZER_STATES InitState::next_state(){
 	return MENY;
 }
+//InitState-------------------------------------------------//
+
+//PostMatch-------------------------------------------------//
+PostMatch::PostMatch(GraphicsEngine* graphicsengine, GameWorld* gameworld, Audio* audio):
+	State(graphicsengine,gameworld,audio){}
+
+

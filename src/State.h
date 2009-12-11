@@ -265,4 +265,22 @@ private:
 	PANZER_STATES nextState_;
 };
 
+class PostMatch : public State
+{
+public:
+	PostMatch(GraphicsEngine*, GameWorld*, Audio*);
+	~PostMatch(){};
+
+	void render();
+
+	void logic();
+
+	void handle_input(SDL_Event&);
+
+	PANZER_STATES next_state();
+private:
+	PANZER_STATES nextState_;
+};
+
+
 #endif /* STATE_H_ */
