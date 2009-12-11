@@ -167,7 +167,7 @@ void Player1State::handle_input(SDL_Event& event){
 				if (fire_power_ != 0)
 				{
 					nextState_ = FIRE;
-					gameworld_ptr_->get_leftCannon()->set_power(fire_power_);
+					gameworld_ptr_->get_leftCannon()->set_power(fire_power_*3);
 					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_leftCannon()->fire());
 					audio_ptr_->playSound(0);
 					if (player_ptr_->network())
@@ -244,7 +244,7 @@ void Player2State::handle_input(SDL_Event& event){
 				if (fire_power_ != 0)
 				{
 					nextState_ = FIRE;
-					gameworld_ptr_->get_rightCannon()->set_power(fire_power_);
+					gameworld_ptr_->get_rightCannon()->set_power(fire_power_*3);
 					gameworld_ptr_->get_MovableElemets()->push_back(gameworld_ptr_->get_rightCannon()->fire());
 					audio_ptr_->playSound(0);
 					if (player_ptr_->network())
