@@ -635,7 +635,7 @@ void PostMatch::render(){
 	if(player1_ptr_->get_health() < 0)
 		graphicsengine_ptr_->drawTextToScreenBuffer(player2_ptr_->get_name() +"  is the winner",0,0,255,255,255,LAZY32);
 	else
-		graphicsengine_ptr_->drawTextToScreenBuffer(player1_ptr_->get_name() +"  is the winner",0,0,255,255,255LAZY32);
+		graphicsengine_ptr_->drawTextToScreenBuffer(player1_ptr_->get_name() +"  is the winner",0,0,255,255,255, LAZY32);
 
 }
 void PostMatch::logic(){ SDL_Delay(2000);}
