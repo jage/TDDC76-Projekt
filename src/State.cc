@@ -36,7 +36,7 @@ Meny::~Meny(){
 
 void Meny::render(){
 		graphicsengine_ptr_->clearScreenBuffer(1);
-		graphicsengine_ptr_->drawBackgroundToScreenBuffer(3);
+		graphicsengine_ptr_->drawBackgroundToScreenBuffer(1);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Play",26,100,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Network",26,170,255,255,255,PAPER_CUT72);
 		graphicsengine_ptr_->drawTextToScreenBuffer("Options",26,240,255,255,255,PAPER_CUT72);
