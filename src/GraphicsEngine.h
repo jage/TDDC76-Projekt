@@ -21,7 +21,7 @@
 const int DEGREES = 360;
 const int NROFFONTS = 3;
 const int NROFBUTTONIMG = 5;
-const int NROFBACKGROUNDS = 3;
+const int NROFBACKGROUNDS = 4;
 
 class GraphicsEngine
 {

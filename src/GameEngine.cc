@@ -65,6 +65,9 @@ void GameEngine::run()
 
 	while(currentState_ != EXITGAME)
 		{
+			if (currentState_ == INITSTATE) {
+				playerTurn_ = PLAYER1STATE;
+			}
 			ticks_ = SDL_GetTicks();
 			stateVector_.at(currentState_) ->render();
 			graphicsengine_.showScreenBufferOnScreen();

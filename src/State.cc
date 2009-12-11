@@ -616,6 +616,8 @@ void InitState::render(){
 void InitState::logic(){
 	gameworld_ptr_->generate_world(1);
 	gameworld_ptr_->set_wind(.1*((rand()%200) - 100));
+	gameworld_ptr_->setPlayer1Health(100);
+	gameworld_ptr_->setPlayer2Health(100);
 	cout << "Level generated, we wait so we see the splash screen..." << endl;
 
 }
