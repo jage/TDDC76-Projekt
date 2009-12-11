@@ -4,7 +4,7 @@
  *	Creator: Johan Wågberg
  *	Date: 091123
  *
- *	Ritar ut Element och text på skärmen.
+ *	Draws Elements, buttons and text to screen.
  */
 
 
