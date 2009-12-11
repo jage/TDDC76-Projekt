@@ -142,6 +142,9 @@ void Player1State::logic()
 	nextState_ = PLAYER1STATE;
 }
 
+/*
+ * Handle SDL_Event, if player is connected to a remote network player, send messages
+ */
 void Player1State::handle_input(SDL_Event& event){
 
 	if(event.type == SDL_KEYDOWN)
@@ -218,6 +221,9 @@ void Player2State::render(){
 
 void Player2State::logic(){nextState_ = PLAYER2STATE;}
 
+/*
+ * Handle SDL_Event, if player is connected to a remote network player, send messages
+ */
 void Player2State::handle_input(SDL_Event& event){
 	if(event.type == SDL_KEYDOWN)
 	{
