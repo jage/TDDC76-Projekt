@@ -758,7 +758,7 @@ void GraphicsEngine::loadBackgroundsIntoMemory()
 	backgrounds[2] = loadImageFromDisc("Gfx/babe.bmp");
 	if (backgrounds[2] == NULL) return;
 
-	backgrounds[3] = loadImageFromDisc("Gfx/babe.bmp");
+	backgrounds[3] = loadImageFromDisc("Gfx/ascii-art.png");
 	if (backgrounds[3] == NULL) return;
 }
 
